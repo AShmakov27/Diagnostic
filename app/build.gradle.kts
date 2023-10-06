@@ -68,5 +68,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    implementation("com.github.felHR85:UsbSerial:6.1.0")
+    implementation("com.google.dagger:hilt-android:2.44.2")
+    implementation("com.google.dagger:hilt-compiler:2.44.2")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 }
