@@ -61,14 +61,16 @@ import com.diplom.mkp_mbsy_diagnostic.ui.theme.MKP_MBSY_diagnosticTheme
 @Composable
 fun MBSYScreen(
     navController: NavHostController,
-    data: List<MBSYMessage>/*,
-    onSendArrayClicked: () -> Unit,
+    data: List<MBSYMessage>,
+    onSendArrayClicked: (Int, Int) -> Unit,
+    /*
     on16Clicked: () -> Unit,
     on20Clicked: () -> Unit,
     on62Clicked: () -> Unit,
     onDeleteClick: () -> Unit,
     onSaveClick: () -> Unit*/
 ) {
+    var showDialog by remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
             TopBar(title = "Мобильная диагностика МКП и МБСУ. Связь с МБСУ")
@@ -86,13 +88,20 @@ fun MBSYScreen(
                     onSaveClick = onSaveClick*/
                 )
             }
+            IDsDialog(
+                showDialog = showDialog,
+                onDismiss = { showDialog = false },
+                onConfirm = { text1, text2 ->
+                    onSendArrayClicked(text1.toInt(), text2.toInt())
+                }
+            )
         },
         floatingActionButton = {
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
                 shape = CircleShape,
-                onClick = {},/*onSendArrayClicked*/
+                onClick = { showDialog = true }
             ) {
                 Icon(imageVector = Icons.Filled.Email, contentDescription = "Send Array")
             }
@@ -510,7 +519,10 @@ fun MBSYDarkPreview() {
         )
     )
     MKP_MBSY_diagnosticTheme(darkTheme = true) {
-        MBSYScreen(navController = rememberNavController(), data = testlist)
+        MBSYScreen(
+            navController = rememberNavController(),
+            data = testlist,
+            onSendArrayClicked = { text1, text2 -> text1 + text2 })
     }
 }
 
@@ -533,7 +545,10 @@ fun MBSYLightPreview() {
         )
     )
     MKP_MBSY_diagnosticTheme(darkTheme = false) {
-        MBSYScreen(navController = rememberNavController(), data = testlist)
+        MBSYScreen(
+            navController = rememberNavController(),
+            data = testlist,
+            onSendArrayClicked = { text1, text2 -> text1 + text2 })
     }
 }
 
