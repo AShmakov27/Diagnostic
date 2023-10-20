@@ -1,6 +1,5 @@
 package com.diplom.mkp_mbsy_diagnostic.viewmodel
 
-import android.content.Context
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
@@ -59,8 +58,7 @@ class MBSYViewModel(
         if (sentBytes >= 0) {
             Toast.makeText(LocalContext.current, "Сообщение отправлено", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(LocalContext.current, "Сообщение неотправлено", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(LocalContext.current, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -74,8 +72,7 @@ class MBSYViewModel(
         if (sentBytes >= 0) {
             Toast.makeText(LocalContext.current, "Сообщение отправлено", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(LocalContext.current, "Сообщение неотправлено", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(LocalContext.current, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -89,8 +86,7 @@ class MBSYViewModel(
         if (sentBytes >= 0) {
             Toast.makeText(LocalContext.current, "Сообщение отправлено", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(LocalContext.current, "Сообщение неотправлено", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(LocalContext.current, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
         }
     }
 
