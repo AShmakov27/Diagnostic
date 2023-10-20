@@ -12,15 +12,18 @@ import com.diplom.mkp_mbsy_diagnostic.ui.theme.MKP_MBSY_diagnosticTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(title: String)
-{
-    TopAppBar(title =
-    { Text(text = title,
-        style = TextStyle(
-            fontSize = MaterialTheme.typography.titleLarge.fontSize,
-            color = MaterialTheme.colorScheme.onPrimary)
-    )
-    },
+fun TopBar(title: String) {
+    TopAppBar(
+        title =
+        {
+            Text(
+                text = title,
+                style = TextStyle(
+                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            )
+        },
         colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary)
     )
 }
@@ -28,7 +31,7 @@ fun TopBar(title: String)
 
 @Preview
 @Composable
-fun TopBarDarkPreview(){
+fun TopBarDarkPreview() {
     MKP_MBSY_diagnosticTheme(darkTheme = true) {
         TopBar(title = "Preview")
     }
@@ -36,7 +39,7 @@ fun TopBarDarkPreview(){
 
 @Preview
 @Composable
-fun TopBarLightPreview(){
+fun TopBarLightPreview() {
     MKP_MBSY_diagnosticTheme(darkTheme = false) {
         TopBar(title = "Preview")
     }

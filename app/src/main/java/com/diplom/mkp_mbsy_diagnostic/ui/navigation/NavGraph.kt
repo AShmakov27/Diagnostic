@@ -12,7 +12,7 @@ import com.diplom.mkp_mbsy_diagnostic.ui.screens.MKPScreen
 
 
 @Composable
-fun NavGraph () {
+fun NavGraph() {
 
     val navController = rememberNavController()
 
@@ -21,10 +21,10 @@ fun NavGraph () {
         composable(Routes.Choose.route) {
             ChooseTypeScreen(navController = navController)
         }
-        composable(Routes.MBSY.route){
+        composable(Routes.MBSY.route) {
             MBSYScreen(navController = navController, data = emptyList<MBSYMessage>())
         }
-        composable(Routes.MKP.route){
+        composable(Routes.MKP.route) {
             MKPScreen(data = emptyList<MKPMessage>())
         }
     }

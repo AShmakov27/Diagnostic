@@ -92,7 +92,7 @@ fun MBSYScreen(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
                 shape = CircleShape,
-                onClick = {}/*onSendArrayClicked*/,
+                onClick = {},/*onSendArrayClicked*/
             ) {
                 Icon(imageVector = Icons.Filled.Email, contentDescription = "Send Array")
             }
@@ -113,9 +113,10 @@ fun MBSYContent(
     onSaveClick: () -> Unit*/
 
 ) {
-    Column (modifier = Modifier
-        .fillMaxSize()
-        .padding(start = 0.dp, end = 0.dp),
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 0.dp, end = 0.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     )
@@ -151,303 +152,363 @@ fun MBSYContent(
 
 @ExperimentalMaterial3Api
 @Composable
-fun MessageMBSYView(navController: NavHostController,
-                MB_id: String, Version: String, PodVersion: String, Month: String, Year: String,
-                kolErr: String, Sec: String,
-                Param1: String, Param2: String, Param3: String, Param4: String, Param5: String, Param6: String
-                /*,on16licked: () -> Unit, on20Clicked: () -> Unit, on62Clicked: () -> Unit, onDeleteClick: () -> Unit, onSaveClick: () -> Unit*/)
-{
-    var expandedState by remember { mutableStateOf(true)}
-        val rotationState by animateFloatAsState(
-            targetValue = if (expandedState) 180f else 0f
-        )
-        Card (
+fun MessageMBSYView(
+    navController: NavHostController,
+    MB_id: String, Version: String, PodVersion: String, Month: String, Year: String,
+    kolErr: String, Sec: String,
+    Param1: String, Param2: String, Param3: String, Param4: String, Param5: String, Param6: String
+    /*,on16licked: () -> Unit, on20Clicked: () -> Unit, on62Clicked: () -> Unit, onDeleteClick: () -> Unit, onSaveClick: () -> Unit*/
+) {
+    var expandedState by remember { mutableStateOf(true) }
+    val rotationState by animateFloatAsState(
+        targetValue = if (expandedState) 180f else 0f
+    )
+    Card(
+        modifier = Modifier
+            .padding(top = 5.dp, start = 5.dp, end = 5.dp)
+            .fillMaxWidth()
+            .animateContentSize(
+                animationSpec = tween(
+                    durationMillis = 300,
+                    easing = LinearOutSlowInEasing
+                )
+            ),
+        shape = RoundedCornerShape(10.dp)
+    )
+    {
+        Row(
             modifier = Modifier
-                .padding(top = 5.dp, start = 5.dp, end = 5.dp)
-                .fillMaxWidth()
-                .animateContentSize(
-                    animationSpec = tween(
-                        durationMillis = 300,
-                        easing = LinearOutSlowInEasing
-                    )
-                ),
-            shape = RoundedCornerShape(10.dp)
-        )
-        {
-            Row (modifier = Modifier
                 .fillMaxWidth()
                 .background(color = MaterialTheme.colorScheme.secondaryContainer)
-            ){
+        ) {
+            Text(
+                text = "МБСУ №$MB_id",
+                style = TextStyle(
+                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                ),
+                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            )
+            {
+                IconButton(modifier = Modifier
+                    .padding(end = 5.dp)
+                    .rotate(rotationState),
+                    onClick = { expandedState = !expandedState })
+                {
+                    Icon(
+                        modifier = Modifier.fillMaxSize(),
+                        imageVector = Icons.Default.ArrowDropDown,
+                        contentDescription = "Close",
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                }
+            }
+        }
+        if (expandedState) {
+            Row(
+                modifier = Modifier
+                    .height(20.dp)
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.secondaryContainer)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                )
+                {
+                    IconButton(modifier = Modifier
+                        .padding(end = 5.dp),
+                        onClick = { /*onDeleteClick*/ })
+                    {
+                        Icon(
+                            modifier = Modifier.fillMaxSize(),
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Delete",
+                            tint = Color.Red
+                        )
+                    }
+                    IconButton(modifier = Modifier
+                        .padding(end = 5.dp),
+                        onClick = { /*onSaveClick*/ })
+                    {
+                        Icon(
+                            modifier = Modifier.fillMaxSize(),
+                            imageVector = Icons.Default.AddCircle,
+                            contentDescription = "Save",
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer
+                        )
+                    }
+                }
+            }
+            Spacer(
+                modifier = Modifier
+                    .padding(start = 5.dp, end = 5.dp)
+                    .height(3.dp)
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.onSecondaryContainer)
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.secondaryContainer)
+            )
+            {
                 Text(
-                    text = "МБСУ №$MB_id",
+                    text = "Версия: $Version",
                     style = TextStyle(
-                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                        fontWeight = FontWeight.Bold,
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                        fontWeight = FontWeight.Normal,
                         color = MaterialTheme.colorScheme.onSecondaryContainer
                     ),
                     modifier = Modifier.padding(start = 5.dp, end = 10.dp)
                 )
-                Row (modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End)
-                {
-                    IconButton(modifier = Modifier
-                        .padding(end = 5.dp)
-                        .rotate(rotationState),
-                        onClick = { expandedState = !expandedState })
-                    {
-                        Icon(modifier = Modifier.fillMaxSize(), imageVector = Icons.Default.ArrowDropDown, contentDescription = "Close", tint = MaterialTheme.colorScheme.onSecondaryContainer)
-                    }
-                }
+                Text(
+                    text = "Подверсия: $PodVersion",
+                    style = TextStyle(
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    ),
+                    modifier = Modifier.padding(start = 5.dp, end = 10.dp)
+                )
+                Text(
+                    text = "Месяц: $Month",
+                    style = TextStyle(
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    ),
+                    modifier = Modifier.padding(start = 5.dp, end = 10.dp)
+                )
+                Text(
+                    text = "Год: $Year",
+                    style = TextStyle(
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    ),
+                    modifier = Modifier.padding(start = 5.dp, end = 10.dp)
+                )
             }
-            if(expandedState)
-            {
-                Row (modifier = Modifier
-                    .height(20.dp)
+            Spacer(
+                modifier = Modifier
+                    .padding(start = 5.dp, end = 5.dp)
+                    .height(3.dp)
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.onSecondaryContainer)
+            )
+            Column(
+                modifier = Modifier
                     .fillMaxWidth()
                     .background(color = MaterialTheme.colorScheme.secondaryContainer)
-                ){
-                    Row (modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End)
-                    {
-                        IconButton(modifier = Modifier
-                            .padding(end = 5.dp),
-                            onClick = { /*onDeleteClick*/ })
-                        {
-                            Icon(modifier = Modifier.fillMaxSize(), imageVector = Icons.Default.Delete, contentDescription = "Delete", tint = Color.Red)
-                        }
-                        IconButton(modifier = Modifier
-                            .padding(end = 5.dp),
-                            onClick = { /*onSaveClick*/ })
-                        {
-                            Icon(modifier = Modifier.fillMaxSize(), imageVector = Icons.Default.AddCircle, contentDescription = "Save", tint = MaterialTheme.colorScheme.onSecondaryContainer)
-                        }
-                    }
-                }
-                Spacer(modifier = Modifier
+            )
+            {
+                Text(
+                    text = "Количество ошибок: $kolErr",
+                    style = TextStyle(
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    ),
+                    modifier = Modifier.padding(start = 5.dp, end = 10.dp)
+                )
+                Text(
+                    text = "Время: $Sec с",
+                    style = TextStyle(
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    ),
+                    modifier = Modifier.padding(start = 5.dp, end = 10.dp)
+                )
+            }
+            Spacer(
+                modifier = Modifier
                     .padding(start = 5.dp, end = 5.dp)
                     .height(3.dp)
                     .fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.onSecondaryContainer))
-                Column (modifier = Modifier
+                    .background(color = MaterialTheme.colorScheme.onSecondaryContainer)
+            )
+            Column(
+                modifier = Modifier
                     .fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.secondaryContainer))
-                {
-                    Text(
-                        text = "Версия: $Version",
-                        style = TextStyle(
-                            fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                            fontWeight = FontWeight.Normal,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
-                        ),
-                        modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                    )
-                    Text(
-                        text = "Подверсия: $PodVersion",
-                        style = TextStyle(
-                            fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                            fontWeight = FontWeight.Normal,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
-                        ),
-                        modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                    )
-                    Text(
-                        text = "Месяц: $Month",
-                        style = TextStyle(
-                            fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                            fontWeight = FontWeight.Normal,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
-                        ),
-                        modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                    )
-                    Text(
-                        text = "Год: $Year",
-                        style = TextStyle(
-                            fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                            fontWeight = FontWeight.Normal,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
-                        ),
-                        modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                    )
-                }
-                Spacer(modifier = Modifier
+                    .background(color = MaterialTheme.colorScheme.secondaryContainer)
+            )
+            {
+                Text(
+                    text = "Напряжение МСУ: $Param1 В",
+                    style = TextStyle(
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    ),
+                    modifier = Modifier.padding(start = 5.dp, end = 10.dp)
+                )
+                Text(
+                    text = "Напряжение аккумулятора модема: $Param2 В",
+                    style = TextStyle(
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    ),
+                    modifier = Modifier.padding(start = 5.dp, end = 10.dp)
+                )
+                Text(
+                    text = "Напряжение разблокировки: $Param3 В",
+                    style = TextStyle(
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    ),
+                    modifier = Modifier.padding(start = 5.dp, end = 10.dp)
+                )
+                Text(
+                    text = "Процент распознанной информации: $Param4 %",
+                    style = TextStyle(
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    ),
+                    modifier = Modifier.padding(start = 5.dp, end = 10.dp)
+                )
+                Text(
+                    text = "Резерв: $Param5 В",
+                    style = TextStyle(
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    ),
+                    modifier = Modifier.padding(start = 5.dp, end = 10.dp)
+                )
+                Text(
+                    text = "Температура внутри блока: $Param6 г.ц.",
+                    style = TextStyle(
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    ),
+                    modifier = Modifier.padding(start = 5.dp, end = 10.dp)
+                )
+            }
+            Spacer(
+                modifier = Modifier
                     .padding(start = 5.dp, end = 5.dp)
                     .height(3.dp)
                     .fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.onSecondaryContainer))
-                Column (modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.secondaryContainer))
-                {
-                    Text(
-                        text = "Количество ошибок: $kolErr",
-                        style = TextStyle(
-                            fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                            fontWeight = FontWeight.Normal,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
-                        ),
-                        modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                    )
-                    Text(
-                        text = "Время: $Sec с",
-                        style = TextStyle(
-                            fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                            fontWeight = FontWeight.Normal,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
-                        ),
-                        modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                    )
-                }
-                Spacer(modifier = Modifier
-                    .padding(start = 5.dp, end = 5.dp)
-                    .height(3.dp)
-                    .fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.onSecondaryContainer))
-                Column (modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.secondaryContainer))
-                {
-                    Text(
-                        text = "Напряжение МСУ: $Param1 В",
-                        style = TextStyle(
-                            fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                            fontWeight = FontWeight.Normal,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
-                        ),
-                        modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                    )
-                    Text(
-                        text = "Напряжение аккумулятора модема: $Param2 В",
-                        style = TextStyle(
-                            fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                            fontWeight = FontWeight.Normal,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
-                        ),
-                        modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                    )
-                    Text(
-                        text = "Напряжение разблокировки: $Param3 В",
-                        style = TextStyle(
-                            fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                            fontWeight = FontWeight.Normal,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
-                        ),
-                        modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                    )
-                    Text(
-                        text = "Процент распознанной информации: $Param4 %",
-                        style = TextStyle(
-                            fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                            fontWeight = FontWeight.Normal,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
-                        ),
-                        modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                    )
-                    Text(
-                        text = "Резерв: $Param5 В",
-                        style = TextStyle(
-                            fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                            fontWeight = FontWeight.Normal,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
-                        ),
-                        modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                    )
-                    Text(
-                        text = "Температура внутри блока: $Param6 г.ц.",
-                        style = TextStyle(
-                            fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                            fontWeight = FontWeight.Normal,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
-                        ),
-                        modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                    )
-                }
-                Spacer(modifier = Modifier
-                    .padding(start = 5.dp, end = 5.dp)
-                    .height(3.dp)
-                    .fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.onSecondaryContainer))
-                Row (modifier = Modifier
+                    .background(color = MaterialTheme.colorScheme.onSecondaryContainer)
+            )
+            Row(
+                modifier = Modifier
                     .fillMaxWidth()
                     .background(color = MaterialTheme.colorScheme.secondaryContainer),
-                    horizontalArrangement = Arrangement.Center)
+                horizontalArrangement = Arrangement.Center
+            )
+            {
+                Button(
+                    onClick = { navController.navigate(Routes.MKP.route) },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                )
                 {
-                    Button(onClick = { navController.navigate(Routes.MKP.route) },
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary))
-                    {
-                        Text(text = "Управление МКП",
-                            style = TextStyle(
-                                fontSize = MaterialTheme.typography.labelSmall.fontSize,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSecondary,
-                                textAlign = TextAlign.Center
-                            ))
-                    }
-                }
-                Row (modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.secondaryContainer),
-                    horizontalArrangement = Arrangement.Center)
-                {
-                    Button(modifier = Modifier
-                        .padding(end = 5.dp)
-                        .width(120.dp),
-                        onClick = { /*on16Clicked*/ },
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                    Text(
+                        text = "Управление МКП",
+                        style = TextStyle(
+                            fontSize = MaterialTheme.typography.labelSmall.fontSize,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSecondary,
+                            textAlign = TextAlign.Center
+                        )
                     )
-                    {
-                        Text(text = "Версия",
-                            style = TextStyle(
-                                fontSize = MaterialTheme.typography.labelSmall.fontSize,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSecondary,
-                                textAlign = TextAlign.Center
-                            ))
-                    }
-                    Button(modifier = Modifier
-                        .padding(end = 5.dp)
-                        .width(120.dp),
-                        onClick = { /*on20Clicked*/ },
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary))
-                    {
-                        Text(text = "Ошибки",
-                            style = TextStyle(
-                                fontSize = MaterialTheme.typography.labelSmall.fontSize,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSecondary,
-                                textAlign = TextAlign.Center
-                            ))
-                    }
-                    Button(modifier = Modifier
-                        .padding(end = 5.dp)
-                        .width(120.dp),
-                        onClick = { /*on62Clicked*/ },
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary))
-                    {
-                        Text(text = "Напряжение",
-                            style = TextStyle(
-                                fontSize = MaterialTheme.typography.labelSmall.fontSize,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSecondary,
-                                textAlign = TextAlign.Center
-                            ))
-                    }
                 }
             }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.secondaryContainer),
+                horizontalArrangement = Arrangement.Center
+            )
+            {
+                Button(
+                    modifier = Modifier
+                        .padding(end = 5.dp)
+                        .width(120.dp),
+                    onClick = { /*on16Clicked*/ },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                )
+                {
+                    Text(
+                        text = "Версия",
+                        style = TextStyle(
+                            fontSize = MaterialTheme.typography.labelSmall.fontSize,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSecondary,
+                            textAlign = TextAlign.Center
+                        )
+                    )
+                }
+                Button(
+                    modifier = Modifier
+                        .padding(end = 5.dp)
+                        .width(120.dp),
+                    onClick = { /*on20Clicked*/ },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                )
+                {
+                    Text(
+                        text = "Ошибки",
+                        style = TextStyle(
+                            fontSize = MaterialTheme.typography.labelSmall.fontSize,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSecondary,
+                            textAlign = TextAlign.Center
+                        )
+                    )
+                }
+                Button(
+                    modifier = Modifier
+                        .padding(end = 5.dp)
+                        .width(120.dp),
+                    onClick = { /*on62Clicked*/ },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                )
+                {
+                    Text(
+                        text = "Напряжение",
+                        style = TextStyle(
+                            fontSize = MaterialTheme.typography.labelSmall.fontSize,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSecondary,
+                            textAlign = TextAlign.Center
+                        )
+                    )
+                }
+            }
+        }
     }
 }
 
 @Preview
 @Composable
-fun MBSYDarkPreview(){
+fun MBSYDarkPreview() {
     val testlist = mutableListOf<MBSYMessage>()
-    testlist.add(MBSYMessage(
-        Message_17(2u,2u,2u,2u,1u,1u,1,1,1,23),
-        Message_21(2u,2u,2u,2u,1u,1u,0u,24u),
-        Message_63(2u,2u,2u,2u,1u,1u,1u,1u,1u,1u,1u,1u)))
-    testlist.add(MBSYMessage(
-        Message_17(2u,2u,2u,2u,2u,1u,2,2,2,23),
-        Message_21(2u,2u,2u,2u,2u,2u,2u,24u),
-        Message_63(2u,2u,2u,2u,2u,2u,2u,2u,2u,2u,2u,2u)))
+    testlist.add(
+        MBSYMessage(
+            Message_17(2u, 2u, 2u, 2u, 1u, 1u, 1, 1, 1, 23),
+            Message_21(2u, 2u, 2u, 2u, 1u, 1u, 0u, 24u),
+            Message_63(2u, 2u, 2u, 2u, 1u, 1u, 1u, 1u, 1u, 1u, 1u, 1u)
+        )
+    )
+    testlist.add(
+        MBSYMessage(
+            Message_17(2u, 2u, 2u, 2u, 2u, 1u, 2, 2, 2, 23),
+            Message_21(2u, 2u, 2u, 2u, 2u, 2u, 2u, 24u),
+            Message_63(2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u)
+        )
+    )
     MKP_MBSY_diagnosticTheme(darkTheme = true) {
         MBSYScreen(navController = rememberNavController(), data = testlist)
     }
@@ -455,16 +516,22 @@ fun MBSYDarkPreview(){
 
 @Preview
 @Composable
-fun MBSYLightPreview(){
+fun MBSYLightPreview() {
     val testlist = mutableListOf<MBSYMessage>()
-    testlist.add(MBSYMessage(
-        Message_17(2u,2u,2u,2u,1u,1u,1,1,1,23),
-        Message_21(2u,2u,2u,2u,1u,1u,0u,24u),
-        Message_63(2u,2u,2u,2u,1u,1u,1u,1u,1u,1u,1u,1u)))
-    testlist.add(MBSYMessage(
-        Message_17(2u,2u,2u,2u,2u,1u,2,2,2,23),
-        Message_21(2u,2u,2u,2u,2u,2u,2u,24u),
-        Message_63(2u,2u,2u,2u,2u,2u,2u,2u,2u,2u,2u,2u)))
+    testlist.add(
+        MBSYMessage(
+            Message_17(2u, 2u, 2u, 2u, 1u, 1u, 1, 1, 1, 23),
+            Message_21(2u, 2u, 2u, 2u, 1u, 1u, 0u, 24u),
+            Message_63(2u, 2u, 2u, 2u, 1u, 1u, 1u, 1u, 1u, 1u, 1u, 1u)
+        )
+    )
+    testlist.add(
+        MBSYMessage(
+            Message_17(2u, 2u, 2u, 2u, 2u, 1u, 2, 2, 2, 23),
+            Message_21(2u, 2u, 2u, 2u, 2u, 2u, 2u, 24u),
+            Message_63(2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u)
+        )
+    )
     MKP_MBSY_diagnosticTheme(darkTheme = false) {
         MBSYScreen(navController = rememberNavController(), data = testlist)
     }
@@ -474,7 +541,7 @@ fun MBSYLightPreview(){
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun MBSYViewLightPreview(){
+fun MBSYViewLightPreview() {
     MKP_MBSY_diagnosticTheme(darkTheme = false) {
         MessageMBSYView(
             MB_id = "1",
@@ -498,7 +565,7 @@ fun MBSYViewLightPreview(){
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun MBSYViewDarkPreview(){
+fun MBSYViewDarkPreview() {
     MKP_MBSY_diagnosticTheme(darkTheme = true) {
         MessageMBSYView(
             MB_id = "1",

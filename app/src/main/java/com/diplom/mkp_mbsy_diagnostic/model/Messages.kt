@@ -1,11 +1,12 @@
 package com.diplom.mkp_mbsy_diagnostic.model
 
-open class Header (
+open class Header(
     var id_head: UShort,
     var id: UShort,
     var LoSumm: UShort,
     var HiSumm: UShort
 )
+
 class Message_16(
     id_head: UShort,
     id: UShort,
@@ -105,10 +106,10 @@ class MBSYMessage(
     var Mes17: Message_17,
     var Mes21: Message_21,
     var Mes63: Message_63
-){}
+) {}
 
 class MKPMessage(
     var Mes21: Message_21,
     var Mes39: Message_39,
     var Mes63: Message_63,
-){}
+) {}

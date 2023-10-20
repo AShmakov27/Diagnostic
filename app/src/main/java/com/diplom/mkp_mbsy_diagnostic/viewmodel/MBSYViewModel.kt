@@ -41,9 +41,9 @@ class MBSYViewModel(
         usbCommunicationModel.closeUSBConnection()
     }
 
-    fun sendArrayOfMessages(start: Int, end: Int){
-        for (i in start..end){
-            val message = Message_16(1u,1u,1u,1u, i.toUShort(), 0u)
+    fun sendArrayOfMessages(start: Int, end: Int) {
+        for (i in start..end) {
+            val message = Message_16(1u, 1u, 1u, 1u, i.toUShort(), 0u)
             val data = objectToByteArray(message)
             val sentBytes = usbCommunicationModel.sendDataToUSB(data)
         }
@@ -51,46 +51,46 @@ class MBSYViewModel(
 
     @Composable
     fun SendMessage16(MB_id: String) {
-        val message = Message_16(1u,1u,1u,1u, MB_id.toUShort(), 0u)
+        val message = Message_16(1u, 1u, 1u, 1u, MB_id.toUShort(), 0u)
         val data = objectToByteArray(message)
         val sentBytes = usbCommunicationModel.sendDataToUSB(data)
 
         // Обработка результата отправки
-        if (sentBytes >=0){
+        if (sentBytes >= 0) {
             Toast.makeText(LocalContext.current, "Сообщение отправлено", Toast.LENGTH_SHORT).show()
-        }
-        else {
-            Toast.makeText(LocalContext.current, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(LocalContext.current, "Сообщение неотправлено", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
     @Composable
     fun SendMessage20(MB_id: String) {
-        val message = Message_20(1u,1u,1u,1u, MB_id.toUShort(), 0u)
+        val message = Message_20(1u, 1u, 1u, 1u, MB_id.toUShort(), 0u)
         val data = objectToByteArray(message)
         val sentBytes = usbCommunicationModel.sendDataToUSB(data)
 
         // Обработка результата отправки
-        if (sentBytes >=0){
+        if (sentBytes >= 0) {
             Toast.makeText(LocalContext.current, "Сообщение отправлено", Toast.LENGTH_SHORT).show()
-        }
-        else {
-            Toast.makeText(LocalContext.current, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(LocalContext.current, "Сообщение неотправлено", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
     @Composable
     fun SendMessage62(MB_id: String) {
-        val message = Message_62(1u,1u,1u,1u, MB_id.toUShort(), 0u)
+        val message = Message_62(1u, 1u, 1u, 1u, MB_id.toUShort(), 0u)
         val data = objectToByteArray(message)
         val sentBytes = usbCommunicationModel.sendDataToUSB(data)
 
         // Обработка результата отправки
-        if (sentBytes >=0){
+        if (sentBytes >= 0) {
             Toast.makeText(LocalContext.current, "Сообщение отправлено", Toast.LENGTH_SHORT).show()
-        }
-        else {
-            Toast.makeText(LocalContext.current, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(LocalContext.current, "Сообщение неотправлено", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 

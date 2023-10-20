@@ -92,7 +92,7 @@ fun MKPScreen(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
                 shape = CircleShape,
-                onClick = {}/*onSendArrayClicked*/,
+                onClick = {},/*onSendArrayClicked*/
             ) {
                 Icon(imageVector = Icons.Filled.Email, contentDescription = "Send Array")
             }
@@ -113,9 +113,10 @@ fun MKPContent(
     onSaveClick: () -> Unit*/
 
 ) {
-    Column (modifier = Modifier
-        .fillMaxSize()
-        .padding(start = 0.dp, end = 0.dp),
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 0.dp, end = 0.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     )
@@ -149,16 +150,17 @@ fun MKPContent(
 
 @OptIn(ExperimentalUnsignedTypes::class)
 @Composable
-fun MessageMKPView(MK_id: String, kolErr: String, Sec: String,
-                Param1: String, Param2: String, Param3: String, Param4: String, Param5: String, Param6: String,
-                Charge: UShortArray
-                /*, on20Clicked: () -> Unit, on38Clicked: () -> Unit, on54Clicked: () -> Unit, on62Clicked: () -> Unit, onMKPClicked: () -> Unit, onDeleteClick: () -> Unit, onSaveClick: () -> Unit*/)
-{
-    var expandedState by remember { mutableStateOf(true)}
+fun MessageMKPView(
+    MK_id: String, kolErr: String, Sec: String,
+    Param1: String, Param2: String, Param3: String, Param4: String, Param5: String, Param6: String,
+    Charge: UShortArray
+    /*, on20Clicked: () -> Unit, on38Clicked: () -> Unit, on54Clicked: () -> Unit, on62Clicked: () -> Unit, onMKPClicked: () -> Unit, onDeleteClick: () -> Unit, onSaveClick: () -> Unit*/
+) {
+    var expandedState by remember { mutableStateOf(true) }
     val rotationState by animateFloatAsState(
         targetValue = if (expandedState) 180f else 0f
     )
-    Card (
+    Card(
         modifier = Modifier
             .padding(top = 5.dp, start = 5.dp, end = 5.dp)
             .fillMaxWidth()
@@ -171,10 +173,11 @@ fun MessageMKPView(MK_id: String, kolErr: String, Sec: String,
         shape = RoundedCornerShape(10.dp)
     )
     {
-        Row (modifier = Modifier
-            .fillMaxWidth()
-            .background(color = MaterialTheme.colorScheme.secondaryContainer)
-        ){
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = MaterialTheme.colorScheme.secondaryContainer)
+        ) {
             Text(
                 text = "МКП №$MK_id",
                 style = TextStyle(
@@ -184,50 +187,73 @@ fun MessageMKPView(MK_id: String, kolErr: String, Sec: String,
                 ),
                 modifier = Modifier.padding(start = 5.dp, end = 10.dp)
             )
-            Row (modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            )
             {
                 IconButton(modifier = Modifier
                     .padding(end = 5.dp)
                     .rotate(rotationState),
                     onClick = { expandedState = !expandedState })
                 {
-                    Icon(modifier = Modifier.fillMaxSize(), imageVector = Icons.Default.ArrowDropDown, contentDescription = "Close", tint = MaterialTheme.colorScheme.onSecondaryContainer)
+                    Icon(
+                        modifier = Modifier.fillMaxSize(),
+                        imageVector = Icons.Default.ArrowDropDown,
+                        contentDescription = "Close",
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
                 }
             }
         }
-        if(expandedState)
-        {
-            Row (modifier = Modifier
-                .height(20.dp)
-                .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.secondaryContainer)
-            ){
-                Row (modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End)
+        if (expandedState) {
+            Row(
+                modifier = Modifier
+                    .height(20.dp)
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.secondaryContainer)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                )
                 {
                     IconButton(modifier = Modifier
                         .padding(end = 5.dp),
                         onClick = { /*onDeleteClick*/ })
                     {
-                        Icon(modifier = Modifier.fillMaxSize(), imageVector = Icons.Default.Delete, contentDescription = "Delete", tint = Color.Red)
+                        Icon(
+                            modifier = Modifier.fillMaxSize(),
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Delete",
+                            tint = Color.Red
+                        )
                     }
                     IconButton(modifier = Modifier
                         .padding(end = 5.dp),
                         onClick = { /*onSaveClick*/ })
                     {
-                        Icon(modifier = Modifier.fillMaxSize(), imageVector = Icons.Default.AddCircle, contentDescription = "Save", tint = MaterialTheme.colorScheme.onSecondaryContainer)
+                        Icon(
+                            modifier = Modifier.fillMaxSize(),
+                            imageVector = Icons.Default.AddCircle,
+                            contentDescription = "Save",
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer
+                        )
                     }
                 }
             }
-            Spacer(modifier = Modifier
-                .padding(start = 5.dp, end = 5.dp)
-                .height(3.dp)
-                .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.onSecondaryContainer))
-            Column (modifier = Modifier
-                .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.secondaryContainer))
+            Spacer(
+                modifier = Modifier
+                    .padding(start = 5.dp, end = 5.dp)
+                    .height(3.dp)
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.onSecondaryContainer)
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.secondaryContainer)
+            )
             {
                 Text(
                     text = "Количество ошибок: $kolErr",
@@ -248,14 +274,18 @@ fun MessageMKPView(MK_id: String, kolErr: String, Sec: String,
                     modifier = Modifier.padding(start = 5.dp, end = 10.dp)
                 )
             }
-            Spacer(modifier = Modifier
-                .padding(start = 5.dp, end = 5.dp)
-                .height(3.dp)
-                .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.onSecondaryContainer))
-            Column (modifier = Modifier
-                .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.secondaryContainer))
+            Spacer(
+                modifier = Modifier
+                    .padding(start = 5.dp, end = 5.dp)
+                    .height(3.dp)
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.onSecondaryContainer)
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.secondaryContainer)
+            )
             {
                 Text(
                     text = "Напряжение МСУ: $Param1 В",
@@ -312,174 +342,268 @@ fun MessageMKPView(MK_id: String, kolErr: String, Sec: String,
                     modifier = Modifier.padding(start = 5.dp, end = 10.dp)
                 )
             }
-            Spacer(modifier = Modifier
-                .padding(start = 5.dp, end = 5.dp)
-                .height(3.dp)
-                .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.onSecondaryContainer))
+            Spacer(
+                modifier = Modifier
+                    .padding(start = 5.dp, end = 5.dp)
+                    .height(3.dp)
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.onSecondaryContainer)
+            )
             val values = Charge.toList()
             val size_val = values.size
             val counter = values.count { it.toUInt() == 1u }
-            Row (modifier = Modifier
-                .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.secondaryContainer),
-                horizontalArrangement = Arrangement.Center)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.secondaryContainer),
+                horizontalArrangement = Arrangement.Center
+            )
             {
-                Text(modifier = Modifier
-                    .padding(top = 5.dp, bottom = 5.dp),
+                Text(
+                    modifier = Modifier
+                        .padding(top = 5.dp, bottom = 5.dp),
                     text = "Зарядов: $counter/$size_val",
                     style = TextStyle(
                         fontSize = MaterialTheme.typography.titleSmall.fontSize,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSecondaryContainer,
                         textAlign = TextAlign.Center
-                    ))
+                    )
+                )
             }
-             LazyVerticalGrid(modifier = Modifier
-                 .fillMaxWidth()
-                 .height(120.dp)
-                 .background(color = MaterialTheme.colorScheme.secondaryContainer),
-                 columns = GridCells.Fixed(5),
-                 userScrollEnabled = false)
-             {
+            LazyVerticalGrid(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp)
+                    .background(color = MaterialTheme.colorScheme.secondaryContainer),
+                columns = GridCells.Fixed(5),
+                userScrollEnabled = false
+            )
+            {
                 items(size_val)
                 {
-                    val index = it+1
-                    if (Charge.get(it).toUInt() == 1u)
-                    {
+                    val index = it + 1
+                    if (Charge.get(it).toUInt() == 1u) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally)
                         {
-                            Text(modifier = Modifier
-                                .padding(top = 5.dp, bottom = 5.dp, start = 3.dp, end = 3.dp)
-                                .width(20.dp)
-                                .height(20.dp)
-                                .background(
-                                    color = MaterialTheme.colorScheme.secondary,
-                                    shape = RoundedCornerShape(5.dp)
-                                ),
+                            Text(
+                                modifier = Modifier
+                                    .padding(top = 5.dp, bottom = 5.dp, start = 3.dp, end = 3.dp)
+                                    .width(20.dp)
+                                    .height(20.dp)
+                                    .background(
+                                        color = MaterialTheme.colorScheme.secondary,
+                                        shape = RoundedCornerShape(5.dp)
+                                    ),
                                 text = "$index",
                                 style = TextStyle(
                                     fontSize = MaterialTheme.typography.labelLarge.fontSize,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSecondary,
                                     textAlign = TextAlign.Center
-                                ))
+                                )
+                            )
                         }
-                    }
-                    else
-                    {
+                    } else {
                         Column(horizontalAlignment = Alignment.CenterHorizontally)
                         {
-                            Text(modifier = Modifier
-                                .padding(top = 5.dp, bottom = 5.dp, start = 3.dp, end = 3.dp)
-                                .width(20.dp)
-                                .height(20.dp)
-                                .background(
-                                    color = MaterialTheme.colorScheme.error,
-                                    shape = RoundedCornerShape(5.dp)
-                                ),
+                            Text(
+                                modifier = Modifier
+                                    .padding(top = 5.dp, bottom = 5.dp, start = 3.dp, end = 3.dp)
+                                    .width(20.dp)
+                                    .height(20.dp)
+                                    .background(
+                                        color = MaterialTheme.colorScheme.error,
+                                        shape = RoundedCornerShape(5.dp)
+                                    ),
                                 text = "$index",
                                 style = TextStyle(
                                     fontSize = MaterialTheme.typography.labelLarge.fontSize,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onError,
                                     textAlign = TextAlign.Center
-                                ))
+                                )
+                            )
                         }
                     }
                 }
-             }
-            Spacer(modifier = Modifier
-                .padding(start = 5.dp, end = 5.dp)
-                .height(3.dp)
-                .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.onSecondaryContainer))
-            Row (modifier = Modifier
-                .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.secondaryContainer),
-                horizontalArrangement = Arrangement.Center)
+            }
+            Spacer(
+                modifier = Modifier
+                    .padding(start = 5.dp, end = 5.dp)
+                    .height(3.dp)
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.onSecondaryContainer)
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.secondaryContainer),
+                horizontalArrangement = Arrangement.Center
+            )
             {
-                Button(modifier = Modifier
-                    .padding(end = 120.dp)
-                    .width(120.dp),
+                Button(
+                    modifier = Modifier
+                        .padding(end = 120.dp)
+                        .width(120.dp),
                     onClick = { /*on54Clicked*/ },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary))
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                )
                 {
-                    Text(text = "Заряды",
+                    Text(
+                        text = "Заряды",
                         style = TextStyle(
                             fontSize = MaterialTheme.typography.labelSmall.fontSize,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSecondary,
                             textAlign = TextAlign.Center
-                        ))
+                        )
+                    )
                 }
-                Button(modifier = Modifier
-                    .padding(end = 5.dp)
-                    .width(120.dp),
+                Button(
+                    modifier = Modifier
+                        .padding(end = 5.dp)
+                        .width(120.dp),
                     onClick = { /*on38Clicked*/ },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary))
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                )
                 {
-                    Text(text = "Подрыв",
+                    Text(
+                        text = "Подрыв",
                         style = TextStyle(
                             fontSize = MaterialTheme.typography.labelSmall.fontSize,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSecondary,
                             textAlign = TextAlign.Center
-                        ))
+                        )
+                    )
                 }
             }
-            Row (modifier = Modifier
-                .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.secondaryContainer),
-                horizontalArrangement = Arrangement.Center)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.secondaryContainer),
+                horizontalArrangement = Arrangement.Center
+            )
             {
-                Button(modifier = Modifier
-                    .padding(end = 120.dp)
-                    .width(120.dp),
+                Button(
+                    modifier = Modifier
+                        .padding(end = 120.dp)
+                        .width(120.dp),
                     onClick = { /*on20Clicked*/ },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary))
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                )
                 {
-                    Text(text = "Ошибки",
+                    Text(
+                        text = "Ошибки",
                         style = TextStyle(
                             fontSize = MaterialTheme.typography.labelSmall.fontSize,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSecondary,
                             textAlign = TextAlign.Center
-                        ))
+                        )
+                    )
                 }
-                Button(modifier = Modifier
-                    .padding(end = 5.dp)
-                    .width(120.dp),
+                Button(
+                    modifier = Modifier
+                        .padding(end = 5.dp)
+                        .width(120.dp),
                     onClick = { /*on62Clicked*/ },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary))
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                )
                 {
-                    Text(text = "Напряжение",
+                    Text(
+                        text = "Напряжение",
                         style = TextStyle(
                             fontSize = MaterialTheme.typography.labelSmall.fontSize,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSecondary,
                             textAlign = TextAlign.Center
-                        ))
+                        )
+                    )
                 }
             }
         }
     }
 }
+
 @OptIn(ExperimentalUnsignedTypes::class)
 @Preview
 @Composable
-fun MKPDarkPreview(){
+fun MKPDarkPreview() {
     val testlist2 = mutableListOf<MKPMessage>()
-    testlist2.add(MKPMessage(
-        Message_21(2u,2u,2u,2u,1u,1u,0u,24u),
-        Message_39(2u,2u,2u,2u,2u,2u, ushortArrayOf(1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u)),
-        Message_63(2u,2u,2u,2u,1u,1u,1u,1u,1u,1u,1u,1u)
-    ))
-    testlist2.add(MKPMessage(
-        Message_21(2u,2u,2u,2u,2u,2u,2u,24u),
-        Message_39(2u,2u,2u,2u,1u,1u, ushortArrayOf(1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u)),
-        Message_63(2u,2u,2u,2u,2u,2u,2u,2u,2u,2u,2u,2u)
-    ))
+    testlist2.add(
+        MKPMessage(
+            Message_21(2u, 2u, 2u, 2u, 1u, 1u, 0u, 24u),
+            Message_39(
+                2u,
+                2u,
+                2u,
+                2u,
+                2u,
+                2u,
+                ushortArrayOf(
+                    1u,
+                    1u,
+                    0u,
+                    1u,
+                    1u,
+                    1u,
+                    1u,
+                    0u,
+                    1u,
+                    1u,
+                    1u,
+                    1u,
+                    0u,
+                    1u,
+                    1u,
+                    1u,
+                    1u,
+                    0u,
+                    1u,
+                    1u
+                )
+            ),
+            Message_63(2u, 2u, 2u, 2u, 1u, 1u, 1u, 1u, 1u, 1u, 1u, 1u)
+        )
+    )
+    testlist2.add(
+        MKPMessage(
+            Message_21(2u, 2u, 2u, 2u, 2u, 2u, 2u, 24u),
+            Message_39(
+                2u,
+                2u,
+                2u,
+                2u,
+                1u,
+                1u,
+                ushortArrayOf(
+                    1u,
+                    1u,
+                    0u,
+                    1u,
+                    1u,
+                    1u,
+                    1u,
+                    0u,
+                    1u,
+                    1u,
+                    1u,
+                    1u,
+                    0u,
+                    1u,
+                    1u,
+                    1u,
+                    1u,
+                    0u,
+                    1u,
+                    1u
+                )
+            ),
+            Message_63(2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u)
+        )
+    )
     MKP_MBSY_diagnosticTheme(darkTheme = true) {
         MKPScreen(data = testlist2)
     }
@@ -488,18 +612,80 @@ fun MKPDarkPreview(){
 @OptIn(ExperimentalUnsignedTypes::class)
 @Preview
 @Composable
-fun MKPLightPreview(){
+fun MKPLightPreview() {
     val testlist2 = mutableListOf<MKPMessage>()
-    testlist2.add(MKPMessage(
-        Message_21(2u,2u,2u,2u,1u,1u,0u,24u),
-        Message_39(2u,2u,2u,2u,1u,1u, ushortArrayOf(1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u)),
-        Message_63(2u,2u,2u,2u,1u,1u,1u,1u,1u,1u,1u,1u)
-    ))
-    testlist2.add(MKPMessage(
-        Message_21(2u,2u,2u,2u,2u,2u,2u,24u),
-        Message_39(2u,2u,2u,2u,2u,2u, ushortArrayOf(1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u)),
-        Message_63(2u,2u,2u,2u,2u,2u,2u,2u,2u,2u,2u,2u)
-    ))
+    testlist2.add(
+        MKPMessage(
+            Message_21(2u, 2u, 2u, 2u, 1u, 1u, 0u, 24u),
+            Message_39(
+                2u,
+                2u,
+                2u,
+                2u,
+                1u,
+                1u,
+                ushortArrayOf(
+                    1u,
+                    1u,
+                    0u,
+                    1u,
+                    1u,
+                    1u,
+                    1u,
+                    0u,
+                    1u,
+                    1u,
+                    1u,
+                    1u,
+                    0u,
+                    1u,
+                    1u,
+                    1u,
+                    1u,
+                    0u,
+                    1u,
+                    1u
+                )
+            ),
+            Message_63(2u, 2u, 2u, 2u, 1u, 1u, 1u, 1u, 1u, 1u, 1u, 1u)
+        )
+    )
+    testlist2.add(
+        MKPMessage(
+            Message_21(2u, 2u, 2u, 2u, 2u, 2u, 2u, 24u),
+            Message_39(
+                2u,
+                2u,
+                2u,
+                2u,
+                2u,
+                2u,
+                ushortArrayOf(
+                    1u,
+                    1u,
+                    0u,
+                    1u,
+                    1u,
+                    1u,
+                    1u,
+                    0u,
+                    1u,
+                    1u,
+                    1u,
+                    1u,
+                    0u,
+                    1u,
+                    1u,
+                    1u,
+                    1u,
+                    0u,
+                    1u,
+                    1u
+                )
+            ),
+            Message_63(2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u)
+        )
+    )
     MKP_MBSY_diagnosticTheme(darkTheme = false) {
         MKPScreen(data = testlist2)
     }
@@ -508,7 +694,7 @@ fun MKPLightPreview(){
 @OptIn(ExperimentalUnsignedTypes::class)
 @Preview
 @Composable
-fun MKPViewLightPreview(){
+fun MKPViewLightPreview() {
     MKP_MBSY_diagnosticTheme(darkTheme = false) {
         MessageMKPView(
             MK_id = "1",
@@ -520,7 +706,28 @@ fun MKPViewLightPreview(){
             Param4 = "1",
             Param5 = "1",
             Param6 = "1",
-            Charge = ushortArrayOf(1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u)
+            Charge = ushortArrayOf(
+                1u,
+                1u,
+                0u,
+                1u,
+                1u,
+                1u,
+                1u,
+                0u,
+                1u,
+                1u,
+                1u,
+                1u,
+                0u,
+                1u,
+                1u,
+                1u,
+                1u,
+                0u,
+                1u,
+                1u
+            )
         )
     }
 }
@@ -528,7 +735,7 @@ fun MKPViewLightPreview(){
 @OptIn(ExperimentalUnsignedTypes::class)
 @Preview
 @Composable
-fun MKPViewDarkPreview(){
+fun MKPViewDarkPreview() {
     MKP_MBSY_diagnosticTheme(darkTheme = true) {
         MessageMKPView(
             MK_id = "1",
@@ -540,7 +747,28 @@ fun MKPViewDarkPreview(){
             Param4 = "1",
             Param5 = "1",
             Param6 = "1",
-            Charge = ushortArrayOf(1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u)
+            Charge = ushortArrayOf(
+                1u,
+                1u,
+                0u,
+                1u,
+                1u,
+                1u,
+                1u,
+                0u,
+                1u,
+                1u,
+                1u,
+                1u,
+                0u,
+                1u,
+                1u,
+                1u,
+                1u,
+                0u,
+                1u,
+                1u
+            )
         )
     }
 }

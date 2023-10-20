@@ -48,39 +48,49 @@ fun ChooseTypeScreen(
 fun ChooseTypeContent(
     navController: NavHostController
 ) {
-    Column (modifier = Modifier
-        .fillMaxSize()
-        .padding(start = 12.dp, end = 12.dp),
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 12.dp, end = 12.dp),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment =Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally
     )
     {
-        Row (modifier = Modifier
-            .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        )
         {
-            Text(text = "Выберите тип связи",
+            Text(
+                text = "Выберите тип связи",
                 style = TextStyle(
                     fontSize = MaterialTheme.typography.titleLarge.fontSize
                 )
             )
         }
-        Row (modifier = Modifier
-            .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        )
         {
-            Button(modifier = Modifier.fillMaxWidth(),
+            Button(
+                modifier = Modifier.fillMaxWidth(),
                 onClick = { navController.navigate(Routes.MKP.route) },
             ) {
                 Text(text = "Связь с МКП")
             }
         }
         Spacer(modifier = Modifier.height(12.dp))
-        Row (modifier = Modifier
-            .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        )
         {
-            Button(modifier = Modifier.fillMaxWidth(),
+            Button(
+                modifier = Modifier.fillMaxWidth(),
                 onClick = { navController.navigate(Routes.MBSY.route) },
             ) {
                 Text(text = "Связь с МБСУ")
@@ -91,16 +101,16 @@ fun ChooseTypeContent(
 
 @Preview
 @Composable
-fun ChooseScreenDarkPreview(){
-    MKP_MBSY_diagnosticTheme (darkTheme = true){
-        ChooseTypeScreen(navController = rememberNavController(),)
+fun ChooseScreenDarkPreview() {
+    MKP_MBSY_diagnosticTheme(darkTheme = true) {
+        ChooseTypeScreen(navController = rememberNavController())
     }
 }
 
 @Preview
 @Composable
-fun ChooseScreenLightPreview(){
-    MKP_MBSY_diagnosticTheme (darkTheme = false){
-        ChooseTypeScreen(navController = rememberNavController(),)
+fun ChooseScreenLightPreview() {
+    MKP_MBSY_diagnosticTheme(darkTheme = false) {
+        ChooseTypeScreen(navController = rememberNavController())
     }
 }
