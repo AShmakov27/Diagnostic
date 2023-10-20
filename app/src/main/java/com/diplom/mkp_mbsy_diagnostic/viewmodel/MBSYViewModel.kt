@@ -1,11 +1,26 @@
 package com.diplom.mkp_mbsy_diagnostic.viewmodel
 
+import android.content.Context
+import android.widget.Toast
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.diplom.mkp_mbsy_diagnostic.data.UsbCommunicationModel
+import com.diplom.mkp_mbsy_diagnostic.model.Header
+import com.diplom.mkp_mbsy_diagnostic.model.Message_16
+import com.diplom.mkp_mbsy_diagnostic.model.Message_20
+import com.diplom.mkp_mbsy_diagnostic.model.Message_62
+import dagger.hilt.android.lifecycle.HiltViewModel
+import java.io.ByteArrayOutputStream
+import java.io.ObjectOutputStream
 
-class MBSYViewModel(private val usbCommunicationModel: UsbCommunicationModel) : ViewModel() {
+
+@HiltViewModel
+class MBSYViewModel(
+    private val usbCommunicationModel: UsbCommunicationModel
+) : ViewModel() {
 
     private val usbDataLiveData = MutableLiveData<ByteArray>()
 
@@ -26,31 +41,64 @@ class MBSYViewModel(private val usbCommunicationModel: UsbCommunicationModel) : 
         usbCommunicationModel.closeUSBConnection()
     }
 
-    fun sendMessage16() {
-        //val message =
-        //val data = message.toByteArray(Charsets.UTF_8)
-        //val sentBytes = usbCommunicationModel.sendDataToUSB(data)
-
-        // Обработка результата отправки
+    fun sendArrayOfMessages(start: Int, end: Int){
+        for (i in start..end){
+            val message = Message_16(1u,1u,1u,1u, i.toUShort(), 0u)
+            val data = objectToByteArray(message)
+            val sentBytes = usbCommunicationModel.sendDataToUSB(data)
+        }
     }
 
-    fun sendMessage20() {
-        //val message =
-        //val data = message.toByteArray(Charsets.UTF_8)
-        //val sentBytes = usbCommunicationModel.sendDataToUSB(data)
+    @Composable
+    fun SendMessage16(MB_id: String) {
+        val message = Message_16(1u,1u,1u,1u, MB_id.toUShort(), 0u)
+        val data = objectToByteArray(message)
+        val sentBytes = usbCommunicationModel.sendDataToUSB(data)
 
         // Обработка результата отправки
+        if (sentBytes >=0){
+            Toast.makeText(LocalContext.current, "Сообщение отправлено", Toast.LENGTH_SHORT).show()
+        }
+        else {
+            Toast.makeText(LocalContext.current, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
+        }
     }
 
-    fun sendMessage62() {
-        //val message =
-        //val data = message.toByteArray(Charsets.UTF_8)
-        //val sentBytes = usbCommunicationModel.sendDataToUSB(data)
+    @Composable
+    fun SendMessage20(MB_id: String) {
+        val message = Message_20(1u,1u,1u,1u, MB_id.toUShort(), 0u)
+        val data = objectToByteArray(message)
+        val sentBytes = usbCommunicationModel.sendDataToUSB(data)
 
         // Обработка результата отправки
+        if (sentBytes >=0){
+            Toast.makeText(LocalContext.current, "Сообщение отправлено", Toast.LENGTH_SHORT).show()
+        }
+        else {
+            Toast.makeText(LocalContext.current, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
+        }
     }
 
-    fun byteArrayToString(data: ByteArray): String {
-        return String(data, Charsets.UTF_8)
+    @Composable
+    fun SendMessage62(MB_id: String) {
+        val message = Message_62(1u,1u,1u,1u, MB_id.toUShort(), 0u)
+        val data = objectToByteArray(message)
+        val sentBytes = usbCommunicationModel.sendDataToUSB(data)
+
+        // Обработка результата отправки
+        if (sentBytes >=0){
+            Toast.makeText(LocalContext.current, "Сообщение отправлено", Toast.LENGTH_SHORT).show()
+        }
+        else {
+            Toast.makeText(LocalContext.current, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun objectToByteArray(obj: Header): ByteArray {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        val objectOutputStream = ObjectOutputStream(byteArrayOutputStream)
+        objectOutputStream.writeObject(obj)
+        objectOutputStream.flush()
+        return byteArrayOutputStream.toByteArray()
     }
 }

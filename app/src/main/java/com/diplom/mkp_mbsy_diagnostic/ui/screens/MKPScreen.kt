@@ -19,15 +19,19 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -56,6 +60,7 @@ import com.diplom.mkp_mbsy_diagnostic.ui.theme.MKP_MBSY_diagnosticTheme
 @Composable
 fun MKPScreen(
     data: List<MKPMessage>/*,
+    onSendArrayClicked: () -> Unit,
     on20Clicked: () -> Unit,
     on38Clicked: () -> Unit,
     on54Clicked: () -> Unit,
@@ -81,7 +86,18 @@ fun MKPScreen(
                     onSaveClick = onSaveClick*/
                 )
             }
-        }
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                shape = CircleShape,
+                onClick = {}/*onSendArrayClicked*/,
+            ) {
+                Icon(imageVector = Icons.Filled.Email, contentDescription = "Send Array")
+            }
+        },
+        floatingActionButtonPosition = FabPosition.End
     )
 }
 
@@ -455,14 +471,14 @@ fun MessageMKPView(MK_id: String, kolErr: String, Sec: String,
 fun MKPDarkPreview(){
     val testlist2 = mutableListOf<MKPMessage>()
     testlist2.add(MKPMessage(
-        Message_21(1u,1u,0u,24u),
-        Message_39(2u,2u, ushortArrayOf(1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u)),
-        Message_63(1u,1u,1u,1u,1u,1u,1u,1u)
+        Message_21(2u,2u,2u,2u,1u,1u,0u,24u),
+        Message_39(2u,2u,2u,2u,2u,2u, ushortArrayOf(1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u)),
+        Message_63(2u,2u,2u,2u,1u,1u,1u,1u,1u,1u,1u,1u)
     ))
     testlist2.add(MKPMessage(
-        Message_21(2u,2u,2u,24u),
-        Message_39(1u,1u, ushortArrayOf(1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u)),
-        Message_63(2u,2u,2u,2u,2u,2u,2u,2u)
+        Message_21(2u,2u,2u,2u,2u,2u,2u,24u),
+        Message_39(2u,2u,2u,2u,1u,1u, ushortArrayOf(1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u)),
+        Message_63(2u,2u,2u,2u,2u,2u,2u,2u,2u,2u,2u,2u)
     ))
     MKP_MBSY_diagnosticTheme(darkTheme = true) {
         MKPScreen(data = testlist2)
@@ -475,14 +491,14 @@ fun MKPDarkPreview(){
 fun MKPLightPreview(){
     val testlist2 = mutableListOf<MKPMessage>()
     testlist2.add(MKPMessage(
-        Message_21(1u,1u,0u,24u),
-        Message_39(1u,1u, ushortArrayOf(1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u)),
-        Message_63(1u,1u,1u,1u,1u,1u,1u,1u)
+        Message_21(2u,2u,2u,2u,1u,1u,0u,24u),
+        Message_39(2u,2u,2u,2u,1u,1u, ushortArrayOf(1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u)),
+        Message_63(2u,2u,2u,2u,1u,1u,1u,1u,1u,1u,1u,1u)
     ))
     testlist2.add(MKPMessage(
-        Message_21(2u,2u,2u,24u),
-        Message_39(2u,2u, ushortArrayOf(1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u)),
-        Message_63(2u,2u,2u,2u,2u,2u,2u,2u)
+        Message_21(2u,2u,2u,2u,2u,2u,2u,24u),
+        Message_39(2u,2u,2u,2u,2u,2u, ushortArrayOf(1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u,1u,1u,0u,1u,1u)),
+        Message_63(2u,2u,2u,2u,2u,2u,2u,2u,2u,2u,2u,2u)
     ))
     MKP_MBSY_diagnosticTheme(darkTheme = false) {
         MKPScreen(data = testlist2)
