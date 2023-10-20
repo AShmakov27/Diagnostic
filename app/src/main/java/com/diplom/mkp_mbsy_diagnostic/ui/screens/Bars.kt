@@ -92,13 +92,14 @@ fun IDsDialog(
                             }
                         ),
                         modifier = Modifier
+                            .height(25.dp)
                             .fillMaxWidth()
                             .border(
                                 BorderStroke(
                                     width = 2.dp,
                                     color = MaterialTheme.colorScheme.primary
                                 ),
-                                shape = RoundedCornerShape(50)
+                                shape = RoundedCornerShape(15)
                             )
                     )
                     Spacer(modifier = Modifier.height(16.dp))
@@ -120,13 +121,14 @@ fun IDsDialog(
                             }
                         ),
                         modifier = Modifier
+                            .height(25.dp)
                             .fillMaxWidth()
                             .border(
                                 BorderStroke(
                                     width = 2.dp,
                                     color = MaterialTheme.colorScheme.primary
                                 ),
-                                shape = RoundedCornerShape(50)
+                                shape = RoundedCornerShape(15)
                             )
                     )
                 }
