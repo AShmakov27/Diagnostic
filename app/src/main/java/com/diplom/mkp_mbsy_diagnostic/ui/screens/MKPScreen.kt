@@ -59,8 +59,8 @@ import com.diplom.mkp_mbsy_diagnostic.ui.theme.MKP_MBSY_diagnosticTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MKPScreen(
-    data: List<MKPMessage>/*,
-    onSendArrayClicked: () -> Unit,
+    data: List<MKPMessage>,
+    onSendArrayClicked: (Int, Int) -> Unit/*,
     on20Clicked: () -> Unit,
     on38Clicked: () -> Unit,
     on54Clicked: () -> Unit,
@@ -68,6 +68,7 @@ fun MKPScreen(
     onDeleteClick: () -> Unit,
     onSaveClick: () -> Unit*/
 ) {
+    var showDialog by remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
             TopBar(title = "Мобильная диагностика МКП и МБСУ. Связь c МКП")
@@ -86,13 +87,20 @@ fun MKPScreen(
                     onSaveClick = onSaveClick*/
                 )
             }
+            IDsDialog(
+                showDialog = showDialog,
+                onDismiss = { showDialog = false },
+                onConfirm = { text1, text2 ->
+                    onSendArrayClicked(text1.toInt(), text2.toInt())
+                }
+            )
         },
         floatingActionButton = {
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
                 shape = CircleShape,
-                onClick = {},/*onSendArrayClicked*/
+                onClick = { showDialog = true }
             ) {
                 Icon(imageVector = Icons.Filled.Email, contentDescription = "Send Array")
             }
@@ -536,34 +544,8 @@ fun MKPDarkPreview() {
         MKPMessage(
             Message_21(2u, 2u, 2u, 2u, 1u, 1u, 0u, 24u),
             Message_39(
-                2u,
-                2u,
-                2u,
-                2u,
-                2u,
-                2u,
-                ushortArrayOf(
-                    1u,
-                    1u,
-                    0u,
-                    1u,
-                    1u,
-                    1u,
-                    1u,
-                    0u,
-                    1u,
-                    1u,
-                    1u,
-                    1u,
-                    0u,
-                    1u,
-                    1u,
-                    1u,
-                    1u,
-                    0u,
-                    1u,
-                    1u
-                )
+                2u, 2u, 2u, 2u, 2u, 2u,
+                ushortArrayOf(1u, 1u, 0u, 1u, 1u, 1u, 1u, 0u, 1u, 1u, 1u, 1u, 0u, 1u, 1u, 1u, 1u, 0u, 1u, 1u)
             ),
             Message_63(2u, 2u, 2u, 2u, 1u, 1u, 1u, 1u, 1u, 1u, 1u, 1u)
         )
@@ -571,41 +553,16 @@ fun MKPDarkPreview() {
     testlist2.add(
         MKPMessage(
             Message_21(2u, 2u, 2u, 2u, 2u, 2u, 2u, 24u),
-            Message_39(
-                2u,
-                2u,
-                2u,
-                2u,
-                1u,
-                1u,
-                ushortArrayOf(
-                    1u,
-                    1u,
-                    0u,
-                    1u,
-                    1u,
-                    1u,
-                    1u,
-                    0u,
-                    1u,
-                    1u,
-                    1u,
-                    1u,
-                    0u,
-                    1u,
-                    1u,
-                    1u,
-                    1u,
-                    0u,
-                    1u,
-                    1u
-                )
+            Message_39(2u, 2u, 2u, 2u, 1u, 1u,
+                ushortArrayOf(1u, 1u, 0u, 1u, 1u, 1u, 1u, 0u, 1u, 1u, 1u, 1u, 0u, 1u, 1u, 1u, 1u, 0u, 1u, 1u)
             ),
             Message_63(2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u)
         )
     )
     MKP_MBSY_diagnosticTheme(darkTheme = true) {
-        MKPScreen(data = testlist2)
+        MKPScreen(
+            data = testlist2,
+            onSendArrayClicked = { text1, text2 -> text1 + text2 })
     }
 }
 
@@ -617,35 +574,8 @@ fun MKPLightPreview() {
     testlist2.add(
         MKPMessage(
             Message_21(2u, 2u, 2u, 2u, 1u, 1u, 0u, 24u),
-            Message_39(
-                2u,
-                2u,
-                2u,
-                2u,
-                1u,
-                1u,
-                ushortArrayOf(
-                    1u,
-                    1u,
-                    0u,
-                    1u,
-                    1u,
-                    1u,
-                    1u,
-                    0u,
-                    1u,
-                    1u,
-                    1u,
-                    1u,
-                    0u,
-                    1u,
-                    1u,
-                    1u,
-                    1u,
-                    0u,
-                    1u,
-                    1u
-                )
+            Message_39(2u, 2u, 2u, 2u, 1u, 1u,
+                ushortArrayOf(1u, 1u, 0u, 1u, 1u, 1u, 1u, 0u, 1u, 1u, 1u, 1u, 0u, 1u, 1u, 1u, 1u, 0u, 1u, 1u)
             ),
             Message_63(2u, 2u, 2u, 2u, 1u, 1u, 1u, 1u, 1u, 1u, 1u, 1u)
         )
@@ -653,40 +583,15 @@ fun MKPLightPreview() {
     testlist2.add(
         MKPMessage(
             Message_21(2u, 2u, 2u, 2u, 2u, 2u, 2u, 24u),
-            Message_39(
-                2u,
-                2u,
-                2u,
-                2u,
-                2u,
-                2u,
-                ushortArrayOf(
-                    1u,
-                    1u,
-                    0u,
-                    1u,
-                    1u,
-                    1u,
-                    1u,
-                    0u,
-                    1u,
-                    1u,
-                    1u,
-                    1u,
-                    0u,
-                    1u,
-                    1u,
-                    1u,
-                    1u,
-                    0u,
-                    1u,
-                    1u
-                )
+            Message_39(2u, 2u, 2u, 2u, 2u, 2u,
+                ushortArrayOf(1u, 1u, 0u, 1u, 1u, 1u, 1u, 0u, 1u, 1u, 1u, 1u, 0u, 1u, 1u, 1u, 1u, 0u, 1u, 1u)
             ),
             Message_63(2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u)
         )
     )
     MKP_MBSY_diagnosticTheme(darkTheme = false) {
-        MKPScreen(data = testlist2)
+        MKPScreen(
+            data = testlist2,
+            onSendArrayClicked = { text1, text2 -> text1 + text2 })
     }
 }
