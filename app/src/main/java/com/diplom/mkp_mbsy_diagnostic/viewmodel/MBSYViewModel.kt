@@ -11,11 +11,8 @@ import com.diplom.mkp_mbsy_diagnostic.data.UsbCommunicationModel
 import com.diplom.mkp_mbsy_diagnostic.model.Header
 import com.diplom.mkp_mbsy_diagnostic.model.MBSYMessage
 import com.diplom.mkp_mbsy_diagnostic.model.Message_16
-import com.diplom.mkp_mbsy_diagnostic.model.Message_17
 import com.diplom.mkp_mbsy_diagnostic.model.Message_20
-import com.diplom.mkp_mbsy_diagnostic.model.Message_21
 import com.diplom.mkp_mbsy_diagnostic.model.Message_62
-import com.diplom.mkp_mbsy_diagnostic.model.Message_63
 import com.diplom.mkp_mbsy_diagnostic.model.byteArrayToMessage_17
 import com.diplom.mkp_mbsy_diagnostic.model.byteArrayToMessage_21
 import com.diplom.mkp_mbsy_diagnostic.model.byteArrayToMessage_63
@@ -36,15 +33,10 @@ class MBSYViewModel(
         return usbCommunicationModel.initializeUsbDevice(vendorId, productId)
     }
 
-    // Наверн надо удалить
-    fun readDataFromUsb(bufferSize: Int) {
-        while (true) {
-            val data = usbCommunicationModel.readDataFromUSB(bufferSize)
-            if (data.isEmpty()) {
-                break
-            }
-            usbDataLiveData.postValue(data)
-        }
+    fun readDataFromUsb(bufferSize: Int): ByteArray {
+        val data = usbCommunicationModel.readDataFromUSB(bufferSize)
+        usbDataLiveData.postValue(data)
+        return data
     }
 
     fun getUsbDataLiveData(): LiveData<ByteArray> {
@@ -55,22 +47,10 @@ class MBSYViewModel(
         usbCommunicationModel.closeUSBConnection()
     }
 
-    fun sendArrayOfMessages(start: Int, end: Int) {
+    @Composable
+    fun SendArrayOfMessages(start: Int, end: Int) {
         for (i in start..end) {
-            val message = Message_16(1u, 1u, 1u, 1u, i.toUShort(), 0u)
-            val data = objectToByteArray(message)
-            val sentBytes = usbCommunicationModel.sendDataToUSB(data)
-            if (sentBytes >= 0) {
-                val bufferSize = 1024 // Размер буфера для чтения
-                while (true) {
-                    val received = usbCommunicationModel.readDataFromUSB(bufferSize)
-                    if (received.isEmpty()) {
-                        break
-                    }
-                    usbDataLiveData.postValue(received)
-                    var parced_mess = byteArrayToMessage_17(received)
-                }
-            }
+            SendMessage16(MB_id = i.toString())
         }
     }
 
@@ -80,21 +60,13 @@ class MBSYViewModel(
         val data = objectToByteArray(message)
         val sentBytes = usbCommunicationModel.sendDataToUSB(data)
 
-        // Обработка результата отправки
         if (sentBytes >= 0) {
-            Toast.makeText(LocalContext.current, "Сообщение отправлено", Toast.LENGTH_SHORT).show()
-            val bufferSize = 1024 // Размер буфера для чтения
-            while (true) {
-                val received = usbCommunicationModel.readDataFromUSB(bufferSize)
-                if (received.isEmpty()) {
-                    break
-                }
-                usbDataLiveData.postValue(received)
-                var parced_mess = byteArrayToMessage_17(received)
-            }
+            Toast.makeText(LocalContext.current, "Сообщение на МБСУ №$MB_id отправлено", Toast.LENGTH_SHORT).show()
+            val bufferSize = 1024
+            val received = readDataFromUsb(bufferSize)
+            var parsed_mess = byteArrayToMessage_17(received)
         } else {
-            Toast.makeText(LocalContext.current, "Сообщение неотправлено", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(LocalContext.current, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -104,21 +76,13 @@ class MBSYViewModel(
         val data = objectToByteArray(message)
         val sentBytes = usbCommunicationModel.sendDataToUSB(data)
 
-        // Обработка результата отправки
         if (sentBytes >= 0) {
             Toast.makeText(LocalContext.current, "Сообщение отправлено", Toast.LENGTH_SHORT).show()
-            val bufferSize = 1024 // Размер буфера для чтения
-            while (true) {
-                val received = usbCommunicationModel.readDataFromUSB(bufferSize)
-                if (received.isEmpty()) {
-                    break
-                }
-                usbDataLiveData.postValue(received)
-                var parced_mess = byteArrayToMessage_21(received)
-            }
+            val bufferSize = 1024
+            val received = readDataFromUsb(bufferSize)
+            var parsed_mess = byteArrayToMessage_21(received)
         } else {
-            Toast.makeText(LocalContext.current, "Сообщение неотправлено", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(LocalContext.current, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -128,21 +92,13 @@ class MBSYViewModel(
         val data = objectToByteArray(message)
         val sentBytes = usbCommunicationModel.sendDataToUSB(data)
 
-        // Обработка результата отправки
         if (sentBytes >= 0) {
             Toast.makeText(LocalContext.current, "Сообщение отправлено", Toast.LENGTH_SHORT).show()
-            val bufferSize = 1024 // Размер буфера для чтения
-            while (true) {
-                val received = usbCommunicationModel.readDataFromUSB(bufferSize)
-                if (received.isEmpty()) {
-                    break
-                }
-                usbDataLiveData.postValue(received)
-                var parced_mess = byteArrayToMessage_63(received)
-            }
+            val bufferSize = 1024
+            val received = readDataFromUsb(bufferSize)
+            var parsed_mess = byteArrayToMessage_63(received)
         } else {
-            Toast.makeText(LocalContext.current, "Сообщение неотправлено", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(LocalContext.current, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
         }
     }
 
