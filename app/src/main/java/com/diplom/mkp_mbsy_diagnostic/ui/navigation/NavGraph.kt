@@ -3,11 +3,10 @@ package com.diplom.mkp_mbsy_diagnostic.ui.navigation
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.diplom.mkp_mbsy_diagnostic.model.MKPMessage
+import com.diplom.mkp_mbsy_diagnostic.datamodel.MKPMessage
 import com.diplom.mkp_mbsy_diagnostic.ui.screens.ChooseTypeScreen
 import com.diplom.mkp_mbsy_diagnostic.ui.screens.MBSYScreen
 import com.diplom.mkp_mbsy_diagnostic.ui.screens.MKPScreen

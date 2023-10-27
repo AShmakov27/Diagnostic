@@ -50,10 +50,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import com.diplom.mkp_mbsy_diagnostic.model.MKPMessage
-import com.diplom.mkp_mbsy_diagnostic.model.Message_21
-import com.diplom.mkp_mbsy_diagnostic.model.Message_39
-import com.diplom.mkp_mbsy_diagnostic.model.Message_63
+import com.diplom.mkp_mbsy_diagnostic.datamodel.MKPMessage
+import com.diplom.mkp_mbsy_diagnostic.datamodel.Message_21
+import com.diplom.mkp_mbsy_diagnostic.datamodel.Message_39
+import com.diplom.mkp_mbsy_diagnostic.datamodel.Message_63
 import com.diplom.mkp_mbsy_diagnostic.ui.theme.MKP_MBSY_diagnosticTheme
 
 @OptIn(ExperimentalMaterial3Api::class)

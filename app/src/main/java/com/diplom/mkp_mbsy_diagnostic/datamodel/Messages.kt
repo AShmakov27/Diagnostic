@@ -1,4 +1,4 @@
-package com.diplom.mkp_mbsy_diagnostic.model
+package com.diplom.mkp_mbsy_diagnostic.datamodel
 
 open class Header(
     var id_head: UShort,

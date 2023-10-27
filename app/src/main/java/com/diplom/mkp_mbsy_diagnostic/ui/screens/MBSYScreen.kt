@@ -51,10 +51,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.diplom.mkp_mbsy_diagnostic.model.MBSYMessage
+import com.diplom.mkp_mbsy_diagnostic.datamodel.MBSYMessage
 import com.diplom.mkp_mbsy_diagnostic.ui.navigation.Routes
 import com.diplom.mkp_mbsy_diagnostic.ui.theme.MKP_MBSY_diagnosticTheme
 import com.diplom.mkp_mbsy_diagnostic.viewmodel.MBSYViewModel

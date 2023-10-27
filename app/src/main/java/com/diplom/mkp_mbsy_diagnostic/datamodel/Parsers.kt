@@ -1,4 +1,4 @@
-package com.diplom.mkp_mbsy_diagnostic.model
+package com.diplom.mkp_mbsy_diagnostic.datamodel
 
 fun byteArrayToMessage_17(bytes: ByteArray): Message_17? {
     if (bytes.size != 16) {
