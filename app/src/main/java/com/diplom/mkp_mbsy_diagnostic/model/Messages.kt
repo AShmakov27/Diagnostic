@@ -104,8 +104,8 @@ class Message_63(
 
 class MBSYMessage(
     var Mes17: Message_17,
-    var Mes21: Message_21,
-    var Mes63: Message_63
+    var Mes21: Message_21?,
+    var Mes63: Message_63?
 ) {}
 
 class MKPMessage(

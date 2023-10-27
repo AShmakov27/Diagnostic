@@ -1,5 +1,6 @@
 package com.diplom.mkp_mbsy_diagnostic.ui.screens
 
+import android.content.Context
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -47,7 +48,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.diplom.mkp_mbsy_diagnostic.model.MBSYMessage
@@ -56,21 +59,18 @@ import com.diplom.mkp_mbsy_diagnostic.model.Message_21
 import com.diplom.mkp_mbsy_diagnostic.model.Message_63
 import com.diplom.mkp_mbsy_diagnostic.ui.navigation.Routes
 import com.diplom.mkp_mbsy_diagnostic.ui.theme.MKP_MBSY_diagnosticTheme
+import com.diplom.mkp_mbsy_diagnostic.viewmodel.MBSYViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MBSYScreen(
     navController: NavHostController,
-    data: List<MBSYMessage>,
-    onSendArrayClicked: (Int, Int) -> Unit,
-    /*
-    on16Clicked: () -> Unit,
-    on20Clicked: () -> Unit,
-    on62Clicked: () -> Unit,
+    viewModel: MBSYViewModel = hiltViewModel()/*,
     onDeleteClick: () -> Unit,
     onSaveClick: () -> Unit*/
 ) {
     var showDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
     Scaffold(
         topBar = {
             TopBar(title = "Мобильная диагностика МКП и МБСУ. Связь с МБСУ")
@@ -80,10 +80,9 @@ fun MBSYScreen(
             {
                 MBSYContent(
                     navController = navController,
-                    data = data/*,
-                    on16licked = on16licked,
-                    on20Clicked = on20Clicked,
-                    on62Clicked = on62Clicked,
+                    viewModel = viewModel,
+                    context = context,
+                    data = viewModel.data_list/*,
                     onDeleteClick = onDeleteClick,
                     onSaveClick = onSaveClick*/
                 )
@@ -91,8 +90,12 @@ fun MBSYScreen(
             IDsDialog(
                 showDialog = showDialog,
                 onDismiss = { showDialog = false },
-                onConfirm = { text1, text2 ->
-                    onSendArrayClicked(text1.toInt(), text2.toInt())
+                onConfirm = { start, end ->
+                    viewModel.SendArrayOfMessages(
+                        context = context,
+                        start = start.toInt(),
+                        end = end.toInt()
+                    )
                 }
             )
         },
@@ -114,10 +117,9 @@ fun MBSYScreen(
 @Composable
 fun MBSYContent(
     navController: NavHostController,
+    viewModel: MBSYViewModel = hiltViewModel(),
+    context: Context,
     data: List<MBSYMessage>/*,
-    on16licked: () -> Unit,
-    on20Clicked: () -> Unit,
-    on62Clicked: () -> Unit,
     onDeleteClick: () -> Unit,
     onSaveClick: () -> Unit*/
 
@@ -135,22 +137,21 @@ fun MBSYContent(
             items(items = data, key = { it.Mes17.MB_id.toString() }) {
                 MessageMBSYView(
                     navController = navController,
+                    viewModel = viewModel,
+                    context = context,
                     MB_id = it.Mes17.MB_id.toString(),
                     Version = it.Mes17.Version.toString(),
                     PodVersion = it.Mes17.PodVersion.toString(),
                     Month = it.Mes17.Month.toString(),
                     Year = it.Mes17.Year.toString(),
-                    kolErr = it.Mes21.KolErr.toString(),
-                    Sec = it.Mes21.Sec.toString(),
-                    Param1 = it.Mes63.Param1.toString(),
-                    Param2 = it.Mes63.Param2.toString(),
-                    Param3 = it.Mes63.Param3.toString(),
-                    Param4 = it.Mes63.Param4.toString(),
-                    Param5 = it.Mes63.Param5.toString(),
-                    Param6 = it.Mes63.Param6.toString()/*,
-                    on16licked = on16licked,
-                    on20Clicked = on20Clicked,
-                    on62Clicked = on62Clicked,
+                    kolErr = it.Mes21?.KolErr.toString(),
+                    Sec = it.Mes21?.Sec.toString(),
+                    Param1 = it.Mes63?.Param1.toString(),
+                    Param2 = it.Mes63?.Param2.toString(),
+                    Param3 = it.Mes63?.Param3.toString(),
+                    Param4 = it.Mes63?.Param4.toString(),
+                    Param5 = it.Mes63?.Param5.toString(),
+                    Param6 = it.Mes63?.Param6.toString()/*,
                     onDeleteClick = onDeleteClick,
                     onSaveClick = onSaveClick*/
                 )
@@ -162,11 +163,11 @@ fun MBSYContent(
 @ExperimentalMaterial3Api
 @Composable
 fun MessageMBSYView(
-    navController: NavHostController,
+    navController: NavHostController, viewModel: MBSYViewModel = hiltViewModel(), context: Context,
     MB_id: String, Version: String, PodVersion: String, Month: String, Year: String,
     kolErr: String, Sec: String,
-    Param1: String, Param2: String, Param3: String, Param4: String, Param5: String, Param6: String
-    /*,on16licked: () -> Unit, on20Clicked: () -> Unit, on62Clicked: () -> Unit, onDeleteClick: () -> Unit, onSaveClick: () -> Unit*/
+    Param1: String, Param2: String, Param3: String, Param4: String, Param5: String, Param6: String/*,
+     onDeleteClick: () -> Unit, onSaveClick: () -> Unit*/
 ) {
     var expandedState by remember { mutableStateOf(true) }
     val rotationState by animateFloatAsState(
@@ -445,7 +446,7 @@ fun MessageMBSYView(
                     modifier = Modifier
                         .padding(end = 5.dp)
                         .width(120.dp),
-                    onClick = { /*on16Clicked*/ },
+                    onClick = { viewModel.SendMessage16(context = context, MB_id = MB_id) },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                 )
                 {
@@ -463,7 +464,7 @@ fun MessageMBSYView(
                     modifier = Modifier
                         .padding(end = 5.dp)
                         .width(120.dp),
-                    onClick = { /*on20Clicked*/ },
+                    onClick = { viewModel.SendMessage20(context = context, MB_id = MB_id) },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                 )
                 {
@@ -481,7 +482,7 @@ fun MessageMBSYView(
                     modifier = Modifier
                         .padding(end = 5.dp)
                         .width(120.dp),
-                    onClick = { /*on62Clicked*/ },
+                    onClick = { viewModel.SendMessage62(context = context, MB_id = MB_id) },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                 )
                 {
@@ -503,51 +504,23 @@ fun MessageMBSYView(
 @Preview
 @Composable
 fun MBSYDarkPreview() {
-    val testlist = mutableListOf<MBSYMessage>()
-    testlist.add(
-        MBSYMessage(
-            Message_17(2u, 2u, 2u, 2u, 1u, 1u, 1, 1, 1, 23),
-            Message_21(2u, 2u, 2u, 2u, 1u, 1u, 0u, 24u),
-            Message_63(2u, 2u, 2u, 2u, 1u, 1u, 1u, 1u, 1u, 1u, 1u, 1u)
-        )
-    )
-    testlist.add(
-        MBSYMessage(
-            Message_17(2u, 2u, 2u, 2u, 2u, 1u, 2, 2, 2, 23),
-            Message_21(2u, 2u, 2u, 2u, 2u, 2u, 2u, 24u),
-            Message_63(2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u)
-        )
-    )
+    val MBSYviewModel: MBSYViewModel = hiltViewModel()
     MKP_MBSY_diagnosticTheme(darkTheme = true) {
         MBSYScreen(
             navController = rememberNavController(),
-            data = testlist,
-            onSendArrayClicked = { text1, text2 -> text1 + text2 })
+            viewModel = MBSYviewModel
+        )
     }
 }
 
 @Preview
 @Composable
 fun MBSYLightPreview() {
-    val testlist = mutableListOf<MBSYMessage>()
-    testlist.add(
-        MBSYMessage(
-            Message_17(2u, 2u, 2u, 2u, 1u, 1u, 1, 1, 1, 23),
-            Message_21(2u, 2u, 2u, 2u, 1u, 1u, 0u, 24u),
-            Message_63(2u, 2u, 2u, 2u, 1u, 1u, 1u, 1u, 1u, 1u, 1u, 1u)
-        )
-    )
-    testlist.add(
-        MBSYMessage(
-            Message_17(2u, 2u, 2u, 2u, 2u, 1u, 2, 2, 2, 23),
-            Message_21(2u, 2u, 2u, 2u, 2u, 2u, 2u, 24u),
-            Message_63(2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u)
-        )
-    )
+    val MBSYviewModel: MBSYViewModel = hiltViewModel()
     MKP_MBSY_diagnosticTheme(darkTheme = false) {
         MBSYScreen(
             navController = rememberNavController(),
-            data = testlist,
-            onSendArrayClicked = { text1, text2 -> text1 + text2 })
+            viewModel = MBSYviewModel
+        )
     }
 }
