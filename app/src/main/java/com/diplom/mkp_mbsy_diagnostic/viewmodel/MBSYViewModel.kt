@@ -3,6 +3,7 @@ package com.diplom.mkp_mbsy_diagnostic.viewmodel
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.diplom.mkp_mbsy_diagnostic.data.UsbCommunicationModel
@@ -21,14 +22,15 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.io.ObjectOutputStream
+import javax.inject.Inject
 
 
 @HiltViewModel
-class MBSYViewModel(
+class MBSYViewModel @Inject constructor(
     private val usbCommunicationModel: UsbCommunicationModel
 ) : ViewModel() {
 
-    var data_list = mutableListOf<MBSYMessage>()
+    var data_list = MutableLiveData(mutableListOf<MBSYMessage>())
 
     init {
         viewModelScope.launch {
@@ -114,26 +116,40 @@ class MBSYViewModel(
     }
 
     fun pushMes17inList(mes_17: Message_17) {
-        val index = data_list.indexOfFirst { it.Mes17.MB_id == mes_17.MB_id }
-        if (index != -1) {
-            data_list[index].Mes17 = mes_17
-        } else {
-            val newMes = MBSYMessage(mes_17, null, null)
-            data_list.add(newMes)
+        val index = data_list.value?.indexOfFirst { it.Mes17.MB_id == mes_17.MB_id }
+        if (index != null) {
+            if (index != -1) {
+                val list = data_list.value ?: mutableListOf()
+                list[index].Mes17 = mes_17
+                data_list.value = list
+            } else {
+                val newMes = MBSYMessage(mes_17, null, null)
+                val list = data_list.value ?: mutableListOf()
+                list.add(newMes)
+                data_list.value = list
+            }
         }
     }
 
     fun pushMes21inList(mes_21: Message_21) {
-        val index = data_list.indexOfFirst { it.Mes17.MB_id == mes_21.MB_id }
-        if (index != -1) {
-            data_list[index].Mes21 = mes_21
+        val index = data_list.value?.indexOfFirst { it.Mes17.MB_id == mes_21.MB_id }
+        if (index != null) {
+            if (index != -1) {
+                val list = data_list.value ?: mutableListOf()
+                list[index].Mes21 = mes_21
+                data_list.value = list
+            }
         }
     }
 
     fun pushMes63inList(mes_63: Message_63) {
-        val index = data_list.indexOfFirst { it.Mes17.MB_id == mes_63.MB_id }
-        if (index != -1) {
-            data_list[index].Mes63 = mes_63
+        val index = data_list.value?.indexOfFirst { it.Mes17.MB_id == mes_63.MB_id }
+        if (index != null) {
+            if (index != -1) {
+                val list = data_list.value ?: mutableListOf()
+                list[index].Mes63 = mes_63
+                data_list.value = list
+            }
         }
     }
 

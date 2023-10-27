@@ -51,12 +51,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.diplom.mkp_mbsy_diagnostic.model.MBSYMessage
-import com.diplom.mkp_mbsy_diagnostic.model.Message_17
-import com.diplom.mkp_mbsy_diagnostic.model.Message_21
-import com.diplom.mkp_mbsy_diagnostic.model.Message_63
 import com.diplom.mkp_mbsy_diagnostic.ui.navigation.Routes
 import com.diplom.mkp_mbsy_diagnostic.ui.theme.MKP_MBSY_diagnosticTheme
 import com.diplom.mkp_mbsy_diagnostic.viewmodel.MBSYViewModel
@@ -82,7 +80,7 @@ fun MBSYScreen(
                     navController = navController,
                     viewModel = viewModel,
                     context = context,
-                    data = viewModel.data_list/*,
+                    data = viewModel.data_list.value!!.toList()/*,
                     onDeleteClick = onDeleteClick,
                     onSaveClick = onSaveClick*/
                 )
