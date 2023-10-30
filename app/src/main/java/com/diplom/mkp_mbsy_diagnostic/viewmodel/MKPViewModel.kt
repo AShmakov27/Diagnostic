@@ -6,31 +6,31 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.diplom.mkp_mbsy_diagnostic.model.UsbCommunicationModel
 import com.diplom.mkp_mbsy_diagnostic.datamodel.Header
-import com.diplom.mkp_mbsy_diagnostic.datamodel.MBSYMessage
-import com.diplom.mkp_mbsy_diagnostic.datamodel.Message_16
-import com.diplom.mkp_mbsy_diagnostic.datamodel.Message_17
+import com.diplom.mkp_mbsy_diagnostic.datamodel.MKPMessage
 import com.diplom.mkp_mbsy_diagnostic.datamodel.Message_20
 import com.diplom.mkp_mbsy_diagnostic.datamodel.Message_21
+import com.diplom.mkp_mbsy_diagnostic.datamodel.Message_38
+import com.diplom.mkp_mbsy_diagnostic.datamodel.Message_39
+import com.diplom.mkp_mbsy_diagnostic.datamodel.Message_54
 import com.diplom.mkp_mbsy_diagnostic.datamodel.Message_62
 import com.diplom.mkp_mbsy_diagnostic.datamodel.Message_63
-import com.diplom.mkp_mbsy_diagnostic.datamodel.byteArrayToMessage_17
 import com.diplom.mkp_mbsy_diagnostic.datamodel.byteArrayToMessage_21
+import com.diplom.mkp_mbsy_diagnostic.datamodel.byteArrayToMessage_39
 import com.diplom.mkp_mbsy_diagnostic.datamodel.byteArrayToMessage_63
+import com.diplom.mkp_mbsy_diagnostic.model.UsbCommunicationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.io.ObjectOutputStream
 import javax.inject.Inject
 
-
 @HiltViewModel
-class MBSYViewModel @Inject constructor(
+class MKPViewModel @Inject constructor(
     private val usbCommunicationModel: UsbCommunicationModel
 ) : ViewModel() {
 
-    var data_list = MutableLiveData(mutableListOf<MBSYMessage>())
+    var data_list = MutableLiveData(mutableListOf<MKPMessage>())
 
     init {
         viewModelScope.launch {
@@ -55,46 +55,21 @@ class MBSYViewModel @Inject constructor(
         usbCommunicationModel.closeUSBConnection()
     }
 
-    fun SendArrayOfMessages(start: Int, end: Int, context: Context) {
+    fun SendArrayOfMessages(MB_id: String, start: Int, end: Int, context: Context) {
         for (i in start..end) {
-            SendMessage16(context = context, MB_id = i.toString())
+            //Надо узнать что кидается первым пакетом на МКП
+            /*SendMessage16(context = context,MB_id = i.toString())*/
         }
     }
 
-    fun SendMessage16(context: Context, MB_id: String) {
-        val message = Message_16(1u, 1u, 1u, 1u, MB_id.toUShort(), 0u)
+    fun SendMessage20(context: Context, MB_id: String, MK_id: String) {
+        val message = Message_20(1u, 1u, 1u, 1u, MB_id.toUShort(), MK_id.toUShort())
         val data = objectToByteArray(message)
         val sentBytes = usbCommunicationModel.sendDataToUSB(data)
 
         if (sentBytes >= 0) {
-            Toast.makeText(context, "Сообщение на МБСУ №$MB_id отправлено", Toast.LENGTH_SHORT).show()
-            val index = data_list.value?.indexOfFirst { it.Mes17.MB_id == MB_id.toUShort() }
-            if (index != null) {
-                if (index != -1) {
-                    val list = data_list.value ?: mutableListOf()
-                    list[index].count_send += 1
-                    data_list.value = list
-                }
-            }
-            val bufferSize = 1024
-            val received = readDataFromUsb(bufferSize)
-            val parsed_mess = byteArrayToMessage_17(received)
-            if (parsed_mess != null) {
-                pushMes17inList(parsed_mess)
-            }
-        } else {
-            Toast.makeText(context, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    fun SendMessage20(context: Context, MB_id: String) {
-        val message = Message_20(1u, 1u, 1u, 1u, MB_id.toUShort(), 0u)
-        val data = objectToByteArray(message)
-        val sentBytes = usbCommunicationModel.sendDataToUSB(data)
-
-        if (sentBytes >= 0) {
-            Toast.makeText(context, "Сообщение на МБСУ №$MB_id отправлено", Toast.LENGTH_SHORT).show()
-            val index = data_list.value?.indexOfFirst { it.Mes17.MB_id == MB_id.toUShort() }
+            Toast.makeText(context, "Сообщение на МКП №$MK_id отправлено", Toast.LENGTH_SHORT).show()
+            val index = data_list.value?.indexOfFirst { it.Mes21.MK_id == MK_id.toUShort() }
             if (index != null) {
                 if (index != -1) {
                     val list = data_list.value ?: mutableListOf()
@@ -113,14 +88,61 @@ class MBSYViewModel @Inject constructor(
         }
     }
 
-    fun SendMessage62(context: Context, MB_id: String) {
-        val message = Message_62(1u, 1u, 1u, 1u, MB_id.toUShort(), 0u)
+    fun SendMessage38(context: Context, MB_id: String, MK_id: String){
+        val message = Message_38(1u, 1u, 1u, 1u, MB_id.toUShort(), MK_id.toUShort())
         val data = objectToByteArray(message)
         val sentBytes = usbCommunicationModel.sendDataToUSB(data)
 
         if (sentBytes >= 0) {
-            Toast.makeText(context, "Сообщение на МБСУ №$MB_id отправлено", Toast.LENGTH_SHORT).show()
-            val index = data_list.value?.indexOfFirst { it.Mes17.MB_id == MB_id.toUShort() }
+            Toast.makeText(context, "Сообщение на МКП №$MK_id отправлено", Toast.LENGTH_SHORT).show()
+            val index = data_list.value?.indexOfFirst { it.Mes21.MK_id == MK_id.toUShort() }
+            if (index != null) {
+                if (index != -1) {
+                    val list = data_list.value ?: mutableListOf()
+                    list[index].count_send += 1
+                    data_list.value = list
+                }
+            }
+            val bufferSize = 1024
+            val received = readDataFromUsb(bufferSize)
+            val parsed_mess = byteArrayToMessage_39(received)
+            if (parsed_mess != null) {
+                pushMes39inList(parsed_mess)
+            }
+        } else {
+            Toast.makeText(context, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    //НАПИСАТЬ ПОЛУЧЕНИК Underminning0 на вьюхе
+    @OptIn(ExperimentalUnsignedTypes::class)
+    fun SendMessage54(context: Context, MB_id: String, MK_id: String, Underminning0: UShortArray = UShortArray(20)){
+        val message = Message_54(1u, 1u, 1u, 1u, MB_id.toUShort(), MK_id.toUShort(), Underminning0)
+        val data = objectToByteArray(message)
+        val sentBytes = usbCommunicationModel.sendDataToUSB(data)
+        if (sentBytes >= 0) {
+            Toast.makeText(context, "Сообщение на МКП №$MK_id отправлено", Toast.LENGTH_SHORT).show()
+            val index = data_list.value?.indexOfFirst { it.Mes21.MK_id == MK_id.toUShort() }
+            if (index != null) {
+                if (index != -1) {
+                    val list = data_list.value ?: mutableListOf()
+                    list[index].count_send += 1
+                    data_list.value = list
+                }
+            }
+        } else {
+            Toast.makeText(context, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun SendMessage62(context: Context, MB_id: String, MK_id: String) {
+        val message = Message_62(1u, 1u, 1u, 1u, MB_id.toUShort(), MK_id.toUShort())
+        val data = objectToByteArray(message)
+        val sentBytes = usbCommunicationModel.sendDataToUSB(data)
+
+        if (sentBytes >= 0) {
+            Toast.makeText(context, "Сообщение на МКП №$MK_id отправлено", Toast.LENGTH_SHORT).show()
+            val index = data_list.value?.indexOfFirst { it.Mes21.MK_id == MK_id.toUShort() }
             if (index != null) {
                 if (index != -1) {
                     val list = data_list.value ?: mutableListOf()
@@ -139,16 +161,16 @@ class MBSYViewModel @Inject constructor(
         }
     }
 
-    fun pushMes17inList(mes_17: Message_17) {
-        val index = data_list.value?.indexOfFirst { it.Mes17.MB_id == mes_17.MB_id }
+    fun pushMes21inList(mes_21: Message_21) {
+        val index = data_list.value?.indexOfFirst { it.Mes21.MB_id == mes_21.MB_id }
         if (index != null) {
             if (index != -1) {
                 val list = data_list.value ?: mutableListOf()
-                list[index].Mes17 = mes_17
+                list[index].Mes21 = mes_21
                 list[index].count_receive += 1
                 data_list.value = list
             } else {
-                val newMes = MBSYMessage(mes_17, null, null)
+                val newMes = MKPMessage(mes_21, null, null)
                 newMes.count_send += 1
                 newMes.count_receive += 1
                 val list = data_list.value ?: mutableListOf()
@@ -158,12 +180,12 @@ class MBSYViewModel @Inject constructor(
         }
     }
 
-    fun pushMes21inList(mes_21: Message_21) {
-        val index = data_list.value?.indexOfFirst { it.Mes17.MB_id == mes_21.MB_id }
+    fun pushMes39inList(mes_39: Message_39) {
+        val index = data_list.value?.indexOfFirst { it.Mes21.MB_id == mes_39.MB_id }
         if (index != null) {
             if (index != -1) {
                 val list = data_list.value ?: mutableListOf()
-                list[index].Mes21 = mes_21
+                list[index].Mes39 = mes_39
                 list[index].count_receive += 1
                 data_list.value = list
             }
@@ -171,7 +193,7 @@ class MBSYViewModel @Inject constructor(
     }
 
     fun pushMes63inList(mes_63: Message_63) {
-        val index = data_list.value?.indexOfFirst { it.Mes17.MB_id == mes_63.MB_id }
+        val index = data_list.value?.indexOfFirst { it.Mes21.MB_id == mes_63.MB_id }
         if (index != null) {
             if (index != -1) {
                 val list = data_list.value ?: mutableListOf()

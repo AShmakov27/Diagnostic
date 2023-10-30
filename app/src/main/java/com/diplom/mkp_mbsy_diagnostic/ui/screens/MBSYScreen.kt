@@ -22,9 +22,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -43,7 +46,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.rotate
@@ -52,10 +54,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.diplom.mkp_mbsy_diagnostic.datamodel.MBSYMessage
 import com.diplom.mkp_mbsy_diagnostic.ui.navigation.Routes
-import com.diplom.mkp_mbsy_diagnostic.ui.theme.MKP_MBSY_diagnosticTheme
 import com.diplom.mkp_mbsy_diagnostic.viewmodel.MBSYViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -110,7 +110,7 @@ fun MBSYScreen(
     )
 }
 
-@OptIn(ExperimentalUnsignedTypes::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MBSYContent(
     navController: NavHostController,
@@ -136,6 +136,8 @@ fun MBSYContent(
                     navController = navController,
                     viewModel = viewModel,
                     context = context,
+                    send = it.count_send,
+                    receive = it.count_receive,
                     MB_id = it.Mes17.MB_id.toString(),
                     Version = it.Mes17.Version.toString(),
                     PodVersion = it.Mes17.PodVersion.toString(),
@@ -161,6 +163,7 @@ fun MBSYContent(
 @Composable
 fun MessageMBSYView(
     navController: NavHostController, viewModel: MBSYViewModel = hiltViewModel(), context: Context,
+    send: Int, receive: Int,
     MB_id: String, Version: String, PodVersion: String, Month: String, Year: String,
     kolErr: String, Sec: String,
     Param1: String, Param2: String, Param3: String, Param4: String, Param5: String, Param6: String/*,
@@ -223,6 +226,50 @@ fun MessageMBSYView(
                     .fillMaxWidth()
                     .background(color = MaterialTheme.colorScheme.secondaryContainer)
             ) {
+                Row(
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.MailOutline,
+                        contentDescription = "Send",
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                    Icon(
+                        imageVector = Icons.Default.ArrowForward,
+                        contentDescription = "Send",
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                    Text(
+                        text = "$send",
+                        style = TextStyle(
+                            fontSize = MaterialTheme.typography.labelLarge.fontSize,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            textAlign = TextAlign.Center
+                        )
+                    )
+                    Icon(
+                        modifier = Modifier
+                            .padding(start = 20.dp),
+                        imageVector = Icons.Default.MailOutline,
+                        contentDescription = "Receive",
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "Receive",
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                    Text(
+                        text = "$receive",
+                        style = TextStyle(
+                            fontSize = MaterialTheme.typography.labelLarge.fontSize,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            textAlign = TextAlign.Center
+                        )
+                    )
+                }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
@@ -495,29 +542,5 @@ fun MessageMBSYView(
                 }
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun MBSYDarkPreview() {
-    val MBSYviewModel: MBSYViewModel = hiltViewModel()
-    MKP_MBSY_diagnosticTheme(darkTheme = true) {
-        MBSYScreen(
-            navController = rememberNavController(),
-            viewModel = MBSYviewModel
-        )
-    }
-}
-
-@Preview
-@Composable
-fun MBSYLightPreview() {
-    val MBSYviewModel: MBSYViewModel = hiltViewModel()
-    MKP_MBSY_diagnosticTheme(darkTheme = false) {
-        MBSYScreen(
-            navController = rememberNavController(),
-            viewModel = MBSYviewModel
-        )
     }
 }

@@ -74,6 +74,7 @@ fun IDsDialog(
             },
             text = {
                 Column {
+                    Text(text = "Начало интервала")
                     BasicTextField(
                         value = text1,
                         onValueChange = { text1 = it },
@@ -103,6 +104,7 @@ fun IDsDialog(
                             )
                     )
                     Spacer(modifier = Modifier.height(16.dp))
+                    Text(text = "Конец интервала")
                     BasicTextField(
                         value = text2,
                         onValueChange = { text2 = it },
@@ -116,6 +118,133 @@ fun IDsDialog(
 
                                 if (inputText.isNotEmpty() && inputText2.isNotEmpty()) {
                                     onConfirm(text1, text2)
+                                    onDismiss()
+                                }
+                            }
+                        ),
+                        modifier = Modifier
+                            .height(25.dp)
+                            .fillMaxWidth()
+                            .border(
+                                BorderStroke(
+                                    width = 2.dp,
+                                    color = MaterialTheme.colorScheme.primary
+                                ),
+                                shape = RoundedCornerShape(15)
+                            )
+                    )
+                }
+            }
+        )
+    }
+}
+
+@Composable
+fun IDsMKPDialog(
+    showDialog: Boolean,
+    onDismiss: () -> Unit,
+    onConfirm: (String, String, String) -> Unit
+) {
+    var text1 by remember { mutableStateOf("") }
+    var text2 by remember { mutableStateOf("") }
+    var text3 by remember { mutableStateOf("") }
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            title = { Text("Введите границы интервала номеров устройств") },
+            confirmButton = {
+                Button(onClick = {
+                    onConfirm(text1, text2, text3)
+                    onDismiss()
+                }) {
+                    Text("Отправить")
+                }
+            },
+            dismissButton = {
+                Button(onClick = onDismiss) {
+                    Text("Отмена")
+                }
+            },
+            text = {
+                Column {
+                    Text(text = "Номер МБСУ")
+                    BasicTextField(
+                        value = text1,
+                        onValueChange = { text1 = it },
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            imeAction = androidx.compose.ui.text.input.ImeAction.Done
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                val inputText = text1
+                                val inputText2 = text2
+                                val inputText3 = text3
+
+                                if (inputText.isNotEmpty() && inputText2.isNotEmpty() && inputText3.isNotEmpty()) {
+                                    onConfirm(text1, text2, text3)
+                                    onDismiss()
+                                }
+                            }
+                        ),
+                        modifier = Modifier
+                            .height(25.dp)
+                            .fillMaxWidth()
+                            .border(
+                                BorderStroke(
+                                    width = 2.dp,
+                                    color = MaterialTheme.colorScheme.primary
+                                ),
+                                shape = RoundedCornerShape(15)
+                            )
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(text = "Начало интервала")
+                    BasicTextField(
+                        value = text2,
+                        onValueChange = { text2 = it },
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            imeAction = androidx.compose.ui.text.input.ImeAction.Done
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                val inputText = text1
+                                val inputText2 = text2
+                                val inputText3 = text3
+
+                                if (inputText.isNotEmpty() && inputText2.isNotEmpty() && inputText3.isNotEmpty()) {
+                                    onConfirm(text1, text2, text3)
+                                    onDismiss()
+                                }
+                            }
+                        ),
+                        modifier = Modifier
+                            .height(25.dp)
+                            .fillMaxWidth()
+                            .border(
+                                BorderStroke(
+                                    width = 2.dp,
+                                    color = MaterialTheme.colorScheme.primary
+                                ),
+                                shape = RoundedCornerShape(15)
+                            )
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(text = "Конец интервала")
+                    BasicTextField(
+                        value = text3,
+                        onValueChange = { text3 = it },
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            imeAction = androidx.compose.ui.text.input.ImeAction.Done
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                val inputText = text1
+                                val inputText2 = text2
+                                val inputText3 = text3
+
+                                if (inputText.isNotEmpty() && inputText2.isNotEmpty() && inputText3.isNotEmpty()) {
+                                    onConfirm(text1, text2, text3)
                                     onDismiss()
                                 }
                             }
@@ -178,6 +307,38 @@ fun DialogDarkPreview() {
             onConfirm = { text1, text2 ->
                 println("Text 1: $text1")
                 println("Text 2: $text2")
+            }
+        )
+    }
+}
+
+@Preview
+@Composable
+fun DialogMKPLightPreview() {
+    MKP_MBSY_diagnosticTheme(darkTheme = false) {
+        IDsMKPDialog(
+            showDialog = true,
+            onDismiss = {},
+            onConfirm = { text1, text2, text3 ->
+                println("Text 1: $text1")
+                println("Text 2: $text2")
+                println("Text 2: $text3")
+            }
+        )
+    }
+}
+
+@Preview
+@Composable
+fun DialogMKPDarkPreview() {
+    MKP_MBSY_diagnosticTheme(darkTheme = true) {
+        IDsMKPDialog(
+            showDialog = true,
+            onDismiss = {},
+            onConfirm = { text1, text2, text3 ->
+                println("Text 1: $text1")
+                println("Text 2: $text2")
+                println("Text 2: $text3")
             }
         )
     }

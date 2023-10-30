@@ -106,10 +106,16 @@ class MBSYMessage(
     var Mes17: Message_17,
     var Mes21: Message_21?,
     var Mes63: Message_63?
-) {}
+) {
+    var count_receive: Int = 0
+    var count_send: Int = 0
+}
 
 class MKPMessage(
     var Mes21: Message_21,
-    var Mes39: Message_39,
-    var Mes63: Message_63,
-) {}
+    var Mes39: Message_39?,
+    var Mes63: Message_63?,
+) {
+    var count_receive: Int = 0
+    var count_send: Int = 0
+}

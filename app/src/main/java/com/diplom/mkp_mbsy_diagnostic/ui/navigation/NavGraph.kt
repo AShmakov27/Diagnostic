@@ -11,6 +11,7 @@ import com.diplom.mkp_mbsy_diagnostic.ui.screens.ChooseTypeScreen
 import com.diplom.mkp_mbsy_diagnostic.ui.screens.MBSYScreen
 import com.diplom.mkp_mbsy_diagnostic.ui.screens.MKPScreen
 import com.diplom.mkp_mbsy_diagnostic.viewmodel.MBSYViewModel
+import com.diplom.mkp_mbsy_diagnostic.viewmodel.MKPViewModel
 
 
 @Composable
@@ -18,6 +19,7 @@ fun NavGraph() {
 
     val navController = rememberNavController()
     val MBSYviewModel: MBSYViewModel = hiltViewModel()
+    val MKPviewModel: MKPViewModel = hiltViewModel()
     NavHost(navController = navController, startDestination = Routes.Choose.route)
     {
         composable(Routes.Choose.route) {
@@ -27,7 +29,7 @@ fun NavGraph() {
             MBSYScreen(navController = navController, viewModel = MBSYviewModel)
         }
         composable(Routes.MKP.route) {
-            MKPScreen(data = emptyList<MKPMessage>(), onSendArrayClicked = { start, end -> Log.d("VALUE", (start+end).toString()) })
+            MKPScreen(viewModel = MKPviewModel)
         }
     }
 }
