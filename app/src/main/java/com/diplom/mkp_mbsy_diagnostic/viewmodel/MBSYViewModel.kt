@@ -31,14 +31,24 @@ class MBSYViewModel @Inject constructor(
 ) : ViewModel() {
 
     var data_list = MutableLiveData(mutableListOf<MBSYMessage>())
+    var connected = false
 
     init {
         viewModelScope.launch {
-            if (/*initializeUsbDevice(vendor_id, product_id)*/ true) {
+            if (initializeUsbDevice(1234, 5678)) {
+                connected = true
                 Log.d("Connection", "Device connected")
             } else {
+                connected = false
                 Log.d("Connection", "Device not connected")
             }
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        if (connected) {
+            closeUsbConnection()
         }
     }
 
@@ -53,11 +63,16 @@ class MBSYViewModel @Inject constructor(
 
     fun closeUsbConnection() {
         usbCommunicationModel.closeUSBConnection()
+        Log.d("Connection", "Connection closed")
     }
 
     fun SendArrayOfMessages(start: Int, end: Int, context: Context) {
-        for (i in start..end) {
-            SendMessage16(context = context, MB_id = i.toString())
+        if (connected) {
+            for (i in start..end) {
+                SendMessage16(context = context,MB_id = i.toString())
+            }
+        } else {
+            Log.d("Sending", "Unable to send messages, USB device not connected")
         }
     }
 

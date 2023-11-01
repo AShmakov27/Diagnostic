@@ -31,14 +31,24 @@ class MKPViewModel @Inject constructor(
 ) : ViewModel() {
 
     var data_list = MutableLiveData(mutableListOf<MKPMessage>())
+    var connected = false
 
     init {
         viewModelScope.launch {
-            if (/*initializeUsbDevice(vendor_id, product_id)*/ true) {
+            if (initializeUsbDevice(1234, 5678)) {
+                connected = true
                 Log.d("Connection", "Device connected")
             } else {
+                connected = false
                 Log.d("Connection", "Device not connected")
             }
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        if (connected) {
+            closeUsbConnection()
         }
     }
 
@@ -53,12 +63,17 @@ class MKPViewModel @Inject constructor(
 
     fun closeUsbConnection() {
         usbCommunicationModel.closeUSBConnection()
+        Log.d("Connection", "Connection closed")
     }
 
     fun SendArrayOfMessages(MB_id: String, start: Int, end: Int, context: Context) {
-        for (i in start..end) {
-            //Надо узнать что кидается первым пакетом на МКП
-            /*SendMessage16(context = context,MB_id = i.toString())*/
+        if (connected) {
+            for (i in start..end) {
+                //Надо узнать что кидается первым пакетом на МКП
+                /*SendMessage16(context = context,MB_id = i.toString())*/
+            }
+        } else {
+            Log.d("Sending", "Unable to send messages, USB device not connected")
         }
     }
 
@@ -114,9 +129,8 @@ class MKPViewModel @Inject constructor(
         }
     }
 
-    //НАПИСАТЬ ПОЛУЧЕНИК Underminning0 на вьюхе
     @OptIn(ExperimentalUnsignedTypes::class)
-    fun SendMessage54(context: Context, MB_id: String, MK_id: String, Underminning0: UShortArray = UShortArray(20)){
+    fun SendMessage54(context: Context, MB_id: String, MK_id: String, Underminning0: UShortArray){
         val message = Message_54(1u, 1u, 1u, 1u, MB_id.toUShort(), MK_id.toUShort(), Underminning0)
         val data = objectToByteArray(message)
         val sentBytes = usbCommunicationModel.sendDataToUSB(data)

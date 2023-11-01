@@ -1,11 +1,13 @@
 package com.diplom.mkp_mbsy_diagnostic.datamodel
 
+import java.io.Serializable
+
 open class Header(
     var id_head: UShort,
     var id: UShort,
     var LoSumm: UShort,
     var HiSumm: UShort
-)
+) : Serializable
 
 class Message_16(
     id_head: UShort,
