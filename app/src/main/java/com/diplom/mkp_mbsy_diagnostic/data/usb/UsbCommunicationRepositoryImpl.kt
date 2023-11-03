@@ -4,13 +4,14 @@ import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbDeviceConnection
 import android.hardware.usb.UsbEndpoint
 import android.hardware.usb.UsbManager
+import com.diplom.mkp_mbsy_diagnostic.data.UsbCommunicationRepository
 
-class UsbCommunicationModel(private val usbManager: UsbManager) {
+class UsbCommunicationRepositoryImpl(private val usbManager: UsbManager): UsbCommunicationRepository {
     private lateinit var usbDevice: UsbDevice
     private lateinit var usbConnection: UsbDeviceConnection
     private lateinit var usbEndpoint: UsbEndpoint
 
-    fun initializeUsbDevice(vendorId: Int, productId: Int): Boolean {
+    override fun initializeUsbDevice(vendorId: Int, productId: Int): Boolean {
         val deviceList = usbManager.deviceList
         for (entry in deviceList.entries) {
             val device = entry.value
@@ -26,17 +27,17 @@ class UsbCommunicationModel(private val usbManager: UsbManager) {
         return false
     }
 
-    fun sendDataToUSB(data: ByteArray): Int {
+    override fun sendDataToUSB(data: ByteArray): Int {
         return usbConnection.bulkTransfer(usbEndpoint, data, data.size, TIMEOUT)
     }
 
-    fun readDataFromUSB(bufferSize: Int): ByteArray {
+    override fun readDataFromUSB(bufferSize: Int): ByteArray {
         val buffer = ByteArray(bufferSize)
         usbConnection.bulkTransfer(usbEndpoint, buffer, bufferSize, TIMEOUT)
         return buffer
     }
 
-    fun closeUSBConnection() {
+    override fun closeUSBConnection() {
         usbConnection.close()
     }
 

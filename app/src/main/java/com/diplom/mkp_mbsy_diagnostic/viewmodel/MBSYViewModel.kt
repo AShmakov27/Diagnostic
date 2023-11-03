@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.diplom.mkp_mbsy_diagnostic.data.usb.UsbCommunicationModel
+import com.diplom.mkp_mbsy_diagnostic.data.UsbCommunicationRepository
 import com.diplom.mkp_mbsy_diagnostic.data.usb.Header
 import com.diplom.mkp_mbsy_diagnostic.data.usb.MBSYMessage
 import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_16
@@ -27,7 +27,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MBSYViewModel @Inject constructor(
-    private val usbCommunicationModel: UsbCommunicationModel
+    private val usbCommunicationRepository: UsbCommunicationRepository
 ) : ViewModel() {
 
     var data_list = MutableLiveData(mutableListOf<MBSYMessage>())
@@ -53,16 +53,16 @@ class MBSYViewModel @Inject constructor(
     }
 
     fun initializeUsbDevice(vendorId: Int, productId: Int): Boolean {
-        return usbCommunicationModel.initializeUsbDevice(vendorId, productId)
+        return usbCommunicationRepository.initializeUsbDevice(vendorId, productId)
     }
 
     fun readDataFromUsb(bufferSize: Int): ByteArray {
-        val data = usbCommunicationModel.readDataFromUSB(bufferSize)
+        val data = usbCommunicationRepository.readDataFromUSB(bufferSize)
         return data
     }
 
     fun closeUsbConnection() {
-        usbCommunicationModel.closeUSBConnection()
+        usbCommunicationRepository.closeUSBConnection()
         Log.d("Connection", "Connection closed")
     }
 
@@ -79,7 +79,7 @@ class MBSYViewModel @Inject constructor(
     fun SendMessage16(context: Context, MB_id: String) {
         val message = Message_16(1u, 1u, 1u, 1u, MB_id.toUShort(), 0u)
         val data = objectToByteArray(message)
-        val sentBytes = usbCommunicationModel.sendDataToUSB(data)
+        val sentBytes = usbCommunicationRepository.sendDataToUSB(data)
 
         if (sentBytes >= 0) {
             Toast.makeText(context, "Сообщение на МБСУ №$MB_id отправлено", Toast.LENGTH_SHORT).show()
@@ -105,7 +105,7 @@ class MBSYViewModel @Inject constructor(
     fun SendMessage20(context: Context, MB_id: String) {
         val message = Message_20(1u, 1u, 1u, 1u, MB_id.toUShort(), 0u)
         val data = objectToByteArray(message)
-        val sentBytes = usbCommunicationModel.sendDataToUSB(data)
+        val sentBytes = usbCommunicationRepository.sendDataToUSB(data)
 
         if (sentBytes >= 0) {
             Toast.makeText(context, "Сообщение на МБСУ №$MB_id отправлено", Toast.LENGTH_SHORT).show()
@@ -131,7 +131,7 @@ class MBSYViewModel @Inject constructor(
     fun SendMessage62(context: Context, MB_id: String) {
         val message = Message_62(1u, 1u, 1u, 1u, MB_id.toUShort(), 0u)
         val data = objectToByteArray(message)
-        val sentBytes = usbCommunicationModel.sendDataToUSB(data)
+        val sentBytes = usbCommunicationRepository.sendDataToUSB(data)
 
         if (sentBytes >= 0) {
             Toast.makeText(context, "Сообщение на МБСУ №$MB_id отправлено", Toast.LENGTH_SHORT).show()

@@ -18,7 +18,7 @@ import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_63
 import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToMessage_21
 import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToMessage_39
 import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToMessage_63
-import com.diplom.mkp_mbsy_diagnostic.data.usb.UsbCommunicationModel
+import com.diplom.mkp_mbsy_diagnostic.data.UsbCommunicationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
@@ -27,7 +27,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MKPViewModel @Inject constructor(
-    private val usbCommunicationModel: UsbCommunicationModel
+    private val usbCommunicationRepository: UsbCommunicationRepository
 ) : ViewModel() {
 
     var data_list = MutableLiveData(mutableListOf<MKPMessage>())
@@ -53,16 +53,16 @@ class MKPViewModel @Inject constructor(
     }
 
     fun initializeUsbDevice(vendorId: Int, productId: Int): Boolean {
-        return usbCommunicationModel.initializeUsbDevice(vendorId, productId)
+        return usbCommunicationRepository.initializeUsbDevice(vendorId, productId)
     }
 
     fun readDataFromUsb(bufferSize: Int): ByteArray {
-        val data = usbCommunicationModel.readDataFromUSB(bufferSize)
+        val data = usbCommunicationRepository.readDataFromUSB(bufferSize)
         return data
     }
 
     fun closeUsbConnection() {
-        usbCommunicationModel.closeUSBConnection()
+        usbCommunicationRepository.closeUSBConnection()
         Log.d("Connection", "Connection closed")
     }
 
@@ -80,7 +80,7 @@ class MKPViewModel @Inject constructor(
     fun SendMessage20(context: Context, MB_id: String, MK_id: String) {
         val message = Message_20(1u, 1u, 1u, 1u, MB_id.toUShort(), MK_id.toUShort())
         val data = objectToByteArray(message)
-        val sentBytes = usbCommunicationModel.sendDataToUSB(data)
+        val sentBytes = usbCommunicationRepository.sendDataToUSB(data)
 
         if (sentBytes >= 0) {
             Toast.makeText(context, "Сообщение на МКП №$MK_id отправлено", Toast.LENGTH_SHORT).show()
@@ -106,7 +106,7 @@ class MKPViewModel @Inject constructor(
     fun SendMessage38(context: Context, MB_id: String, MK_id: String){
         val message = Message_38(1u, 1u, 1u, 1u, MB_id.toUShort(), MK_id.toUShort())
         val data = objectToByteArray(message)
-        val sentBytes = usbCommunicationModel.sendDataToUSB(data)
+        val sentBytes = usbCommunicationRepository.sendDataToUSB(data)
 
         if (sentBytes >= 0) {
             Toast.makeText(context, "Сообщение на МКП №$MK_id отправлено", Toast.LENGTH_SHORT).show()
@@ -133,7 +133,7 @@ class MKPViewModel @Inject constructor(
     fun SendMessage54(context: Context, MB_id: String, MK_id: String, Underminning0: UShortArray){
         val message = Message_54(1u, 1u, 1u, 1u, MB_id.toUShort(), MK_id.toUShort(), Underminning0)
         val data = objectToByteArray(message)
-        val sentBytes = usbCommunicationModel.sendDataToUSB(data)
+        val sentBytes = usbCommunicationRepository.sendDataToUSB(data)
         if (sentBytes >= 0) {
             Toast.makeText(context, "Сообщение на МКП №$MK_id отправлено", Toast.LENGTH_SHORT).show()
             val index = data_list.value?.indexOfFirst { it.Mes21.MK_id == MK_id.toUShort() }
@@ -152,7 +152,7 @@ class MKPViewModel @Inject constructor(
     fun SendMessage62(context: Context, MB_id: String, MK_id: String) {
         val message = Message_62(1u, 1u, 1u, 1u, MB_id.toUShort(), MK_id.toUShort())
         val data = objectToByteArray(message)
-        val sentBytes = usbCommunicationModel.sendDataToUSB(data)
+        val sentBytes = usbCommunicationRepository.sendDataToUSB(data)
 
         if (sentBytes >= 0) {
             Toast.makeText(context, "Сообщение на МКП №$MK_id отправлено", Toast.LENGTH_SHORT).show()
