@@ -54,7 +54,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.diplom.mkp_mbsy_diagnostic.datamodel.MBSYMessage
+import com.diplom.mkp_mbsy_diagnostic.data.usb.MBSYMessage
 import com.diplom.mkp_mbsy_diagnostic.ui.navigation.Routes
 import com.diplom.mkp_mbsy_diagnostic.viewmodel.MBSYViewModel
 

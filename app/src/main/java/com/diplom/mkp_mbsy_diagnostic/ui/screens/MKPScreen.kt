@@ -56,7 +56,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.diplom.mkp_mbsy_diagnostic.datamodel.MKPMessage
+import com.diplom.mkp_mbsy_diagnostic.data.usb.MKPMessage
 import com.diplom.mkp_mbsy_diagnostic.viewmodel.MKPViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

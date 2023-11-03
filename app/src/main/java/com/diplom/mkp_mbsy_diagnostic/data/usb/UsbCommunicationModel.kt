@@ -1,4 +1,4 @@
-package com.diplom.mkp_mbsy_diagnostic.model
+package com.diplom.mkp_mbsy_diagnostic.data.usb
 
 import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbDeviceConnection

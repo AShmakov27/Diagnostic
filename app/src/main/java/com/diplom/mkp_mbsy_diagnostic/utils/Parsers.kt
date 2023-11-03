@@ -1,4 +1,9 @@
-package com.diplom.mkp_mbsy_diagnostic.datamodel
+package com.diplom.mkp_mbsy_diagnostic.utils
+
+import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_17
+import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_21
+import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_39
+import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_63
 
 fun byteArrayToMessage_17(bytes: ByteArray): Message_17? {
     if (bytes.size != 16) {

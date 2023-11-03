@@ -1,4 +1,4 @@
-package com.diplom.mkp_mbsy_diagnostic.datamodel
+package com.diplom.mkp_mbsy_diagnostic.data.usb
 
 import java.io.Serializable
 
