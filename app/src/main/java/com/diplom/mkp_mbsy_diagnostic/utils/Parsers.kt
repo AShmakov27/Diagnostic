@@ -1,9 +1,25 @@
 package com.diplom.mkp_mbsy_diagnostic.utils
 
+import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_16
 import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_17
 import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_21
 import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_39
 import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_63
+
+fun byteArrayToMessage_16(bytes: ByteArray): Message_16? {
+    if (bytes.size != 12) {
+        return null
+    }
+
+    val id_head = ((bytes[1].toInt() shl 8) or bytes[0].toInt()).toUShort()
+    val id = ((bytes[3].toInt() shl 8) or bytes[2].toInt()).toUShort()
+    val LoSumm = ((bytes[5].toInt() shl 8) or bytes[4].toInt()).toUShort()
+    val HiSumm = ((bytes[7].toInt() shl 8) or bytes[6].toInt()).toUShort()
+    val MB_id = ((bytes[9].toInt() shl 8) or bytes[8].toInt()).toUShort()
+    val MK_id = ((bytes[11].toInt() shl 8) or bytes[10].toInt()).toUShort()
+
+    return Message_16(id_head, id, LoSumm, HiSumm, MB_id, MK_id)
+}
 
 fun byteArrayToMessage_17(bytes: ByteArray): Message_17? {
     if (bytes.size != 16) {

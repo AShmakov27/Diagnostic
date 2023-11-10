@@ -4,4 +4,5 @@ sealed class Routes(val route: String) {
     object Choose : Routes("choose")
     object MBSY : Routes("MBSY")
     object MKP : Routes("MKP")
+    object Test : Routes("Test")
 }
