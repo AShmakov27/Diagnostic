@@ -3,26 +3,26 @@ package com.diplom.mkp_mbsy_diagnostic.data.usb
 import java.io.Serializable
 
 open class Header(
-    var id_head: UShort,
-    var id: UShort,
-    var LoSumm: UShort,
-    var HiSumm: UShort
+    var id_head: Byte,
+    var id: Byte,
+    var LoSumm: Byte,
+    var HiSumm: Byte
 ) : Serializable
 
 class Message_16(
-    id_head: UShort,
-    id: UShort,
-    LoSumm: UShort,
-    HiSumm: UShort,
+    id_head: Byte,
+    id: Byte,
+    LoSumm: Byte,
+    HiSumm: Byte,
     var MB_id: UShort,
     var MK_id: UShort
 ) : Header(id_head, id, LoSumm, HiSumm)
 
 class Message_17(
-    id_head: UShort,
-    id: UShort,
-    LoSumm: UShort,
-    HiSumm: UShort,
+    id_head: Byte,
+    id: Byte,
+    LoSumm: Byte,
+    HiSumm: Byte,
     var MB_id: UShort,
     var MK_id: UShort,
     var Version: Byte,
@@ -32,19 +32,19 @@ class Message_17(
 ) : Header(id_head, id, LoSumm, HiSumm)
 
 class Message_20(
-    id_head: UShort,
-    id: UShort,
-    LoSumm: UShort,
-    HiSumm: UShort,
+    id_head: Byte,
+    id: Byte,
+    LoSumm: Byte,
+    HiSumm: Byte,
     var MB_id: UShort,
     var MK_id: UShort
 ) : Header(id_head, id, LoSumm, HiSumm)
 
 class Message_21(
-    id_head: UShort,
-    id: UShort,
-    LoSumm: UShort,
-    HiSumm: UShort,
+    id_head: Byte,
+    id: Byte,
+    LoSumm: Byte,
+    HiSumm: Byte,
     var MB_id: UShort,
     var MK_id: UShort,
     var KolErr: UShort,
@@ -52,48 +52,48 @@ class Message_21(
 ) : Header(id_head, id, LoSumm, HiSumm)
 
 class Message_38(
-    id_head: UShort,
-    id: UShort,
-    LoSumm: UShort,
-    HiSumm: UShort,
+    id_head: Byte,
+    id: Byte,
+    LoSumm: Byte,
+    HiSumm: Byte,
     var MB_id: UShort,
     var MK_id: UShort
 ) : Header(id_head, id, LoSumm, HiSumm)
 
 class Message_39 @OptIn(ExperimentalUnsignedTypes::class) constructor(
-    id_head: UShort,
-    id: UShort,
-    LoSumm: UShort,
-    HiSumm: UShort,
+    id_head: Byte,
+    id: Byte,
+    LoSumm: Byte,
+    HiSumm: Byte,
     var MB_id: UShort,
     var MK_id: UShort,
     var Charge: UShortArray = UShortArray(20)
 ) : Header(id_head, id, LoSumm, HiSumm)
 
 class Message_54 @OptIn(ExperimentalUnsignedTypes::class) constructor(
-    id_head: UShort,
-    id: UShort,
-    LoSumm: UShort,
-    HiSumm: UShort,
+    id_head: Byte,
+    id: Byte,
+    LoSumm: Byte,
+    HiSumm: Byte,
     var MB_id: UShort,
     var MK_id: UShort,
     var Underminning0: UShortArray = UShortArray(20)
 ) : Header(id_head, id, LoSumm, HiSumm)
 
 class Message_62(
-    id_head: UShort,
-    id: UShort,
-    LoSumm: UShort,
-    HiSumm: UShort,
+    id_head: Byte,
+    id: Byte,
+    LoSumm: Byte,
+    HiSumm: Byte,
     var MB_id: UShort,
     var MK_id: UShort
 ) : Header(id_head, id, LoSumm, HiSumm)
 
 class Message_63(
-    id_head: UShort,
-    id: UShort,
-    LoSumm: UShort,
-    HiSumm: UShort,
+    id_head: Byte,
+    id: Byte,
+    LoSumm: Byte,
+    HiSumm: Byte,
     var MB_id: UShort,
     var MK_id: UShort,
     var Param1: UShort,

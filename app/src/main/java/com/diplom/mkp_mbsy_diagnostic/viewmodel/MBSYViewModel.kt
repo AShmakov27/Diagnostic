@@ -77,7 +77,7 @@ class MBSYViewModel @Inject constructor(
     }
 
     fun SendMessage16(context: Context, MB_id: String) {
-        val message = Message_16(1u, 1u, 1u, 1u, MB_id.toUShort(), 0u)
+        val message = Message_16(1, 1, 1, 1, MB_id.toUShort(), 0u)
         val data = objectToByteArray(message)
         val sentBytes = usbCommunicationRepository.sendDataToUSB(data)
 
@@ -103,7 +103,7 @@ class MBSYViewModel @Inject constructor(
     }
 
     fun SendMessage20(context: Context, MB_id: String) {
-        val message = Message_20(1u, 1u, 1u, 1u, MB_id.toUShort(), 0u)
+        val message = Message_20(1, 1, 1, 1, MB_id.toUShort(), 0u)
         val data = objectToByteArray(message)
         val sentBytes = usbCommunicationRepository.sendDataToUSB(data)
 
@@ -129,7 +129,7 @@ class MBSYViewModel @Inject constructor(
     }
 
     fun SendMessage62(context: Context, MB_id: String) {
-        val message = Message_62(1u, 1u, 1u, 1u, MB_id.toUShort(), 0u)
+        val message = Message_62(1, 1, 1, 1, MB_id.toUShort(), 0u)
         val data = objectToByteArray(message)
         val sentBytes = usbCommunicationRepository.sendDataToUSB(data)
 

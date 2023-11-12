@@ -78,7 +78,7 @@ class MKPViewModel @Inject constructor(
     }
 
     fun SendMessage20(context: Context, MB_id: String, MK_id: String) {
-        val message = Message_20(1u, 1u, 1u, 1u, MB_id.toUShort(), MK_id.toUShort())
+        val message = Message_20(1, 1, 1, 1, MB_id.toUShort(), MK_id.toUShort())
         val data = objectToByteArray(message)
         val sentBytes = usbCommunicationRepository.sendDataToUSB(data)
 
@@ -104,7 +104,7 @@ class MKPViewModel @Inject constructor(
     }
 
     fun SendMessage38(context: Context, MB_id: String, MK_id: String){
-        val message = Message_38(1u, 1u, 1u, 1u, MB_id.toUShort(), MK_id.toUShort())
+        val message = Message_38(1, 1, 1, 1, MB_id.toUShort(), MK_id.toUShort())
         val data = objectToByteArray(message)
         val sentBytes = usbCommunicationRepository.sendDataToUSB(data)
 
@@ -131,7 +131,7 @@ class MKPViewModel @Inject constructor(
 
     @OptIn(ExperimentalUnsignedTypes::class)
     fun SendMessage54(context: Context, MB_id: String, MK_id: String, Underminning0: UShortArray){
-        val message = Message_54(1u, 1u, 1u, 1u, MB_id.toUShort(), MK_id.toUShort(), Underminning0)
+        val message = Message_54(1, 1, 1, 1, MB_id.toUShort(), MK_id.toUShort(), Underminning0)
         val data = objectToByteArray(message)
         val sentBytes = usbCommunicationRepository.sendDataToUSB(data)
         if (sentBytes >= 0) {
@@ -150,7 +150,7 @@ class MKPViewModel @Inject constructor(
     }
 
     fun SendMessage62(context: Context, MB_id: String, MK_id: String) {
-        val message = Message_62(1u, 1u, 1u, 1u, MB_id.toUShort(), MK_id.toUShort())
+        val message = Message_62(1, 1, 1, 1, MB_id.toUShort(), MK_id.toUShort())
         val data = objectToByteArray(message)
         val sentBytes = usbCommunicationRepository.sendDataToUSB(data)
 
