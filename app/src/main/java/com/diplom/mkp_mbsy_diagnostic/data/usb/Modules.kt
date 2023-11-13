@@ -11,10 +11,41 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
+object ContextModule {
+    @Provides
+    fun provideContext(
+        app: Application
+    ): Context = app.applicationContext
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object UsbPermissionBroadcastReceiverModule {
+    @Provides
+    fun provideUsbPermissionBroadcastReceiver() = UsbPermissionBroadcastReceiver()
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object UsbSerialReceiverModule {
+    @Provides
+    fun providesUsbSerialReceiver() = UsbSerialReceiver()
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
 object UsbCommunicationModule {
     @Provides
-    fun provideUsbCommunicationRepository(usbManager: UsbManager): UsbCommunicationRepository {
-        return UsbCommunicationRepositoryImpl(usbManager)
+    fun provideUsbCommunicationRepository(
+        context: Context,
+        UsbPermReceiver: UsbPermissionBroadcastReceiver,
+        UsbSerialReceiver: UsbSerialReceiver
+    ): UsbCommunicationRepository {
+        return UsbCommunicationRepositoryImpl(
+            context,
+            UsbPermReceiver,
+            UsbSerialReceiver
+        )
     }
 }
 

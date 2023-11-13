@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -40,16 +42,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.LifecycleOwner
+import com.diplom.mkp_mbsy_diagnostic.data.usb.Header
 import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_16
 import com.diplom.mkp_mbsy_diagnostic.viewmodel.TestViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TestScreen(
+    lifeCycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     viewModel: TestViewModel = hiltViewModel()/*,
     onDeleteClick: () -> Unit,
     onSaveClick: () -> Unit*/
@@ -63,7 +69,7 @@ fun TestScreen(
             Box(modifier = Modifier.padding(it))
             {
                 TestContent(
-                    data = viewModel.data_parsed/*,
+                    data = viewModel.data_list.value!!.toList()/*,
                     onDeleteClick = onDeleteClick,
                     onSaveClick = onSaveClick*/
                 )
@@ -74,7 +80,7 @@ fun TestScreen(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
                 shape = CircleShape,
-                onClick = { viewModel.TestReading(context) }
+                onClick = { viewModel.TestReading(context, lifeCycleOwner) }
             ) {
                 Icon(imageVector = Icons.Filled.PlayArrow, contentDescription = "StartTest")
             }
@@ -85,10 +91,9 @@ fun TestScreen(
 
 @Composable
 fun TestContent(
-    data: Message_16?/*,
+    data: List<Header>/*,
     onDeleteClick: () -> Unit,
     onSaveClick: () -> Unit*/
-
 ) {
     Column(
         modifier = Modifier
@@ -98,15 +103,16 @@ fun TestContent(
         horizontalAlignment = Alignment.CenterHorizontally
     )
     {
-        if (data != null) {
-            TestMessageView(
-                id_head = data.id_head.toString(),
-                id = data.id.toString(),
-                LoSumm = data.LoSumm.toString(),
-                HiSumm = data.HiSumm.toString(),
-                MB_id = data.MB_id.toString(),
-                MK_id = data.MK_id.toString()
-            )
+        LazyColumn(modifier = Modifier.weight(1f))
+        {
+            items(items = data, key = { it.id_head.toString() }) {
+                TestMessageView(
+                    id_head = it.id_head.toString(),
+                    id = it.id.toString(),
+                    LoSumm = it.LoSumm.toString(),
+                    HiSumm = it.HiSumm.toString()
+                )
+            }
         }
     }
 }
@@ -116,9 +122,7 @@ fun TestMessageView(
     id_head: String,
     id: String,
     LoSumm: String,
-    HiSumm: String,
-    MB_id: String,
-    MK_id: String,
+    HiSumm: String
 ) {
     var expandedState by remember { mutableStateOf(true) }
     val rotationState by animateFloatAsState(
@@ -143,7 +147,7 @@ fun TestMessageView(
                 .background(color = MaterialTheme.colorScheme.secondaryContainer)
         ) {
             Text(
-                text = "МБСУ №$MB_id МКП №$MK_id",
+                text = "ID_HEAD $id_head ID $id",
                 style = TextStyle(
                     fontSize = MaterialTheme.typography.titleLarge.fontSize,
                     fontWeight = FontWeight.Bold,
@@ -217,24 +221,6 @@ fun TestMessageView(
                     .background(color = MaterialTheme.colorScheme.secondaryContainer)
             )
             {
-                Text(
-                    text = "ID_head: $id_head",
-                    style = TextStyle(
-                        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                        fontWeight = FontWeight.Normal,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
-                    ),
-                    modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                )
-                Text(
-                    text = "ID: $id",
-                    style = TextStyle(
-                        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                        fontWeight = FontWeight.Normal,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
-                    ),
-                    modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                )
                 Text(
                     text = "HiSumm: $HiSumm",
                     style = TextStyle(

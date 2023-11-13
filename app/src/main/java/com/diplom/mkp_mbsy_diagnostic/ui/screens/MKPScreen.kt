@@ -82,7 +82,7 @@ fun MKPScreen(
                     onDeleteClick = onDeleteClick,
                     onSaveClick = onSaveClick*/
                 )
-            }
+            }/*
             IDsMKPDialog(
                 showDialog = showDialog,
                 onDismiss = { showDialog = false },
@@ -95,6 +95,7 @@ fun MKPScreen(
                     )
                 }
             )
+            */
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -534,12 +535,12 @@ fun MessageMKPView(
                         .padding(end = 120.dp)
                         .width(120.dp),
                     onClick = {
-                        viewModel.SendMessage54(
+                        /*viewModel.SendMessage54(
                             context = context,
                             MB_id = MB_id,
                             MK_id = MK_id,
                             Underminning0 = Underminning0
-                        )
+                        )*/
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                 )
@@ -559,11 +560,11 @@ fun MessageMKPView(
                         .padding(end = 5.dp)
                         .width(120.dp),
                     onClick = {
-                        viewModel.SendMessage38(
+                        /*viewModel.SendMessage38(
                             context = context,
                             MB_id = MB_id,
                             MK_id = MK_id
-                        )
+                        )*/
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                 )
@@ -591,11 +592,11 @@ fun MessageMKPView(
                         .padding(end = 120.dp)
                         .width(120.dp),
                     onClick = {
-                        viewModel.SendMessage20(
+                        /*viewModel.SendMessage20(
                             context = context,
                             MB_id = MB_id,
                             MK_id = MK_id
-                        )
+                        )*/
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                 )
@@ -615,11 +616,11 @@ fun MessageMKPView(
                         .padding(end = 5.dp)
                         .width(120.dp),
                     onClick = {
-                        viewModel.SendMessage62(
+                        /*viewModel.SendMessage62(
                             context = context,
                             MB_id = MB_id,
                             MK_id = MK_id
-                        )
+                        )*/
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                 )

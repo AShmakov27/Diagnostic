@@ -32,10 +32,10 @@ class MKPViewModel @Inject constructor(
 
     var data_list = MutableLiveData(mutableListOf<MKPMessage>())
     var connected = false
-
+    /*
     init {
         viewModelScope.launch {
-            if (initializeUsbDevice(1234, 5678)) {
+            if (initializeUsbDevice(1234)) {
                 connected = true
                 Log.d("Connection", "Device connected")
             } else {
@@ -52,8 +52,8 @@ class MKPViewModel @Inject constructor(
         }
     }
 
-    fun initializeUsbDevice(vendorId: Int, productId: Int): Boolean {
-        return usbCommunicationRepository.initializeUsbDevice(vendorId, productId)
+    fun initializeUsbDevice(vendorId: Int): Boolean {
+        return usbCommunicationRepository.initializeUsbDevice(vendorId)
     }
 
     fun readDataFromUsb(bufferSize: Int): ByteArray {
@@ -225,4 +225,5 @@ class MKPViewModel @Inject constructor(
         objectOutputStream.flush()
         return byteArrayOutputStream.toByteArray()
     }
+    */
 }

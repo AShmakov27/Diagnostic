@@ -1,13 +1,26 @@
 package com.diplom.mkp_mbsy_diagnostic.utils
 
+import com.diplom.mkp_mbsy_diagnostic.data.usb.Header
 import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_16
 import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_17
 import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_21
 import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_39
 import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_63
 
+fun byteArrayToHeader(bytes: ByteArray): Header? {
+    if (bytes.size < 4) {
+        return null
+    }
+    val id_head = bytes[0]
+    val id = bytes[1]
+    val LoSumm = bytes[2]
+    val HiSumm = bytes[3]
+
+    return Header(id_head, id, LoSumm, HiSumm)
+}
+
 fun byteArrayToMessage_16(bytes: ByteArray): Message_16? {
-    if (bytes.size != 8) {
+    if (bytes.size < 8) {
         return null
     }
 

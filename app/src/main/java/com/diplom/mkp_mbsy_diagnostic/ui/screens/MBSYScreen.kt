@@ -84,7 +84,7 @@ fun MBSYScreen(
                     onSaveClick = onSaveClick*/
                 )
             }
-            IDsDialog(
+            /*IDsDialog(
                 showDialog = showDialog,
                 onDismiss = { showDialog = false },
                 onConfirm = { start, end ->
@@ -94,7 +94,7 @@ fun MBSYScreen(
                         end = end.toInt()
                     )
                 }
-            )
+            )*/
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -490,7 +490,7 @@ fun MessageMBSYView(
                     modifier = Modifier
                         .padding(end = 5.dp)
                         .width(120.dp),
-                    onClick = { viewModel.SendMessage16(context = context, MB_id = MB_id) },
+                    onClick = { /*viewModel.SendMessage16(context = context, MB_id = MB_id)*/ },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                 )
                 {
@@ -508,7 +508,7 @@ fun MessageMBSYView(
                     modifier = Modifier
                         .padding(end = 5.dp)
                         .width(120.dp),
-                    onClick = { viewModel.SendMessage20(context = context, MB_id = MB_id) },
+                    onClick = { /*viewModel.SendMessage20(context = context, MB_id = MB_id)*/ },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                 )
                 {
@@ -526,7 +526,7 @@ fun MessageMBSYView(
                     modifier = Modifier
                         .padding(end = 5.dp)
                         .width(120.dp),
-                    onClick = { viewModel.SendMessage62(context = context, MB_id = MB_id) },
+                    onClick = { /*viewModel.SendMessage62(context = context, MB_id = MB_id)*/ },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                 )
                 {
