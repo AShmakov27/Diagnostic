@@ -1,6 +1,7 @@
 package com.diplom.mkp_mbsy_diagnostic.viewmodel
 
 import android.content.Context
+import android.hardware.usb.UsbDevice
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
@@ -30,12 +31,18 @@ class MBSYViewModel @Inject constructor(
     private val usbCommunicationRepository: UsbCommunicationRepository
 ) : ViewModel() {
 
-    var data_list = MutableLiveData(mutableListOf<MBSYMessage>())
+    val message = ArrayList<MBSYMessage>()
+    var data_list = MutableLiveData<List<MBSYMessage>>()
     var connected = false
-    /*
+
     init {
         viewModelScope.launch {
-            if (initializeUsbDevice(1234)) {
+            /*
+            getGrantedDevice().observe(lcowner) { device ->
+                openDeviceAndPort(device)
+            }
+            */
+            if (initializeUsbDevice()) {
                 connected = true
                 Log.d("Connection", "Device connected")
             } else {
@@ -48,28 +55,25 @@ class MBSYViewModel @Inject constructor(
     override fun onCleared() {
         super.onCleared()
         if (connected) {
-            closeUsbConnection()
+            disconnect()
         }
     }
 
-    fun initializeUsbDevice(vendorId: Int): Boolean {
-        return usbCommunicationRepository.initializeUsbDevice(vendorId)
-    }
+    fun initializeUsbDevice() = usbCommunicationRepository.initializeUsbDevice()
 
-    fun readDataFromUsb(bufferSize: Int): ByteArray {
-        val data = usbCommunicationRepository.readDataFromUSB(bufferSize)
-        return data
-    }
+    fun disconnect() = usbCommunicationRepository.disconnect()
 
-    fun closeUsbConnection() {
-        usbCommunicationRepository.closeUSBConnection()
-        Log.d("Connection", "Connection closed")
-    }
+    fun getGrantedDevice() = usbCommunicationRepository.getGrantedDevice()
 
+    fun openDeviceAndPort(device: UsbDevice) = viewModelScope.launch {
+        usbCommunicationRepository.openDeviceAndPort(device)
+
+    }
+    /*
     fun SendArrayOfMessages(start: Int, end: Int, context: Context) {
         if (connected) {
             for (i in start..end) {
-                SendMessage16(context = context,MB_id = i.toString())
+                SendMessage16(context = context, MB_id = i.toString())
             }
         } else {
             Log.d("Sending", "Unable to send messages, USB device not connected")
@@ -82,7 +86,8 @@ class MBSYViewModel @Inject constructor(
         val sentBytes = usbCommunicationRepository.sendDataToUSB(data)
 
         if (sentBytes >= 0) {
-            Toast.makeText(context, "Сообщение на МБСУ №$MB_id отправлено", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Сообщение на МБСУ №$MB_id отправлено", Toast.LENGTH_SHORT)
+                .show()
             val index = data_list.value?.indexOfFirst { it.Mes17.MB_id == MB_id.toUShort() }
             if (index != null) {
                 if (index != -1) {
@@ -108,7 +113,8 @@ class MBSYViewModel @Inject constructor(
         val sentBytes = usbCommunicationRepository.sendDataToUSB(data)
 
         if (sentBytes >= 0) {
-            Toast.makeText(context, "Сообщение на МБСУ №$MB_id отправлено", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Сообщение на МБСУ №$MB_id отправлено", Toast.LENGTH_SHORT)
+                .show()
             val index = data_list.value?.indexOfFirst { it.Mes17.MB_id == MB_id.toUShort() }
             if (index != null) {
                 if (index != -1) {
@@ -134,7 +140,8 @@ class MBSYViewModel @Inject constructor(
         val sentBytes = usbCommunicationRepository.sendDataToUSB(data)
 
         if (sentBytes >= 0) {
-            Toast.makeText(context, "Сообщение на МБСУ №$MB_id отправлено", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Сообщение на МБСУ №$MB_id отправлено", Toast.LENGTH_SHORT)
+                .show()
             val index = data_list.value?.indexOfFirst { it.Mes17.MB_id == MB_id.toUShort() }
             if (index != null) {
                 if (index != -1) {
@@ -196,7 +203,7 @@ class MBSYViewModel @Inject constructor(
             }
         }
     }
-
+    */
     fun objectToByteArray(obj: Header): ByteArray {
         val byteArrayOutputStream = ByteArrayOutputStream()
         val objectOutputStream = ObjectOutputStream(byteArrayOutputStream)
@@ -204,5 +211,4 @@ class MBSYViewModel @Inject constructor(
         objectOutputStream.flush()
         return byteArrayOutputStream.toByteArray()
     }
-    */
 }

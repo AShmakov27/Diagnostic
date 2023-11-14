@@ -5,15 +5,12 @@ import android.hardware.usb.UsbDevice
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.diplom.mkp_mbsy_diagnostic.data.UsbCommunicationRepository
 import com.diplom.mkp_mbsy_diagnostic.data.usb.Header
-import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_16
 import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToHeader
-import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToMessage_16
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,25 +20,33 @@ class TestViewModel @Inject constructor(
     private val usbCommunicationRepository: UsbCommunicationRepository
 ) : ViewModel() {
 
-    val data_list = MutableLiveData(mutableListOf<Header>())
+    val messages = ArrayList<Header>()
+    val data_list = MutableLiveData<List<Header>>()
 
     var connected = false
 
+    override fun onCleared() {
+        super.onCleared()
+        if (connected) {
+            disconnect()
+        }
+    }
+
     fun initializeUsbDevice() = usbCommunicationRepository.initializeUsbDevice()
+
     fun disconnect() = usbCommunicationRepository.disconnect()
+
     fun getGrantedDevice() = usbCommunicationRepository.getGrantedDevice()
+
     fun openDeviceAndPort(device: UsbDevice) = viewModelScope.launch {
         usbCommunicationRepository.openDeviceAndPort(device)
 
     }
+
     fun serialWrite(data: ByteArray): Boolean {
-        val parsed = byteArrayToMessage_16(data)
-        if (parsed != null) {
-            data_list.value?.add(parsed)
-        }
         return usbCommunicationRepository.serialWrite(data)
     }
-    
+
 
     fun getLiveOutput(context: Context): Boolean {
 
@@ -50,7 +55,9 @@ class TestViewModel @Inject constructor(
         val parsed = byteArrayToHeader(liveOutput)
         Toast.makeText(context, "Декодировано в: $parsed", Toast.LENGTH_SHORT).show()
         if (parsed != null) {
-            data_list.value?.add(parsed)
+            messages.add(parsed)
+            data_list.value = messages
+            Toast.makeText(context, "Сообщение добавлено в список", Toast.LENGTH_SHORT).show()
             return true
         }
         return false
@@ -64,7 +71,7 @@ class TestViewModel @Inject constructor(
             connected = true
             Log.d("Connection", "Device connected")
             Toast.makeText(context, "Передатчик подключен", Toast.LENGTH_SHORT).show()
-            if(getLiveOutput(context)) {
+            if (getLiveOutput(context)) {
                 Log.d("Reading", "Message received")
                 Toast.makeText(context, "Сообщение прочитано", Toast.LENGTH_SHORT).show()
             } else {

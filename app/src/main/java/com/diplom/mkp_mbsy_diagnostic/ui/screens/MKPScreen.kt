@@ -51,6 +51,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -67,6 +68,7 @@ fun MKPScreen(
     onSaveClick: () -> Unit*/
 ) {
     var showDialog by remember { mutableStateOf(false) }
+    val data by viewModel.data_list.observeAsState(initial = emptyList())
     val context = LocalContext.current
     Scaffold(
         topBar = {
@@ -78,7 +80,7 @@ fun MKPScreen(
                 MKPContent(
                     viewModel = viewModel,
                     context = context,
-                    data = viewModel.data_list.value!!.toList()/*,
+                    data = data/*,
                     onDeleteClick = onDeleteClick,
                     onSaveClick = onSaveClick*/
                 )
