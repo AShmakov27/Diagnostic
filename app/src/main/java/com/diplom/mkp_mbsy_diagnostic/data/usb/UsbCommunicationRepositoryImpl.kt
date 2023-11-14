@@ -29,7 +29,6 @@ class UsbCommunicationRepositoryImpl @Inject constructor(
     override fun initializeUsbDevice(): Boolean {
         val deviceList = usbManager.deviceList
         Log.d("Connection", "Checking attached USB devices...")
-        Toast.makeText(context, "Поиск подключенных USB устройств...", Toast.LENGTH_SHORT).show()
         if (deviceList.isNotEmpty()) {
             for (device in deviceList) {
                 val deviceVID = device.value.vendorId
@@ -39,13 +38,11 @@ class UsbCommunicationRepositoryImpl @Inject constructor(
                     return true
                 } else {
                     Log.e("Connection", "Arduino Device not found.")
-                    Toast.makeText(context, "Arduino Device не найден.", Toast.LENGTH_SHORT).show()
                     return false
                 }
             }
         } else {
             Log.e("Connection", "No USB devices are attached")
-            Toast.makeText(context, "USB устройство не подключено", Toast.LENGTH_SHORT).show()
         }
         return false
     }
@@ -61,7 +58,6 @@ class UsbCommunicationRepositoryImpl @Inject constructor(
         context.registerReceiver(UsbPermReceiver, filter)
         usbManager.requestPermission(device.value, permissionIntent)
         Log.d("Permission", "Requested permission to access the USB device")
-        Toast.makeText(context, "Запрос доступа к USB устройству", Toast.LENGTH_SHORT).show()
     }
 
     override fun disconnect() {

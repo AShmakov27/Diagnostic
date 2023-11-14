@@ -48,19 +48,17 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.LifecycleOwner
 import com.diplom.mkp_mbsy_diagnostic.data.usb.Header
-import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_16
 import com.diplom.mkp_mbsy_diagnostic.viewmodel.TestViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TestScreen(
-    lifeCycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     viewModel: TestViewModel = hiltViewModel()/*,
     onDeleteClick: () -> Unit,
     onSaveClick: () -> Unit*/
 ) {
+    val lifeCycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
     val data by viewModel.data_list.observeAsState(initial = emptyList())
     Scaffold(

@@ -28,16 +28,16 @@ import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.MailOutline
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FabPosition
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -52,6 +52,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -69,6 +70,7 @@ fun MBSYScreen(
 ) {
     var showDialog by remember { mutableStateOf(false) }
     val data by viewModel.data_list.observeAsState(initial = emptyList())
+    val lifeCycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
     Scaffold(
         topBar = {
@@ -86,7 +88,7 @@ fun MBSYScreen(
                     onSaveClick = onSaveClick*/
                 )
             }
-            /*IDsDialog(
+            IDsDialog(
                 showDialog = showDialog,
                 onDismiss = { showDialog = false },
                 onConfirm = { start, end ->
@@ -96,19 +98,32 @@ fun MBSYScreen(
                         end = end.toInt()
                     )
                 }
-            )*/
+            )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-                shape = CircleShape,
-                onClick = { showDialog = true }
+            Column(
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.Center,
             ) {
-                Icon(imageVector = Icons.Filled.Email, contentDescription = "Send Array")
+                SmallFloatingActionButton(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    shape = CircleShape,
+                    onClick = { showDialog = true }
+                ) {
+                    Icon(imageVector = Icons.Filled.Email, contentDescription = "Send Array")
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                SmallFloatingActionButton(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    shape = CircleShape,
+                    onClick = { viewModel.ConnectToUsb(context, lifeCycleOwner) }
+                ) {
+                    Icon(imageVector = Icons.Filled.Share, contentDescription = "Connect")
+                }
             }
-        },
-        floatingActionButtonPosition = FabPosition.End
+        }
     )
 }
 
@@ -492,7 +507,7 @@ fun MessageMBSYView(
                     modifier = Modifier
                         .padding(end = 5.dp)
                         .width(120.dp),
-                    onClick = { /*viewModel.SendMessage16(context = context, MB_id = MB_id)*/ },
+                    onClick = { viewModel.SendMessage16(context = context, MB_id = MB_id) },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                 )
                 {
@@ -510,7 +525,7 @@ fun MessageMBSYView(
                     modifier = Modifier
                         .padding(end = 5.dp)
                         .width(120.dp),
-                    onClick = { /*viewModel.SendMessage20(context = context, MB_id = MB_id)*/ },
+                    onClick = { viewModel.SendMessage20(context = context, MB_id = MB_id) },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                 )
                 {
@@ -528,7 +543,7 @@ fun MessageMBSYView(
                     modifier = Modifier
                         .padding(end = 5.dp)
                         .width(120.dp),
-                    onClick = { /*viewModel.SendMessage62(context = context, MB_id = MB_id)*/ },
+                    onClick = { viewModel.SendMessage62(context = context, MB_id = MB_id) },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                 )
                 {
