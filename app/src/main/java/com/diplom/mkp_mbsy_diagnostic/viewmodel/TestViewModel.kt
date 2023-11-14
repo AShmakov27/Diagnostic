@@ -76,7 +76,7 @@ class TestViewModel @Inject constructor(
             }
         } else {
             connected = false
-            Log.d("Connection", "Device not connected")
+            Log.e("Connection", "Device not connected")
             Toast.makeText(context, "Передатчик не подключен", Toast.LENGTH_SHORT).show()
         }
     }

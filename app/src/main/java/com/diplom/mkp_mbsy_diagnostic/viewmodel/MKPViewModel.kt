@@ -60,7 +60,7 @@ class MKPViewModel @Inject constructor(
             Toast.makeText(context, "Передатчик подключен", Toast.LENGTH_SHORT).show()
         } else {
             connected = false
-            Log.d("Connection", "Device not connected")
+            Log.e("Connection", "Device not connected")
             Toast.makeText(context, "Передатчик не подключен", Toast.LENGTH_SHORT).show()
         }
     }
@@ -79,6 +79,7 @@ class MKPViewModel @Inject constructor(
                             data_list.value = messages
                             Toast.makeText(context, "Тип сообщения: ${liveOutput[1].toInt()}", Toast.LENGTH_SHORT).show()
                             Toast.makeText(context, "Сообщение в списке обновлено", Toast.LENGTH_SHORT).show()
+                            Log.d("Receiving", "Message type ${liveOutput[1].toInt()} read and added in list")
                             return true
                         } else {
                             val newMes = MKPMessage(parsed, null, null)
@@ -88,11 +89,13 @@ class MKPViewModel @Inject constructor(
                             data_list.value = messages
                             Toast.makeText(context, "Тип сообщения: ${liveOutput[1].toInt()}", Toast.LENGTH_SHORT).show()
                             Toast.makeText(context, "Сообщение добавлено в список", Toast.LENGTH_SHORT).show()
+                            Log.d("Receiving", "Message type ${liveOutput[1].toInt()} read and added in list")
                             return true
                         }
                     }
                 }
             }
+
             39 -> {
                 val parsed = byteArrayToMessage_39(liveOutput)
                 if (parsed != null) {
@@ -104,11 +107,13 @@ class MKPViewModel @Inject constructor(
                             data_list.value = messages
                             Toast.makeText(context, "Тип сообщения: ${liveOutput[1].toInt()}", Toast.LENGTH_SHORT).show()
                             Toast.makeText(context, "Сообщение в списке обновлено", Toast.LENGTH_SHORT).show()
+                            Log.d("Receiving", "Message type ${liveOutput[1].toInt()} read and added in list")
                             return true
                         }
                     }
                 }
             }
+
             63 -> {
                 val parsed = byteArrayToMessage_63(liveOutput)
                 if (parsed != null) {
@@ -120,12 +125,14 @@ class MKPViewModel @Inject constructor(
                             data_list.value = messages
                             Toast.makeText(context, "Тип сообщения: ${liveOutput[1].toInt()}", Toast.LENGTH_SHORT).show()
                             Toast.makeText(context, "Сообщение в списке обновлено", Toast.LENGTH_SHORT).show()
+                            Log.d("Receiving", "Message type ${liveOutput[1].toInt()} read and added in list")
                             return true
                         }
                     }
                 }
             }
         }
+        Log.e("Receiving", "Message not read")
         return false
     }
 
@@ -136,7 +143,7 @@ class MKPViewModel @Inject constructor(
                 /*SendMessage16(context = context,MB_id = i.toString())*/
             }
         } else {
-            Log.d("Sending", "Unable to send messages, USB device not connected")
+            Log.e("Sending", "Unable to send messages, USB device not connected")
         }
     }
 
@@ -152,8 +159,10 @@ class MKPViewModel @Inject constructor(
                     data_list.value = messages
                 }
             }
+            Log.d("Sending", "Message sent")
         } else {
             Toast.makeText(context, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
+            Log.e("Sending", "Message  not sent")
         }
     }
 
@@ -169,8 +178,10 @@ class MKPViewModel @Inject constructor(
                     data_list.value = messages
                 }
             }
+            Log.d("Sending", "Message sent")
         } else {
             Toast.makeText(context, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
+            Log.e("Sending", "Message not sent")
         }
     }
 
@@ -187,8 +198,10 @@ class MKPViewModel @Inject constructor(
                     data_list.value = messages
                 }
             }
+            Log.d("Sending", "Message sent")
         } else {
             Toast.makeText(context, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
+            Log.e("Sending", "Message not sent")
         }
     }
 
@@ -204,8 +217,10 @@ class MKPViewModel @Inject constructor(
                     data_list.value = messages
                 }
             }
+            Log.d("Sending", "Message sent")
         } else {
             Toast.makeText(context, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
+            Log.d("Sending", "Message not sent")
         }
     }
 

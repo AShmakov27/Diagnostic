@@ -8,7 +8,6 @@ import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbDeviceConnection
 import android.hardware.usb.UsbManager
 import android.util.Log
-import android.widget.Toast
 import com.diplom.mkp_mbsy_diagnostic.data.UsbCommunicationRepository
 import com.felhr.usbserial.UsbSerialDevice
 import com.felhr.usbserial.UsbSerialInterface
@@ -34,7 +33,6 @@ class UsbCommunicationRepositoryImpl @Inject constructor(
                 val deviceVID = device.value.vendorId
                 if (deviceVID == 0x1A86) {
                     connect(device)
-                    Toast.makeText(context, "Arduino найдено.", Toast.LENGTH_SHORT).show()
                     return true
                 } else {
                     Log.e("Connection", "Arduino Device not found.")
