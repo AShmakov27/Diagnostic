@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.diplom.mkp_mbsy_diagnostic.data.UsbCommunicationRepository
 import com.diplom.mkp_mbsy_diagnostic.data.usb.Header
+import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.WorkMSSFile
 import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToHeader
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TestViewModel @Inject constructor(
-    private val usbCommunicationRepository: UsbCommunicationRepository
+    private val usbCommunicationRepository: UsbCommunicationRepository,
+    private val WorkMSSFile: WorkMSSFile
 ) : ViewModel() {
 
     val messages = ArrayList<Header>()
@@ -56,6 +58,7 @@ class TestViewModel @Inject constructor(
             data_list.value = messages
             Toast.makeText(context, "Тип сообщения: ${liveOutput[1].toInt()}", Toast.LENGTH_SHORT).show()
             Toast.makeText(context, "Сообщение добавлено в список", Toast.LENGTH_SHORT).show()
+            WorkMSSFile.Write(liveOutput[0].toUInt(), liveOutput.size, 0, liveOutput)
             return true
         }
         return false
@@ -79,6 +82,7 @@ class TestViewModel @Inject constructor(
             Log.e("Connection", "Device not connected")
             Toast.makeText(context, "Передатчик не подключен", Toast.LENGTH_SHORT).show()
         }
+        WorkMSSFile.Open(context, "Test", 1, 1)
     }
 
 }

@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.hardware.usb.UsbManager
 import com.diplom.mkp_mbsy_diagnostic.data.UsbCommunicationRepository
+import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.WorkMSSFile
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -55,5 +56,14 @@ object UsbManagerModule {
     @Provides
     fun provideUsbManager(application: Application): UsbManager {
         return application.getSystemService(Context.USB_SERVICE) as UsbManager
+    }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object  WorkMSSFileModule {
+    @Provides
+    fun provideWorkMSSFile(): WorkMSSFile {
+        return WorkMSSFile()
     }
 }
