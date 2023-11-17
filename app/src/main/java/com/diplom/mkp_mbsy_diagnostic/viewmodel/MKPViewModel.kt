@@ -18,6 +18,7 @@ import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToMessage_21
 import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToMessage_39
 import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToMessage_63
 import com.diplom.mkp_mbsy_diagnostic.data.UsbCommunicationRepository
+import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.WorkMSSFile
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
@@ -26,7 +27,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MKPViewModel @Inject constructor(
-    private val usbCommunicationRepository: UsbCommunicationRepository
+    private val usbCommunicationRepository: UsbCommunicationRepository,
+    private val WorkMSSFile: WorkMSSFile
 ) : ViewModel() {
 
     val messages = ArrayList<MKPMessage>()
@@ -38,6 +40,7 @@ class MKPViewModel @Inject constructor(
         if (connected) {
             disconnect()
         }
+        WorkMSSFile.Close()
     }
 
     fun initializeUsbDevice() = usbCommunicationRepository.initializeUsbDevice()
@@ -63,6 +66,7 @@ class MKPViewModel @Inject constructor(
             Log.e("Connection", "Device not connected")
             Toast.makeText(context, "Передатчик не подключен", Toast.LENGTH_SHORT).show()
         }
+        WorkMSSFile.Open(context, "Test", 1, 1)
     }
 
     fun getLiveOutput(context: Context): Boolean {
@@ -93,6 +97,7 @@ class MKPViewModel @Inject constructor(
                             return true
                         }
                     }
+                    WorkMSSFile.Write(liveOutput[1].toUInt(), liveOutput.size, 0, liveOutput)
                 }
             }
 
@@ -111,6 +116,7 @@ class MKPViewModel @Inject constructor(
                             return true
                         }
                     }
+                    WorkMSSFile.Write(liveOutput[1].toUInt(), liveOutput.size, 0, liveOutput)
                 }
             }
 
@@ -129,6 +135,7 @@ class MKPViewModel @Inject constructor(
                             return true
                         }
                     }
+                    WorkMSSFile.Write(liveOutput[1].toUInt(), liveOutput.size, 0, liveOutput)
                 }
             }
         }
@@ -160,6 +167,7 @@ class MKPViewModel @Inject constructor(
                 }
             }
             Log.d("Sending", "Message sent")
+            WorkMSSFile.Write(data[1].toUInt(), data.size, 1, data)
         } else {
             Toast.makeText(context, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
             Log.e("Sending", "Message  not sent")
@@ -179,6 +187,7 @@ class MKPViewModel @Inject constructor(
                 }
             }
             Log.d("Sending", "Message sent")
+            WorkMSSFile.Write(data[1].toUInt(), data.size, 1, data)
         } else {
             Toast.makeText(context, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
             Log.e("Sending", "Message not sent")
@@ -199,6 +208,7 @@ class MKPViewModel @Inject constructor(
                 }
             }
             Log.d("Sending", "Message sent")
+            WorkMSSFile.Write(data[1].toUInt(), data.size, 1, data)
         } else {
             Toast.makeText(context, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
             Log.e("Sending", "Message not sent")
@@ -218,6 +228,7 @@ class MKPViewModel @Inject constructor(
                 }
             }
             Log.d("Sending", "Message sent")
+            WorkMSSFile.Write(data[1].toUInt(), data.size, 1, data)
         } else {
             Toast.makeText(context, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
             Log.d("Sending", "Message not sent")

@@ -32,6 +32,7 @@ class TestViewModel @Inject constructor(
         if (connected) {
             disconnect()
         }
+        WorkMSSFile.Close()
     }
 
     fun initializeUsbDevice() = usbCommunicationRepository.initializeUsbDevice()
@@ -58,7 +59,7 @@ class TestViewModel @Inject constructor(
             data_list.value = messages
             Toast.makeText(context, "Тип сообщения: ${liveOutput[1].toInt()}", Toast.LENGTH_SHORT).show()
             Toast.makeText(context, "Сообщение добавлено в список", Toast.LENGTH_SHORT).show()
-            WorkMSSFile.Write(liveOutput[0].toUInt(), liveOutput.size, 0, liveOutput)
+            WorkMSSFile.Write(liveOutput[1].toUInt(), liveOutput.size, 0, liveOutput)
             return true
         }
         return false
