@@ -63,7 +63,7 @@ fun TestScreen(
     val data by viewModel.data_list.observeAsState(initial = emptyList())
     Scaffold(
         topBar = {
-            TopBar(title = "Мобильная диагностика МКП и МБСУ. Связь c МКП")
+            TopBar(title = "Мобильная диагностика МКП и МБСУ. Тестирование")
         },
         content = {
             Box(modifier = Modifier.padding(it))

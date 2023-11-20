@@ -10,10 +10,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.diplom.mkp_mbsy_diagnostic.data.UsbCommunicationRepository
 import com.diplom.mkp_mbsy_diagnostic.data.usb.Header
+import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_16
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.WorkMSSFile
 import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToHeader
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
+import java.io.ObjectOutputStream
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,8 +34,8 @@ class TestViewModel @Inject constructor(
         super.onCleared()
         if (connected) {
             disconnect()
+            WorkMSSFile.Close()
         }
-        WorkMSSFile.Close()
     }
 
     fun initializeUsbDevice() = usbCommunicationRepository.initializeUsbDevice()
@@ -59,7 +62,7 @@ class TestViewModel @Inject constructor(
             data_list.value = messages
             Toast.makeText(context, "Тип сообщения: ${liveOutput[1].toInt()}", Toast.LENGTH_SHORT).show()
             Toast.makeText(context, "Сообщение добавлено в список", Toast.LENGTH_SHORT).show()
-            WorkMSSFile.Write(liveOutput[1].toUInt(), liveOutput.size, 0, liveOutput)
+            WorkMSSFile.Write(liveOutput[0].toUInt(), liveOutput.size, 0, liveOutput)
             return true
         }
         return false
@@ -83,7 +86,17 @@ class TestViewModel @Inject constructor(
             Log.e("Connection", "Device not connected")
             Toast.makeText(context, "Передатчик не подключен", Toast.LENGTH_SHORT).show()
         }
-        WorkMSSFile.Open(context, "Test", 1, 1)
+        WorkMSSFile.Open(context, "CommMessages_pms", 1, 1)
+        val msgTest = Message_16(1, 16, 1, 1, 20u, 20u)
+        val bytear = objectToByteArray(msgTest)
+        WorkMSSFile.Write(msgTest.id.toUInt(), bytear.size, 0, bytear)
     }
 
+    fun objectToByteArray(obj: Header): ByteArray {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        val objectOutputStream = ObjectOutputStream(byteArrayOutputStream)
+        objectOutputStream.writeObject(obj)
+        objectOutputStream.flush()
+        return byteArrayOutputStream.toByteArray()
+    }
 }
