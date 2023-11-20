@@ -1,13 +1,13 @@
 package com.diplom.mkp_mbsy_diagnostic.utils.MSSLog
 
 import android.content.Context
+import android.os.Environment
 import android.util.Log
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.io.ObjectOutputStream
 import java.io.Serializable
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class structLabelFile: Serializable {
     var mss: CharArray = CharArray(16)
@@ -28,7 +28,8 @@ class structLabelMessage: Serializable {
     var baba:CharArray = CharArray(4)
     var ID: UInt = 0u
     var size: Int = 0
-    var date_time = LocalDateTime.now()
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+    var date_time = LocalDateTime.now().withNano(0).format(formatter)
     var incoming_message: Byte = 0
     var deda:CharArray = CharArray(4)
 
@@ -84,10 +85,10 @@ class WorkMSSFile {
     }
 
     fun Open(context: Context, libfilename: String, mainversion: Int, smversion: Int): Boolean {
-        val dir = File(context.filesDir, "MSSlog")
+        val dir = File(context.getExternalFilesDir(null), "MBSY_MKPDiagnostic/MSSlog")
         if (open_close == emClose) {
             if (!dir.exists()) {
-                dir.mkdir()
+                dir.mkdirs()
                 Log.d("MSSLog", "Dir created")
             }
 

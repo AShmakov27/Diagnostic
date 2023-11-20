@@ -19,6 +19,10 @@ import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToMessage_39
 import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToMessage_63
 import com.diplom.mkp_mbsy_diagnostic.data.UsbCommunicationRepository
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.WorkMSSFile
+import com.diplom.mkp_mbsy_diagnostic.utils.Message_20toByteArray
+import com.diplom.mkp_mbsy_diagnostic.utils.Message_38toByteArray
+import com.diplom.mkp_mbsy_diagnostic.utils.Message_54toByteArray
+import com.diplom.mkp_mbsy_diagnostic.utils.Message_62toByteArray
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
@@ -156,7 +160,7 @@ class MKPViewModel @Inject constructor(
 
     fun SendMessage20(context: Context, MB_id: String, MK_id: String) {
         val message = Message_20(1, 1, 1, 1, MB_id.toUShort(), MK_id.toUShort())
-        val data = objectToByteArray(message)
+        val data = Message_20toByteArray(message)
         if (usbCommunicationRepository.serialWrite(data)) {
             Toast.makeText(context, "Сообщение на МКП №$MK_id отправлено", Toast.LENGTH_SHORT).show()
             val index = data_list.value?.indexOfFirst { it.Mes21.MK_id == MK_id.toUShort() }
@@ -176,7 +180,7 @@ class MKPViewModel @Inject constructor(
 
     fun SendMessage38(context: Context, MB_id: String, MK_id: String){
         val message = Message_38(1, 1, 1, 1, MB_id.toUShort(), MK_id.toUShort())
-        val data = objectToByteArray(message)
+        val data = Message_38toByteArray(message)
         if (usbCommunicationRepository.serialWrite(data)) {
             Toast.makeText(context, "Сообщение на МКП №$MK_id отправлено", Toast.LENGTH_SHORT).show()
             val index = data_list.value?.indexOfFirst { it.Mes21.MK_id == MK_id.toUShort() }
@@ -197,7 +201,7 @@ class MKPViewModel @Inject constructor(
     @OptIn(ExperimentalUnsignedTypes::class)
     fun SendMessage54(context: Context, MB_id: String, MK_id: String, Underminning0: UShortArray){
         val message = Message_54(1, 54, 1, 1, MB_id.toUShort(), MK_id.toUShort(), Underminning0)
-        val data = objectToByteArray(message)
+        val data = Message_54toByteArray(message)
         if (usbCommunicationRepository.serialWrite(data)) {
             Toast.makeText(context, "Сообщение на МКП №$MK_id отправлено", Toast.LENGTH_SHORT).show()
             val index = data_list.value?.indexOfFirst { it.Mes21.MK_id == MK_id.toUShort() }
@@ -217,7 +221,7 @@ class MKPViewModel @Inject constructor(
 
     fun SendMessage62(context: Context, MB_id: String, MK_id: String) {
         val message = Message_62(1, 1, 1, 1, MB_id.toUShort(), MK_id.toUShort())
-        val data = objectToByteArray(message)
+        val data = Message_62toByteArray(message)
         if (usbCommunicationRepository.serialWrite(data)) {
             Toast.makeText(context, "Сообщение на МКП №$MK_id отправлено", Toast.LENGTH_SHORT).show()
             val index = data_list.value?.indexOfFirst { it.Mes21.MK_id == MK_id.toUShort() }
@@ -233,13 +237,5 @@ class MKPViewModel @Inject constructor(
             Toast.makeText(context, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
             Log.d("Sending", "Message not sent")
         }
-    }
-
-    fun objectToByteArray(obj: Header): ByteArray {
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        val objectOutputStream = ObjectOutputStream(byteArrayOutputStream)
-        objectOutputStream.writeObject(obj)
-        objectOutputStream.flush()
-        return byteArrayOutputStream.toByteArray()
     }
 }

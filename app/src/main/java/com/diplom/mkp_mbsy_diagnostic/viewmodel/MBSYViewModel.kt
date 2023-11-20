@@ -15,6 +15,9 @@ import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_16
 import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_20
 import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_62
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.WorkMSSFile
+import com.diplom.mkp_mbsy_diagnostic.utils.Message_16toByteArray
+import com.diplom.mkp_mbsy_diagnostic.utils.Message_20toByteArray
+import com.diplom.mkp_mbsy_diagnostic.utils.Message_62toByteArray
 import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToMessage_17
 import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToMessage_21
 import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToMessage_63
@@ -154,7 +157,7 @@ class MBSYViewModel @Inject constructor(
 
     fun SendMessage16(context: Context, MB_id: String) {
         val message = Message_16(1, 16, 1, 1, MB_id.toUShort(), 0u)
-        val data = objectToByteArray(message)
+        val data = Message_16toByteArray(message)
         if (usbCommunicationRepository.serialWrite(data)) {
             Toast.makeText(context, "Сообщение на МБСУ №$MB_id отправлено", Toast.LENGTH_SHORT).show()
             val index = data_list.value?.indexOfFirst { it.Mes17.MB_id == MB_id.toUShort() }
@@ -174,7 +177,7 @@ class MBSYViewModel @Inject constructor(
 
     fun SendMessage20(context: Context, MB_id: String) {
         val message = Message_20(1, 20, 1, 1, MB_id.toUShort(), 0u)
-        val data = objectToByteArray(message)
+        val data = Message_20toByteArray(message)
         if (usbCommunicationRepository.serialWrite(data)) {
             Toast.makeText(context, "Сообщение на МБСУ №$MB_id отправлено", Toast.LENGTH_SHORT)
                 .show()
@@ -195,7 +198,7 @@ class MBSYViewModel @Inject constructor(
 
     fun SendMessage62(context: Context, MB_id: String) {
         val message = Message_62(1, 62, 1, 1, MB_id.toUShort(), 0u)
-        val data = objectToByteArray(message)
+        val data = Message_62toByteArray(message)
         if (usbCommunicationRepository.serialWrite(data)) {
             Toast.makeText(context, "Сообщение на МБСУ №$MB_id отправлено", Toast.LENGTH_SHORT)
                 .show()
@@ -212,13 +215,5 @@ class MBSYViewModel @Inject constructor(
             Toast.makeText(context, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
             Log.e("Sending", "Message not sent")
         }
-    }
-
-    fun objectToByteArray(obj: Header): ByteArray {
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        val objectOutputStream = ObjectOutputStream(byteArrayOutputStream)
-        objectOutputStream.writeObject(obj)
-        objectOutputStream.flush()
-        return byteArrayOutputStream.toByteArray()
     }
 }

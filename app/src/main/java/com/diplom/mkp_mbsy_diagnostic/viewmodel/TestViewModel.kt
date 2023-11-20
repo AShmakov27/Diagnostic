@@ -12,6 +12,7 @@ import com.diplom.mkp_mbsy_diagnostic.data.UsbCommunicationRepository
 import com.diplom.mkp_mbsy_diagnostic.data.usb.Header
 import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_16
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.WorkMSSFile
+import com.diplom.mkp_mbsy_diagnostic.utils.Message_16toByteArray
 import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToHeader
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -88,15 +89,7 @@ class TestViewModel @Inject constructor(
         }
         WorkMSSFile.Open(context, "CommMessages_pms", 1, 1)
         val msgTest = Message_16(1, 16, 1, 1, 20u, 20u)
-        val bytear = objectToByteArray(msgTest)
+        val bytear = Message_16toByteArray(msgTest)
         WorkMSSFile.Write(msgTest.id.toUInt(), bytear.size, 0, bytear)
-    }
-
-    fun objectToByteArray(obj: Header): ByteArray {
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        val objectOutputStream = ObjectOutputStream(byteArrayOutputStream)
-        objectOutputStream.writeObject(obj)
-        objectOutputStream.flush()
-        return byteArrayOutputStream.toByteArray()
     }
 }
