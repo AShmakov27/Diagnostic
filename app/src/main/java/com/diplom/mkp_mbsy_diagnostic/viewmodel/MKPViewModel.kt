@@ -2,13 +2,14 @@ package com.diplom.mkp_mbsy_diagnostic.viewmodel
 
 import android.content.Context
 import android.hardware.usb.UsbDevice
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.diplom.mkp_mbsy_diagnostic.data.usb.Header
 import com.diplom.mkp_mbsy_diagnostic.data.usb.MKPMessage
 import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_20
 import com.diplom.mkp_mbsy_diagnostic.data.usb.Message_38
@@ -25,8 +26,6 @@ import com.diplom.mkp_mbsy_diagnostic.utils.Message_54toByteArray
 import com.diplom.mkp_mbsy_diagnostic.utils.Message_62toByteArray
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.io.ByteArrayOutputStream
-import java.io.ObjectOutputStream
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,9 +34,20 @@ class MKPViewModel @Inject constructor(
     private val WorkMSSFile: WorkMSSFile
 ) : ViewModel() {
 
+    private val handler = Handler(Looper.getMainLooper())
+    private val interval = 1000
+
     val messages = ArrayList<MKPMessage>()
     val data_list = MutableLiveData<List<MKPMessage>>()
     var connected = false
+
+    private fun startRepeatingReading(context: Context) {
+        getLiveOutput(context)
+
+        handler.postDelayed({
+            startRepeatingReading(context)
+        }, interval.toLong())
+    }
 
     override fun onCleared() {
         super.onCleared()
@@ -63,6 +73,7 @@ class MKPViewModel @Inject constructor(
         }
         if (initializeUsbDevice()) {
             connected = true
+            startRepeatingReading(context)
             Log.d("Connection", "Device connected")
             Toast.makeText(context, "Передатчик подключен", Toast.LENGTH_SHORT).show()
         } else {
@@ -85,8 +96,6 @@ class MKPViewModel @Inject constructor(
                             messages[index].Mes21 = parsed
                             messages[index].count_receive += 1
                             data_list.value = messages
-                            Toast.makeText(context, "Тип сообщения: ${liveOutput[1].toInt()}", Toast.LENGTH_SHORT).show()
-                            Toast.makeText(context, "Сообщение в списке обновлено", Toast.LENGTH_SHORT).show()
                             Log.d("Receiving", "Message type ${liveOutput[1].toInt()} read and added in list")
                             return true
                         } else {
@@ -95,8 +104,6 @@ class MKPViewModel @Inject constructor(
                             newMes.count_receive += 1
                             messages.add(newMes)
                             data_list.value = messages
-                            Toast.makeText(context, "Тип сообщения: ${liveOutput[1].toInt()}", Toast.LENGTH_SHORT).show()
-                            Toast.makeText(context, "Сообщение добавлено в список", Toast.LENGTH_SHORT).show()
                             Log.d("Receiving", "Message type ${liveOutput[1].toInt()} read and added in list")
                             return true
                         }
@@ -114,8 +121,6 @@ class MKPViewModel @Inject constructor(
                             messages[index].Mes39 = parsed
                             messages[index].count_receive += 1
                             data_list.value = messages
-                            Toast.makeText(context, "Тип сообщения: ${liveOutput[1].toInt()}", Toast.LENGTH_SHORT).show()
-                            Toast.makeText(context, "Сообщение в списке обновлено", Toast.LENGTH_SHORT).show()
                             Log.d("Receiving", "Message type ${liveOutput[1].toInt()} read and added in list")
                             return true
                         }
@@ -133,8 +138,6 @@ class MKPViewModel @Inject constructor(
                             messages[index].Mes63 = parsed
                             messages[index].count_receive += 1
                             data_list.value = messages
-                            Toast.makeText(context, "Тип сообщения: ${liveOutput[1].toInt()}", Toast.LENGTH_SHORT).show()
-                            Toast.makeText(context, "Сообщение в списке обновлено", Toast.LENGTH_SHORT).show()
                             Log.d("Receiving", "Message type ${liveOutput[1].toInt()} read and added in list")
                             return true
                         }
