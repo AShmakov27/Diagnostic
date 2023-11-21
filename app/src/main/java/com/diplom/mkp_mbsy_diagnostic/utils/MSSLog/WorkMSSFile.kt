@@ -1,7 +1,6 @@
 package com.diplom.mkp_mbsy_diagnostic.utils.MSSLog
 
 import android.content.Context
-import android.os.Environment
 import android.util.Log
 import java.io.File
 import java.io.FileOutputStream
