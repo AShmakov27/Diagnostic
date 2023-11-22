@@ -30,6 +30,7 @@ class TestViewModel @Inject constructor(
     val data_list = MutableLiveData<List<Header>>()
 
     var connected = false
+    var head_id = 0
 
     override fun onCleared() {
         super.onCleared()
@@ -88,7 +89,8 @@ class TestViewModel @Inject constructor(
             Toast.makeText(context, "Передатчик не подключен", Toast.LENGTH_SHORT).show()
         }
         WorkMSSFile.Open(context, "CommMessages_pms", 1, 1)
-        val msgTest = Message_16(1, 16, 1, 1, 20u, 20u)
+        head_id += 1
+        val msgTest = Message_16(head_id.toByte(), 16, 1, 1, 20u, 20u)
         val bytear = Message_16toByteArray(msgTest)
         WorkMSSFile.Write(msgTest.id.toUInt(), bytear.size, 0, bytear)
     }

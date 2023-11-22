@@ -38,6 +38,7 @@ class MBSYViewModel @Inject constructor(
     val messages = ArrayList<MBSYMessage>()
     val data_list = MutableLiveData<List<MBSYMessage>>()
     var connected = false
+    var head_id = 0
 
     private fun startRepeatingReading(context: Context) {
         getLiveOutput(context)
@@ -159,7 +160,8 @@ class MBSYViewModel @Inject constructor(
     }
 
     fun SendMessage16(context: Context, MB_id: String) {
-        val message = Message_16(1, 16, 1, 1, MB_id.toUShort(), 0u)
+        head_id += 1
+        val message = Message_16(head_id.toByte(), 16, 1, 1, MB_id.toUShort(), 0u)
         val data = Message_16toByteArray(message)
         if (usbCommunicationRepository.serialWrite(data)) {
             Toast.makeText(context, "Сообщение на МБСУ №$MB_id отправлено", Toast.LENGTH_SHORT).show()
@@ -179,7 +181,8 @@ class MBSYViewModel @Inject constructor(
     }
 
     fun SendMessage20(context: Context, MB_id: String) {
-        val message = Message_20(1, 20, 1, 1, MB_id.toUShort(), 0u)
+        head_id += 1
+        val message = Message_20(head_id.toByte(), 20, 1, 1, MB_id.toUShort(), 0u)
         val data = Message_20toByteArray(message)
         if (usbCommunicationRepository.serialWrite(data)) {
             Toast.makeText(context, "Сообщение на МБСУ №$MB_id отправлено", Toast.LENGTH_SHORT)
@@ -200,7 +203,8 @@ class MBSYViewModel @Inject constructor(
     }
 
     fun SendMessage62(context: Context, MB_id: String) {
-        val message = Message_62(1, 62, 1, 1, MB_id.toUShort(), 0u)
+        head_id += 1
+        val message = Message_62(head_id.toByte(), 62, 1, 1, MB_id.toUShort(), 0u)
         val data = Message_62toByteArray(message)
         if (usbCommunicationRepository.serialWrite(data)) {
             Toast.makeText(context, "Сообщение на МБСУ №$MB_id отправлено", Toast.LENGTH_SHORT)

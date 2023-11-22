@@ -40,6 +40,7 @@ class MKPViewModel @Inject constructor(
     val messages = ArrayList<MKPMessage>()
     val data_list = MutableLiveData<List<MKPMessage>>()
     var connected = false
+    var head_id = 0
 
     private fun startRepeatingReading(context: Context) {
         getLiveOutput(context)
@@ -162,7 +163,8 @@ class MKPViewModel @Inject constructor(
     }
 
     fun SendMessage20(context: Context, MB_id: String, MK_id: String) {
-        val message = Message_20(1, 1, 1, 1, MB_id.toUShort(), MK_id.toUShort())
+        head_id += 1
+        val message = Message_20(head_id.toByte(), 1, 1, 1, MB_id.toUShort(), MK_id.toUShort())
         val data = Message_20toByteArray(message)
         if (usbCommunicationRepository.serialWrite(data)) {
             Toast.makeText(context, "Сообщение на МКП №$MK_id отправлено", Toast.LENGTH_SHORT).show()
@@ -182,7 +184,8 @@ class MKPViewModel @Inject constructor(
     }
 
     fun SendMessage38(context: Context, MB_id: String, MK_id: String){
-        val message = Message_38(1, 1, 1, 1, MB_id.toUShort(), MK_id.toUShort())
+        head_id += 1
+        val message = Message_38(head_id.toByte(), 1, 1, 1, MB_id.toUShort(), MK_id.toUShort())
         val data = Message_38toByteArray(message)
         if (usbCommunicationRepository.serialWrite(data)) {
             Toast.makeText(context, "Сообщение на МКП №$MK_id отправлено", Toast.LENGTH_SHORT).show()
@@ -203,7 +206,8 @@ class MKPViewModel @Inject constructor(
 
     @OptIn(ExperimentalUnsignedTypes::class)
     fun SendMessage54(context: Context, MB_id: String, MK_id: String, Underminning0: UShortArray){
-        val message = Message_54(1, 54, 1, 1, MB_id.toUShort(), MK_id.toUShort(), Underminning0)
+        head_id += 1
+        val message = Message_54(head_id.toByte(), 54, 1, 1, MB_id.toUShort(), MK_id.toUShort(), Underminning0)
         val data = Message_54toByteArray(message)
         if (usbCommunicationRepository.serialWrite(data)) {
             Toast.makeText(context, "Сообщение на МКП №$MK_id отправлено", Toast.LENGTH_SHORT).show()
@@ -223,7 +227,8 @@ class MKPViewModel @Inject constructor(
     }
 
     fun SendMessage62(context: Context, MB_id: String, MK_id: String) {
-        val message = Message_62(1, 1, 1, 1, MB_id.toUShort(), MK_id.toUShort())
+        head_id += 1
+        val message = Message_62(head_id.toByte(), 1, 1, 1, MB_id.toUShort(), MK_id.toUShort())
         val data = Message_62toByteArray(message)
         if (usbCommunicationRepository.serialWrite(data)) {
             Toast.makeText(context, "Сообщение на МКП №$MK_id отправлено", Toast.LENGTH_SHORT).show()
