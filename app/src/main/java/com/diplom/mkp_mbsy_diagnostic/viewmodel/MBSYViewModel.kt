@@ -37,14 +37,15 @@ class MBSYViewModel @Inject constructor(
 
     val messages = ArrayList<MBSYMessage>()
     val data_list = MutableLiveData<List<MBSYMessage>>()
+
     var connected = false
     var head_id = 0
 
-    private fun startRepeatingReading(context: Context) {
-        getLiveOutput(context)
+    private fun startRepeatingReading() {
+        getLiveOutput()
 
         handler.postDelayed({
-            startRepeatingReading(context)
+            startRepeatingReading()
         }, interval.toLong())
     }
 
@@ -52,6 +53,7 @@ class MBSYViewModel @Inject constructor(
         super.onCleared()
         if (connected) {
             disconnect()
+            connected = false
         }
         WorkMSSFile.Close()
     }
@@ -72,7 +74,7 @@ class MBSYViewModel @Inject constructor(
         }
         if (initializeUsbDevice()) {
             connected = true
-            startRepeatingReading(context)
+            startRepeatingReading()
             Log.d("Connection", "Device connected")
             Toast.makeText(context, "Передатчик подключен", Toast.LENGTH_SHORT).show()
         } else {
@@ -80,10 +82,10 @@ class MBSYViewModel @Inject constructor(
             Log.e("Connection", "Device not connected")
             Toast.makeText(context, "Передатчик не подключен", Toast.LENGTH_SHORT).show()
         }
-        WorkMSSFile.Open(context, "Test", 1, 1)
+        WorkMSSFile.Open(context, "CommMessages_pms", 1, 1)
     }
 
-    fun getLiveOutput(context: Context): Boolean {
+    fun getLiveOutput(): Boolean {
         val liveOutput = usbCommunicationRepository.getLiveOutput()
         when (liveOutput[1].toInt()) {
             17 -> {
@@ -153,6 +155,11 @@ class MBSYViewModel @Inject constructor(
         if (connected) {
             for (i in start..end) {
                 SendMessage16(context = context, MB_id = i.toString())
+                try {
+                    Thread.sleep(1000)
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                }
             }
         } else {
             Log.e("Sending", "Unable to send messages, USB device not connected")

@@ -1,6 +1,5 @@
 package com.diplom.mkp_mbsy_diagnostic.data
 
-import android.content.Context
 import android.hardware.usb.UsbDevice
 import androidx.lifecycle.LiveData
 

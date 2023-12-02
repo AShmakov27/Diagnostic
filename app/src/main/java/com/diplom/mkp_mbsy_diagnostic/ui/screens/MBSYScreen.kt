@@ -21,11 +21,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.Share
@@ -50,23 +48,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.diplom.mkp_mbsy_diagnostic.data.usb.MBSYMessage
 import com.diplom.mkp_mbsy_diagnostic.ui.navigation.Routes
+import com.diplom.mkp_mbsy_diagnostic.ui.theme.MKP_MBSY_diagnosticTheme
 import com.diplom.mkp_mbsy_diagnostic.viewmodel.MBSYViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MBSYScreen(
     navController: NavHostController,
-    viewModel: MBSYViewModel = hiltViewModel()/*,
-    onDeleteClick: () -> Unit,
-    onSaveClick: () -> Unit*/
+    viewModel: MBSYViewModel = hiltViewModel()
 ) {
     var showDialog by remember { mutableStateOf(false) }
     val data by viewModel.data_list.observeAsState(initial = emptyList())
@@ -83,9 +81,7 @@ fun MBSYScreen(
                     navController = navController,
                     viewModel = viewModel,
                     context = context,
-                    data = data/*,
-                    onDeleteClick = onDeleteClick,
-                    onSaveClick = onSaveClick*/
+                    data = data
                 )
             }
             IDsDialog(
@@ -133,10 +129,7 @@ fun MBSYContent(
     navController: NavHostController,
     viewModel: MBSYViewModel = hiltViewModel(),
     context: Context,
-    data: List<MBSYMessage>/*,
-    onDeleteClick: () -> Unit,
-    onSaveClick: () -> Unit*/
-
+    data: List<MBSYMessage>
 ) {
     Column(
         modifier = Modifier
@@ -167,9 +160,7 @@ fun MBSYContent(
                     Param3 = it.Mes63?.Param3.toString(),
                     Param4 = it.Mes63?.Param4.toString(),
                     Param5 = it.Mes63?.Param5.toString(),
-                    Param6 = it.Mes63?.Param6.toString()/*,
-                    onDeleteClick = onDeleteClick,
-                    onSaveClick = onSaveClick*/
+                    Param6 = it.Mes63?.Param6.toString()
                 )
             }
         }
@@ -183,8 +174,7 @@ fun MessageMBSYView(
     send: Int, receive: Int,
     MB_id: String, Version: String, PodVersion: String, Month: String, Year: String,
     kolErr: String, Sec: String,
-    Param1: String, Param2: String, Param3: String, Param4: String, Param5: String, Param6: String/*,
-     onDeleteClick: () -> Unit, onSaveClick: () -> Unit*/
+    Param1: String, Param2: String, Param3: String, Param4: String, Param5: String, Param6: String
 ) {
     var expandedState by remember { mutableStateOf(true) }
     val rotationState by animateFloatAsState(
@@ -242,6 +232,7 @@ fun MessageMBSYView(
                     .height(20.dp)
                     .fillMaxWidth()
                     .background(color = MaterialTheme.colorScheme.secondaryContainer)
+                    .padding(start = 5.dp)
             ) {
                 Row(
                     horizontalArrangement = Arrangement.Start
@@ -286,34 +277,6 @@ fun MessageMBSYView(
                             textAlign = TextAlign.Center
                         )
                     )
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                )
-                {
-                    IconButton(modifier = Modifier
-                        .padding(end = 5.dp),
-                        onClick = { /*onDeleteClick*/ })
-                    {
-                        Icon(
-                            modifier = Modifier.fillMaxSize(),
-                            imageVector = Icons.Default.Delete,
-                            contentDescription = "Delete",
-                            tint = Color.Red
-                        )
-                    }
-                    IconButton(modifier = Modifier
-                        .padding(end = 5.dp),
-                        onClick = { /*onSaveClick*/ })
-                    {
-                        Icon(
-                            modifier = Modifier.fillMaxSize(),
-                            imageVector = Icons.Default.AddCircle,
-                            contentDescription = "Save",
-                            tint = MaterialTheme.colorScheme.onSecondaryContainer
-                        )
-                    }
                 }
             }
             Spacer(

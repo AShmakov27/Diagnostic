@@ -24,11 +24,9 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.Share
@@ -53,7 +51,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.style.TextAlign
@@ -64,9 +61,7 @@ import com.diplom.mkp_mbsy_diagnostic.viewmodel.MKPViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MKPScreen(
-    viewModel: MKPViewModel = hiltViewModel()/*,
-    onDeleteClick: () -> Unit,
-    onSaveClick: () -> Unit*/
+    viewModel: MKPViewModel = hiltViewModel()
 ) {
     var showDialog by remember { mutableStateOf(false) }
     val data by viewModel.data_list.observeAsState(initial = emptyList())
@@ -82,9 +77,7 @@ fun MKPScreen(
                 MKPContent(
                     viewModel = viewModel,
                     context = context,
-                    data = data/*,
-                    onDeleteClick = onDeleteClick,
-                    onSaveClick = onSaveClick*/
+                    data = data
                 )
             }
             IDsMKPDialog(
@@ -131,9 +124,7 @@ fun MKPScreen(
 fun MKPContent(
     viewModel: MKPViewModel = hiltViewModel(),
     context: Context,
-    data: List<MKPMessage>/*,
-    onDeleteClick: () -> Unit,
-    onSaveClick: () -> Unit*/
+    data: List<MKPMessage>
 
 ) {
     Column(
@@ -162,9 +153,7 @@ fun MKPContent(
                     Param4 = it.Mes63?.Param4.toString(),
                     Param5 = it.Mes63?.Param5.toString(),
                     Param6 = it.Mes63?.Param6.toString(),
-                    Charge = it.Mes39?.Charge/*,
-                    onDeleteClick = onDeleteClick,
-                    onSaveClick = onSaveClick*/
+                    Charge = it.Mes39?.Charge
                 )
             }
         }
@@ -180,7 +169,6 @@ fun MessageMKPView(
     MB_id: String, MK_id: String, kolErr: String, Sec: String,
     Param1: String, Param2: String, Param3: String, Param4: String, Param5: String, Param6: String,
     Charge: UShortArray?
-    /*, onDeleteClick: () -> Unit, onSaveClick: () -> Unit*/
 ) {
     var expandedState by remember { mutableStateOf(true) }
     val rotationState by animateFloatAsState(
@@ -242,6 +230,7 @@ fun MessageMKPView(
                     .height(20.dp)
                     .fillMaxWidth()
                     .background(color = MaterialTheme.colorScheme.secondaryContainer)
+                    .padding(start = 5.dp)
             ) {
                 Row(
                     horizontalArrangement = Arrangement.Start
@@ -286,34 +275,6 @@ fun MessageMKPView(
                             textAlign = TextAlign.Center
                         )
                     )
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                )
-                {
-                    IconButton(modifier = Modifier
-                        .padding(end = 5.dp),
-                        onClick = { /*onDeleteClick*/ })
-                    {
-                        Icon(
-                            modifier = Modifier.fillMaxSize(),
-                            imageVector = Icons.Default.Delete,
-                            contentDescription = "Delete",
-                            tint = Color.Red
-                        )
-                    }
-                    IconButton(modifier = Modifier
-                        .padding(end = 5.dp),
-                        onClick = { /*onSaveClick*/ })
-                    {
-                        Icon(
-                            modifier = Modifier.fillMaxSize(),
-                            imageVector = Icons.Default.AddCircle,
-                            contentDescription = "Save",
-                            tint = MaterialTheme.colorScheme.onSecondaryContainer
-                        )
-                    }
                 }
             }
             Spacer(

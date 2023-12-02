@@ -39,14 +39,15 @@ class MKPViewModel @Inject constructor(
 
     val messages = ArrayList<MKPMessage>()
     val data_list = MutableLiveData<List<MKPMessage>>()
+
     var connected = false
     var head_id = 0
 
-    private fun startRepeatingReading(context: Context) {
-        getLiveOutput(context)
+    private fun startRepeatingReading() {
+        getLiveOutput()
 
         handler.postDelayed({
-            startRepeatingReading(context)
+            startRepeatingReading()
         }, interval.toLong())
     }
 
@@ -54,6 +55,7 @@ class MKPViewModel @Inject constructor(
         super.onCleared()
         if (connected) {
             disconnect()
+            connected = false
         }
         WorkMSSFile.Close()
     }
@@ -74,7 +76,7 @@ class MKPViewModel @Inject constructor(
         }
         if (initializeUsbDevice()) {
             connected = true
-            startRepeatingReading(context)
+            startRepeatingReading()
             Log.d("Connection", "Device connected")
             Toast.makeText(context, "Передатчик подключен", Toast.LENGTH_SHORT).show()
         } else {
@@ -82,10 +84,10 @@ class MKPViewModel @Inject constructor(
             Log.e("Connection", "Device not connected")
             Toast.makeText(context, "Передатчик не подключен", Toast.LENGTH_SHORT).show()
         }
-        WorkMSSFile.Open(context, "Test", 1, 1)
+        WorkMSSFile.Open(context, "CommMessages_pms", 1, 1)
     }
 
-    fun getLiveOutput(context: Context): Boolean {
+    fun getLiveOutput(): Boolean {
         val liveOutput = usbCommunicationRepository.getLiveOutput()
         when (liveOutput[1].toInt()) {
             21 -> {
@@ -154,8 +156,12 @@ class MKPViewModel @Inject constructor(
     fun SendArrayOfMessages(MB_id: String, start: Int, end: Int, context: Context) {
         if (connected) {
             for (i in start..end) {
-                //Надо узнать что кидается первым пакетом на МКП
-                /*SendMessage16(context = context,MB_id = i.toString())*/
+                SendMessage38(context = context, MK_id = i.toString(), MB_id = MB_id)
+                try {
+                    Thread.sleep(1000)
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                }
             }
         } else {
             Log.e("Sending", "Unable to send messages, USB device not connected")

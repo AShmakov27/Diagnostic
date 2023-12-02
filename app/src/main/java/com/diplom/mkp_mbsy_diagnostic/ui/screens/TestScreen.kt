@@ -19,18 +19,16 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FabPosition
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -41,7 +39,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.TextStyle
@@ -54,9 +51,7 @@ import com.diplom.mkp_mbsy_diagnostic.viewmodel.TestViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TestScreen(
-    viewModel: TestViewModel = hiltViewModel()/*,
-    onDeleteClick: () -> Unit,
-    onSaveClick: () -> Unit*/
+    viewModel: TestViewModel = hiltViewModel()
 ) {
     val lifeCycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
@@ -69,31 +64,40 @@ fun TestScreen(
             Box(modifier = Modifier.padding(it))
             {
                 TestContent(
-                    data = data/*,
-                    onDeleteClick = onDeleteClick,
-                    onSaveClick = onSaveClick*/
+                    data = data
                 )
             }
         },
         floatingActionButton = {
-            FloatingActionButton(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-                shape = CircleShape,
-                onClick = { viewModel.TestReading(context, lifeCycleOwner) }
+            Column(
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.Center,
             ) {
-                Icon(imageVector = Icons.Filled.PlayArrow, contentDescription = "StartTest")
+                SmallFloatingActionButton(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    shape = CircleShape,
+                    onClick = { viewModel.TestReading(context, lifeCycleOwner) }
+                ) {
+                    Icon(imageVector = Icons.Filled.PlayArrow, contentDescription = "StartTest")
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                SmallFloatingActionButton(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    shape = CircleShape,
+                    onClick = { viewModel.TestWriting(context) }
+                ) {
+                    Icon(imageVector = Icons.Filled.Send, contentDescription = "Send")
+                }
             }
-        },
-        floatingActionButtonPosition = FabPosition.End
+        }
     )
 }
 
 @Composable
 fun TestContent(
-    data: List<Header>/*,
-    onDeleteClick: () -> Unit,
-    onSaveClick: () -> Unit*/
+    data: List<Header>
 ) {
     Column(
         modifier = Modifier
@@ -176,46 +180,6 @@ fun TestMessageView(
             }
         }
         if (expandedState) {
-            Row(
-                modifier = Modifier
-                    .height(20.dp)
-                    .fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.secondaryContainer)
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    IconButton(modifier = Modifier
-                        .padding(end = 5.dp),
-                        onClick = { /*onDeleteClick*/ })
-                    {
-                        Icon(
-                            modifier = Modifier.fillMaxSize(),
-                            imageVector = Icons.Default.Delete,
-                            contentDescription = "Delete",
-                            tint = Color.Red
-                        )
-                    }
-                    IconButton(modifier = Modifier
-                        .padding(end = 5.dp),
-                        onClick = { /*onSaveClick*/ })
-                    {
-                        Icon(
-                            modifier = Modifier.fillMaxSize(),
-                            imageVector = Icons.Default.AddCircle,
-                            contentDescription = "Save",
-                            tint = MaterialTheme.colorScheme.onSecondaryContainer
-                        )
-                    }
-                }
-            }
-            Spacer(
-                modifier = Modifier
-                    .padding(start = 5.dp, end = 5.dp)
-                    .height(3.dp)
-                    .fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.onSecondaryContainer)
-            )
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
