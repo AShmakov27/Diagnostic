@@ -1,6 +1,6 @@
 package com.diplom.mkp_mbsy_diagnostic.utils.MSSLog
 
-import android.content.Context
+import android.os.Environment
 import android.util.Log
 import com.diplom.mkp_mbsy_diagnostic.utils.DateTimetoByteArray
 import java.io.File
@@ -82,8 +82,8 @@ class WorkMSSFile {
         return false
     }
 
-    fun Open(context: Context, libfilename: String, mainversion: Int, smversion: Int): Boolean {
-        val dir = File(context.getExternalFilesDir(null), "MBSY_MKPDiagnostic/MSSlog")
+    fun Open(libfilename: String, mainversion: Int, smversion: Int): Boolean {
+        val dir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "MBSY_MKPDiagnostic/MSSlog")
         if (open_close == emClose) {
             if (!dir.exists()) {
                 dir.mkdirs()

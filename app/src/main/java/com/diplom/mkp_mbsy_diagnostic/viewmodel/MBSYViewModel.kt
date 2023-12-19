@@ -82,7 +82,7 @@ class MBSYViewModel @Inject constructor(
             Log.e("Connection", "Device not connected")
             Toast.makeText(context, "Передатчик не подключен", Toast.LENGTH_SHORT).show()
         }
-        WorkMSSFile.Open(context, "CommMessages_pms", 1, 1)
+        WorkMSSFile.Open("CommMessages_pms", 1, 1)
     }
 
     fun getLiveOutput(): Boolean {

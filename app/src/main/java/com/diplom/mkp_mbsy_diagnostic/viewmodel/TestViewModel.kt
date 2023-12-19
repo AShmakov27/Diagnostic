@@ -92,7 +92,7 @@ class TestViewModel @Inject constructor(
             Log.e("Connection", "Device not connected")
             Toast.makeText(context, "Передатчик не подключен", Toast.LENGTH_SHORT).show()
         }
-        WorkMSSFile.Open(context, "CommMessages_pms", 1, 1)
+        WorkMSSFile.Open("CommMessages_pms", 1, 1)
         head_id += 1
         val msgTest = Message_16(head_id.toByte(), 16, 1, 1, 20u, 20u)
         val bytear = Message_16toByteArray(msgTest)

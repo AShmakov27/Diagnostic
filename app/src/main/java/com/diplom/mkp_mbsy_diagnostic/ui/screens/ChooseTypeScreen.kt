@@ -105,6 +105,20 @@ fun ChooseTypeContent(
         {
             Button(
                 modifier = Modifier.fillMaxWidth(),
+                onClick = { navController.navigate(Routes.Log.route) },
+            ) {
+                Text(text = "Просмотр логов")
+            }
+        }
+        Spacer(modifier = Modifier.height(12.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        )
+        {
+            Button(
+                modifier = Modifier.fillMaxWidth(),
                 onClick = { navController.navigate(Routes.Test.route) },
             ) {
                 Text(text = "Тестирование")
