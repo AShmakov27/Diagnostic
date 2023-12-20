@@ -39,19 +39,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.diplom.mkp_mbsy_diagnostic.ui.theme.MKP_MBSY_diagnosticTheme
+import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.Flag
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.MsgFromLog
-import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToMessage_16
-import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToMessage_17
-import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToMessage_21
+import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.PD_chooser
 import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToMessage_39
-import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToMessage_63
 import com.diplom.mkp_mbsy_diagnostic.viewmodel.LogViewModel
 import java.math.BigInteger
 
@@ -61,14 +58,13 @@ fun LogScreen(
     viewModel: LogViewModel = hiltViewModel()
 ) {
     val data by viewModel.data.observeAsState(initial = emptyList())
-    val context = LocalContext.current
 
     val filePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument(),
         onResult =
         {
             if (it != null) {
-                viewModel.onFilePathsListChange(it,context)
+                viewModel.onFilePathsListChange(it)
             }
         })
 
@@ -89,7 +85,7 @@ fun LogScreen(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
                 shape = CircleShape,
-                onClick = {  filePickerLauncher.launch(arrayOf("*/*")) }
+                onClick = { filePickerLauncher.launch(arrayOf("*/*")) }
             ) {
                 Icon(imageVector = Icons.Filled.List, contentDescription = "File choose")
             }
@@ -125,11 +121,12 @@ fun LogContent(
     }
 }
 
+@OptIn(ExperimentalUnsignedTypes::class)
 @Composable
 fun PackagesView(
     pos: Int, incoming_message: Byte, id: UInt, date_time: String, size: Int, data: ByteArray
 ) {
-    var showData by remember { mutableStateOf(true) }
+    var showData by remember { mutableStateOf(false) }
     Card(
         modifier = Modifier
             .padding(top = 5.dp, start = 5.dp, end = 5.dp)
@@ -196,7 +193,7 @@ fun PackagesView(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "$date_time", style = TextStyle(
+                    text = date_time, style = TextStyle(
                         fontSize = MaterialTheme.typography.titleLarge.fontSize,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSecondaryContainer
@@ -216,386 +213,103 @@ fun PackagesView(
                     .fillMaxWidth()
                     .background(color = MaterialTheme.colorScheme.secondaryContainer)
             ) {
+                var msg: List<Comparable<*>>? = null
                 when (id.toInt()) {
                     16, 20, 38, 62 -> {
-                        val msg = byteArrayToMessage_16(data)
-                        if (msg != null) {
-                            Text(
-                                text = "Идентификатор заголовка: ${msg.id_head}",
-                                style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "ID Пакета: ${msg.id}", style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Контрольная сумма ( мл. байт ): ${msg.LoSumm}",
-                                style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Контрольная сумма ( ст. байт ): ${msg.HiSumm}",
-                                style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Номер МБСУ: ${msg.MB_id}", style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Номер МКП: ${msg.MK_id}", style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                        }
+                        msg = listOf(
+                            data[0],
+                            data[1],
+                            data[2],
+                            data[3],
+                            ((data[5].toInt() shl 8) or data[4].toInt()).toUShort(),
+                            ((data[7].toInt() shl 8) or data[6].toInt()).toUShort()
+                        )
                     }
 
                     17 -> {
-                        val msg = byteArrayToMessage_17(data)
-                        if (msg != null) {
-                            Text(
-                                text = "Идентификатор заголовка: ${msg.id_head}",
-                                style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-
-                            Text(
-                                text = "ID Пакета: ${msg.id}", style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Контрольная сумма ( мл. байт ): ${msg.LoSumm}",
-                                style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Контрольная сумма ( ст. байт ): ${msg.HiSumm}",
-                                style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Номер МБСУ: ${msg.MB_id}", style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Номер МКП: ${msg.MK_id}", style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Версия: ${msg.Version}", style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Подверсия: ${msg.PodVersion}", style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Месяц: ${msg.Month}", style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Год: ${msg.Year}", style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                        }
+                        msg = listOf(
+                            data[0],
+                            data[1],
+                            data[2],
+                            data[3],
+                            ((data[5].toInt() shl 8) or data[4].toInt()).toUShort(),
+                            ((data[7].toInt() shl 8) or data[6].toInt()).toUShort(),
+                            data[8],
+                            data[9],
+                            data[10],
+                            data[11]
+                        )
                     }
 
                     21 -> {
-                        val msg = byteArrayToMessage_21(data)
-                        if (msg != null) {
-                            Text(
-                                text = "Идентификатор заголовка: ${msg.id_head}",
-                                style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-
-                            Text(
-                                text = "ID Пакета: ${msg.id}", style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Контрольная сумма ( мл. байт ): ${msg.LoSumm}",
-                                style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Контрольная сумма ( ст. байт ): ${msg.HiSumm}",
-                                style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Номер МБСУ: ${msg.MB_id}", style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Номер МКП: ${msg.MK_id}", style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Колличество ошибок: ${msg.KolErr}", style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Время: ${msg.Sec}", style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                        }
+                        msg = listOf(
+                            data[0],
+                            data[1],
+                            data[2],
+                            data[3],
+                            ((data[5].toInt() shl 8) or data[4].toInt()).toUShort(),
+                            ((data[7].toInt() shl 8) or data[6].toInt()).toUShort(),
+                            ((data[9].toInt() shl 8) or data[8].toInt()).toUShort(),
+                            ((data[11].toInt() shl 8) or data[10].toInt()).toUShort()
+                        )
                     }
 
                     39, 54 -> {
-                        val msg = byteArrayToMessage_39(data)
-                        if (msg != null) {
-                            Text(
-                                text = "Идентификатор заголовка: ${msg.id_head}",
-                                style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-
-                            Text(
-                                text = "ID Пакета: ${msg.id}", style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Контрольная сумма ( мл. байт ): ${msg.LoSumm}",
-                                style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Контрольная сумма ( ст. байт ): ${msg.HiSumm}",
-                                style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Номер МБСУ: ${msg.MB_id}", style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Номер МКП: ${msg.MK_id}", style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
+                        val msg_class = byteArrayToMessage_39(data)
+                        val undermining0 = ArrayList<Int>(0)
+                        val undermining1 = ArrayList<Int>(0)
+                        if (msg_class != null) {
+                            for (i in msg_class.Charge.indices) {
+                                if (msg_class.Charge[i].toUInt() == 1u)
+                                    undermining1.add(i)
+                                else if (msg_class.Charge[i].toUInt() == 0u)
+                                    undermining0.add(i)
+                            }
                         }
+                        msg = listOf(
+                            data[0],
+                            data[1],
+                            data[2],
+                            data[3],
+                            ((data[5].toInt() shl 8) or data[4].toInt()).toUShort(),
+                            ((data[7].toInt() shl 8) or data[6].toInt()).toUShort(),
+                            undermining0.toString(),
+                            undermining1.toString()
+                        )
                     }
 
                     63 -> {
-                        val msg = byteArrayToMessage_63(data)
-                        if (msg != null) {
+                        msg = listOf(
+                            data[0],
+                            data[1],
+                            data[2],
+                            data[3],
+                            ((data[5].toInt() shl 8) or data[4].toInt()).toUShort(),
+                            ((data[7].toInt() shl 8) or data[6].toInt()).toUShort(),
+                            ((data[9].toInt() shl 8) or data[8].toInt()).toUShort(),
+                            ((data[11].toInt() shl 8) or data[10].toInt()).toUShort(),
+                            ((data[13].toInt() shl 8) or data[12].toInt()).toUShort(),
+                            ((data[15].toInt() shl 8) or data[14].toInt()).toUShort(),
+                            ((data[17].toInt() shl 8) or data[16].toInt()).toUShort(),
+                            ((data[19].toInt() shl 8) or data[18].toInt()).toUShort(),
+                        )
+                    }
+                }
+                val PD = PD_chooser(id.toInt())
+                if (PD != null) {
+                    if (msg != null) {
+                        for (i in msg.indices) {
+                            var additional = if (PD[i].m_nEnumOp == Flag.T_OP_EQ) {
+                                if (PD[i].m_nEnumValue.toByte() == msg[i]) {
+                                    PD[i].m_sEnumValue
+                                } else {
+                                    ""
+                                }
+                            } else {
+                                ""
+                            }
                             Text(
-                                text = "Идентификатор заголовка: ${msg.id_head}",
-                                style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-
-                            Text(
-                                text = "ID Пакета: ${msg.id}", style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Контрольная сумма ( мл. байт ): ${msg.LoSumm}",
-                                style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Контрольная сумма ( ст. байт ): ${msg.HiSumm}",
-                                style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Номер МБСУ: ${msg.MB_id}", style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Номер МКП: ${msg.MK_id}", style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Напряжение МСУ: ${msg.Param1}", style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Напряжение аккумулятора модема: ${msg.Param2}",
-                                style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Напряжение разблокировки: ${msg.Param3}",
-                                style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Процент распознанной информации: ${msg.Param4}",
-                                style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Резерв: ${msg.Param5}", style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
-                            )
-                            Text(
-                                text = "Температура внутри блока: ${msg.Param6}",
+                                text = "${PD[i].m_sName} ${msg[i]} $additional",
                                 style = TextStyle(
                                     fontSize = MaterialTheme.typography.titleMedium.fontSize,
                                     fontWeight = FontWeight.Bold,

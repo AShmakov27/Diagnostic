@@ -23,6 +23,21 @@ class TStructField (
     var m_bIncludeInDescription: Int
 )
 
+fun PD_chooser(id: Int): List<TStructField>? {
+    when (id) {
+        16 -> return PD_16
+        17 -> return PD_17
+        20 -> return PD_20
+        21 -> return PD_21
+        38 -> return PD_38
+        39 -> return PD_39
+        54 -> return PD_54
+        62 -> return PD_62
+        63 -> return PD_63
+    }
+    return null
+}
+
 val PD_0 = listOf(
     TStructField("Идентификатор заголовка: ", Flag.T_OP_UNDEF, 0, "", 0),
     TStructField("ID Пакета: ", Flag.T_OP_UNDEF, 0, "", 0),

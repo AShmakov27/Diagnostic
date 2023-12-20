@@ -2,7 +2,9 @@ package com.diplom.mkp_mbsy_diagnostic.viewmodel
 
 import android.content.Context
 import android.net.Uri
+import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.MsgFromLog
@@ -24,15 +26,17 @@ class LogViewModel @Inject constructor() : ViewModel() {
     }
 
     fun getRealPathFromUri(context: Context, uri: Uri): String? {
-        var realPath: String? = null
-        val projection = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor = context.contentResolver.query(uri, projection, null, null, null)
+        var filePath: String? = null
+        val cursor = context.contentResolver.query(uri, null, null, null, null)
+
         cursor?.use {
-            val columnIndex = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
             it.moveToFirst()
-            realPath = it.getString(columnIndex)
+            val index = it.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+            if (index != -1) {
+                filePath = it.getString(index)
+            }
         }
-        return realPath
+        return filePath
     }
 
     fun find4BytesInArray(target: ByteArray, element: ByteArray, startPos: Int): Int {
@@ -73,7 +77,6 @@ class LogViewModel @Inject constructor() : ViewModel() {
             if (dedIndex == -1) {
                 break
             }
-
             val header = fileBytes.copyOfRange(babIndex + 4, dedIndex)
 
             val nextBabIndex =
@@ -102,14 +105,15 @@ class LogViewModel @Inject constructor() : ViewModel() {
             )
             data.value = readed
 
-            startIndex = nextBabIndex
+            startIndex = bodyEndIndex
         }
     }
 
-    fun onFilePathsListChange(uri: Uri, context: Context) {
-        val path = getRealPathFromUri(context, uri)
+    fun onFilePathsListChange(uri: Uri) {
+        val path = uri.path
+        val remainingPath = path?.removePrefix("/document/primary:")
         if (path != null) {
-            val file = File(path)
+            val file = File(Environment.getExternalStorageDirectory(), remainingPath)
             if (file.exists()) {
                 extractRecords(file)
             }
