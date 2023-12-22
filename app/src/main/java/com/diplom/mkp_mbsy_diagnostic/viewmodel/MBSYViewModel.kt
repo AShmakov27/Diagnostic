@@ -72,6 +72,7 @@ class MBSYViewModel @Inject constructor(
         getGrantedDevice().observe(lcowner) { device ->
             openDeviceAndPort(device)
         }
+        WorkMSSFile.Open("CommMessages_pms", 1, 1)
         if (initializeUsbDevice()) {
             connected = true
             startRepeatingReading()
@@ -82,7 +83,6 @@ class MBSYViewModel @Inject constructor(
             Log.e("Connection", "Device not connected")
             Toast.makeText(context, "Передатчик не подключен", Toast.LENGTH_SHORT).show()
         }
-        WorkMSSFile.Open("CommMessages_pms", 1, 1)
     }
 
     fun getLiveOutput(): Boolean {

@@ -200,6 +200,100 @@ fun IDsDialog(
 }
 
 @Composable
+fun NumberDialog(
+    showDialog: Boolean,
+    onDismiss: () -> Unit,
+    onConfirm: (String) -> Unit
+) {
+    var text1 by remember { mutableStateOf("") }
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                text1 = ""
+                onDismiss()
+            },
+            title = {
+                Text(
+                    text = "Введите кол-во записей",
+                    style = TextStyle(
+                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                )
+            },
+            confirmButton = {
+                Button(onClick = {
+                    if (text1 == "") {
+                        text1 = "Введите значение"
+                    }
+                    if (text1 != "Введите значение") {
+                        onConfirm(text1)
+                        text1 = ""
+                        onDismiss()
+                    }
+                }) {
+                    Text("Записать")
+                }
+            },
+            dismissButton = {
+                Button(onClick = {
+                    text1 = ""
+                    onDismiss()
+                }) {
+                    Text("Отмена")
+                }
+            },
+            text = {
+                Column {
+                    Text(
+                        text = "Введите кол-во записей",
+                        modifier = Modifier.padding(start = 5.dp),
+                        style = TextStyle(
+                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer
+                        )
+                    )
+                    BasicTextField(
+                        value = text1,
+                        onValueChange = { text1 = it },
+                        keyboardOptions = KeyboardOptions(
+                            imeAction = androidx.compose.ui.text.input.ImeAction.Done,
+                            keyboardType = KeyboardType.Number
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                if (text1 == "") {
+                                    text1 = "Введите значение"
+                                }
+                                if (text1 != "Введите значение") {
+                                    onConfirm(text1)
+                                    text1 = ""
+                                    onDismiss()
+                                }
+                            }
+                        ),
+                        modifier = Modifier
+                            .height(25.dp)
+                            .fillMaxWidth()
+                            .border(
+                                BorderStroke(
+                                    width = 2.dp,
+                                    color = MaterialTheme.colorScheme.primary
+                                ),
+                                shape = RoundedCornerShape(15)
+                            )
+                            .padding(horizontal = 5.dp, vertical = 5.dp)
+                    )
+                }
+            }
+        )
+    }
+}
+
+@Composable
 fun IDsMKPDialog(
     showDialog: Boolean,
     onDismiss: () -> Unit,

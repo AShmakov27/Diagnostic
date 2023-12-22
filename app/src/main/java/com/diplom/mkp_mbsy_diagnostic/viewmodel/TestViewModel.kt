@@ -82,6 +82,7 @@ class TestViewModel @Inject constructor(
         getGrantedDevice().observe(lcowner) { device ->
             openDeviceAndPort(device)
         }
+        WorkMSSFile.Open("CommMessages_pms", 1, 1)
         if (initializeUsbDevice()) {
             connected = true
             startRepeatingReading(context)
@@ -92,11 +93,6 @@ class TestViewModel @Inject constructor(
             Log.e("Connection", "Device not connected")
             Toast.makeText(context, "Передатчик не подключен", Toast.LENGTH_SHORT).show()
         }
-        WorkMSSFile.Open("CommMessages_pms", 1, 1)
-        head_id += 1
-        val msgTest = Message_16(head_id.toByte(), 16, 1, 1, 20u, 20u)
-        val bytear = Message_16toByteArray(msgTest)
-        WorkMSSFile.Write(msgTest.id.toUInt(), bytear.size, 0, bytear)
     }
 
     fun TestWriting(context: Context) {
@@ -111,6 +107,15 @@ class TestViewModel @Inject constructor(
         } else {
             Toast.makeText(context, "Сообщение неотправлено", Toast.LENGTH_SHORT).show()
             Log.e("Sending", "Message not sent")
+        }
+    }
+
+    fun TestMSSWrite(number: Int) {
+        for (i in 1..number) {
+            WorkMSSFile.Open("CommMessages_pms", 1, 1)
+            val msgTest = Message_16(i.toByte(), 16, 1, 1, 20u, 20u)
+            val bytear = Message_16toByteArray(msgTest)
+            WorkMSSFile.Write(msgTest.id.toUInt(), bytear.size, 0, bytear)
         }
     }
 }

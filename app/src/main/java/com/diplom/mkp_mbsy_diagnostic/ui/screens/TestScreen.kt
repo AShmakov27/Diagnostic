@@ -9,26 +9,22 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Send
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -53,8 +49,6 @@ import com.diplom.mkp_mbsy_diagnostic.viewmodel.TestViewModel
 fun TestScreen(
     viewModel: TestViewModel = hiltViewModel()
 ) {
-    val lifeCycleOwner = LocalLifecycleOwner.current
-    val context = LocalContext.current
     val data by viewModel.data_list.observeAsState(initial = emptyList())
     Scaffold(
         topBar = {
@@ -64,32 +58,9 @@ fun TestScreen(
             Box(modifier = Modifier.padding(it))
             {
                 TestContent(
+                    viewModel = viewModel,
                     data = data
                 )
-            }
-        },
-        floatingActionButton = {
-            Column(
-                horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.Center,
-            ) {
-                SmallFloatingActionButton(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                    shape = CircleShape,
-                    onClick = { viewModel.TestReading(context, lifeCycleOwner) }
-                ) {
-                    Icon(imageVector = Icons.Filled.PlayArrow, contentDescription = "StartTest")
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                SmallFloatingActionButton(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                    shape = CircleShape,
-                    onClick = { viewModel.TestWriting(context) }
-                ) {
-                    Icon(imageVector = Icons.Filled.Send, contentDescription = "Send")
-                }
             }
         }
     )
@@ -97,8 +68,12 @@ fun TestScreen(
 
 @Composable
 fun TestContent(
+    viewModel: TestViewModel = hiltViewModel(),
     data: List<Header>
 ) {
+    val lifeCycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
+    var showDialog by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -107,7 +82,11 @@ fun TestContent(
         horizontalAlignment = Alignment.CenterHorizontally
     )
     {
-        LazyColumn(modifier = Modifier.weight(1f))
+        LazyColumn(
+            modifier = Modifier
+                .weight(1f)
+                .height(300.dp)
+        )
         {
             items(items = data, key = { it.id_head.toString() }) {
                 TestMessageView(
@@ -118,7 +97,28 @@ fun TestContent(
                 )
             }
         }
-
+        Column(
+            modifier = Modifier
+                .padding(top = 5.dp, start = 5.dp, end = 5.dp)
+                .fillMaxWidth()
+        ) {
+            Button(modifier = Modifier.fillMaxWidth(),
+                onClick = { viewModel.TestReading(context, lifeCycleOwner) }) {
+                Text(text = "Тестирование чтения")
+            }
+            Button(modifier = Modifier.fillMaxWidth(),
+                onClick = { viewModel.TestWriting(context) }) {
+                Text(text = "Тестирование записи")
+            }
+            Button(modifier = Modifier.fillMaxWidth(),
+                onClick = { showDialog = true }) {
+                Text(text = "Тестирование записи MSS")
+            }
+        }
+        NumberDialog(
+            showDialog = showDialog,
+            onDismiss = { showDialog = false },
+            onConfirm = { num -> viewModel.TestMSSWrite(num.toInt()) })
     }
 }
 
