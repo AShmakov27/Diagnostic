@@ -39,6 +39,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -58,13 +59,13 @@ fun LogScreen(
     viewModel: LogViewModel = hiltViewModel()
 ) {
     val data by viewModel.data.observeAsState(initial = emptyList())
-
+    val context = LocalContext.current
     val filePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument(),
         onResult =
         {
             if (it != null) {
-                viewModel.onFilePathsListChange(it)
+                viewModel.onFilePathsListChange(context, it)
             }
         })
 
@@ -299,7 +300,7 @@ fun PackagesView(
                 if (PD != null) {
                     if (msg != null) {
                         for (i in msg.indices) {
-                            var additional = if (PD[i].m_nEnumOp == Flag.T_OP_EQ) {
+                            val additional = if (PD[i].m_nEnumOp == Flag.T_OP_EQ) {
                                 if (PD[i].m_nEnumValue.toByte() == msg[i]) {
                                     PD[i].m_sEnumValue
                                 } else {

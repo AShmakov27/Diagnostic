@@ -2,16 +2,10 @@ package com.diplom.mkp_mbsy_diagnostic.viewmodel
 
 import android.content.Context
 import android.net.Uri
-import android.os.Environment
-import android.provider.MediaStore
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.MsgFromLog
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.io.File
-import java.io.FileInputStream
-import java.io.IOException
 import java.math.BigInteger
 import javax.inject.Inject
 
@@ -25,20 +19,6 @@ class LogViewModel @Inject constructor() : ViewModel() {
         data.value = emptyList()
     }
 
-    fun getRealPathFromUri(context: Context, uri: Uri): String? {
-        var filePath: String? = null
-        val cursor = context.contentResolver.query(uri, null, null, null, null)
-
-        cursor?.use {
-            it.moveToFirst()
-            val index = it.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-            if (index != -1) {
-                filePath = it.getString(index)
-            }
-        }
-        return filePath
-    }
-
     fun find4BytesInArray(target: ByteArray, element: ByteArray, startPos: Int): Int {
         for (index in target.indices) {
             if (index >= startPos) {
@@ -50,21 +30,10 @@ class LogViewModel @Inject constructor() : ViewModel() {
         return -1
     }
 
-    fun extractRecords(file: File) {
-        val fileBytes: ByteArray
+    fun extractRecords(fileBytes: ByteArray) {
         val readed = ArrayList<MsgFromLog>()
         var startIndex = 0
         var count_read = 0
-
-        try {
-            FileInputStream(file).use { inputStream ->
-                fileBytes = inputStream.readBytes()
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-            return
-        }
-
         while (startIndex < fileBytes.size) {
             val babIndex =
                 find4BytesInArray(fileBytes, byteArrayOf(0x42, 0x41, 0x42, 0x00), startIndex)
@@ -109,14 +78,12 @@ class LogViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun onFilePathsListChange(uri: Uri) {
-        val path = uri.path
-        val remainingPath = path?.removePrefix("/document/primary:")
-        if (path != null) {
-            val file = File(Environment.getExternalStorageDirectory(), remainingPath)
-            if (file.exists()) {
-                extractRecords(file)
-            }
+    fun onFilePathsListChange(context: Context, uri: Uri) {
+        val input = context.contentResolver.openInputStream(uri)
+        if (input != null) {
+            val bytes = input.readBytes()
+            extractRecords(bytes)
+            input.close()
         }
     }
 }
