@@ -17,7 +17,10 @@ import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.WorkMSSFile
 import com.diplom.mkp_mbsy_diagnostic.utils.Message_16toByteArray
 import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToHeader
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -110,12 +113,15 @@ class TestViewModel @Inject constructor(
         }
     }
 
-    fun TestMSSWrite(number: Int) {
-        for (i in 1..number) {
+    fun TestMSSWrite(number: Int) = runBlocking {
+        withContext(Dispatchers.IO) {
             WorkMSSFile.Open("CommMessages_pms", 1, 1)
-            val msgTest = Message_16(i.toByte(), 16, 1, 1, 20u, 20u)
-            val bytear = Message_16toByteArray(msgTest)
-            WorkMSSFile.Write(msgTest.id.toUInt(), bytear.size, 0, bytear)
+            for (i in 1..number) {
+                val msgTest = Message_16(i.toByte(), 16, 1, 1, 20u, 20u)
+                val bytear = Message_16toByteArray(msgTest)
+                WorkMSSFile.Write(msgTest.id.toUInt(), bytear.size, 0, bytear)
+            }
+            WorkMSSFile.Close()
         }
     }
 }

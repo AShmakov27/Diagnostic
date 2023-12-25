@@ -20,7 +20,7 @@ fun byteArrayToHeader(bytes: ByteArray): Header? {
 }
 
 fun byteArrayToMessage_16(bytes: ByteArray): Message_16? {
-    if (bytes.size < 8) {
+    if (bytes.size != 8) {
         return null
     }
 
@@ -73,7 +73,7 @@ fun byteArrayToMessage_21(bytes: ByteArray): Message_21? {
 
 @OptIn(ExperimentalUnsignedTypes::class)
 fun byteArrayToMessage_39(bytes: ByteArray): Message_39? {
-    if (bytes.size != 48) {
+    if (bytes.size != 12) {
         return null
     }
 
@@ -83,7 +83,7 @@ fun byteArrayToMessage_39(bytes: ByteArray): Message_39? {
     val HiSumm = bytes[3]
     val MB_id = ((bytes[5].toInt() shl 8) or bytes[4].toInt()).toUShort()
     val MK_id = ((bytes[7].toInt() shl 8) or bytes[6].toInt()).toUShort()
-    val charge = byteArrayToUShortArray(bytes.copyOfRange(8, 48))
+    val charge = byteArrayToUShortArray(bytes.copyOfRange(8, 12))
 
     return Message_39(id_head, id, LoSumm, HiSumm, MB_id, MK_id, charge)
 }

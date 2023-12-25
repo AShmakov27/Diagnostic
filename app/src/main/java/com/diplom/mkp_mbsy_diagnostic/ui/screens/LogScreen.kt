@@ -218,10 +218,10 @@ fun PackagesView(
                 when (id.toInt()) {
                     16, 20, 38, 62 -> {
                         msg = listOf(
-                            data[0],
-                            data[1],
-                            data[2],
-                            data[3],
+                            data[0].toUByte(),
+                            data[1].toUByte(),
+                            data[2].toUByte(),
+                            data[3].toUByte(),
                             ((data[5].toInt() shl 8) or data[4].toInt()).toUShort(),
                             ((data[7].toInt() shl 8) or data[6].toInt()).toUShort()
                         )
@@ -229,70 +229,70 @@ fun PackagesView(
 
                     17 -> {
                         msg = listOf(
-                            data[0],
-                            data[1],
-                            data[2],
-                            data[3],
+                            data[0].toUByte(),
+                            data[1].toUByte(),
+                            data[2].toUByte(),
+                            data[3].toUByte(),
                             ((data[5].toInt() shl 8) or data[4].toInt()).toUShort(),
                             ((data[7].toInt() shl 8) or data[6].toInt()).toUShort(),
-                            data[8],
-                            data[9],
-                            data[10],
-                            data[11]
+                            data[8].toUByte(),
+                            data[9].toUByte(),
+                            data[10].toUByte(),
+                            data[11].toUByte()
                         )
                     }
 
                     21 -> {
                         msg = listOf(
-                            data[0],
-                            data[1],
-                            data[2],
-                            data[3],
+                            data[0].toUByte(),
+                            data[1].toUByte(),
+                            data[2].toUByte(),
+                            data[3].toUByte(),
                             ((data[5].toInt() shl 8) or data[4].toInt()).toUShort(),
                             ((data[7].toInt() shl 8) or data[6].toInt()).toUShort(),
-                            ((data[9].toInt() shl 8) or data[8].toInt()).toUShort(),
-                            ((data[11].toInt() shl 8) or data[10].toInt()).toUShort()
+                            ((data[9].toInt() shl 8) or data[8].toInt()).toUByte(),
+                            ((data[11].toInt() shl 8) or data[10].toInt()).toUByte()
                         )
                     }
 
                     39, 54 -> {
                         val msg_class = byteArrayToMessage_39(data)
-                        val undermining0 = ArrayList<Int>(0)
-                        val undermining1 = ArrayList<Int>(0)
+                        val undermining0: String
+                        val undermining1: String
+                        val bitsets = ArrayList<String>()
                         if (msg_class != null) {
-                            for (i in msg_class.Charge.indices) {
-                                if (msg_class.Charge[i].toUInt() == 1u)
-                                    undermining1.add(i)
-                                else if (msg_class.Charge[i].toUInt() == 0u)
-                                    undermining0.add(i)
+                            for (i in msg_class.Charge) {
+                                bitsets.add(i.toString(2))
                             }
                         }
+                        undermining0 = bitsets[0]
+                        undermining1 = bitsets[1]
                         msg = listOf(
-                            data[0],
-                            data[1],
-                            data[2],
-                            data[3],
+                            data[0].toUByte(),
+                            data[1].toUByte(),
+                            data[2].toUByte(),
+                            data[3].toUByte(),
                             ((data[5].toInt() shl 8) or data[4].toInt()).toUShort(),
                             ((data[7].toInt() shl 8) or data[6].toInt()).toUShort(),
-                            undermining0.toString(),
-                            undermining1.toString()
+                            undermining0,
+                            undermining1
                         )
                     }
 
                     63 -> {
                         msg = listOf(
-                            data[0],
-                            data[1],
-                            data[2],
-                            data[3],
+                            data[0].toUByte(),
+                            data[1].toUByte(),
+                            data[2].toUByte(),
+                            data[3].toUByte(),
                             ((data[5].toInt() shl 8) or data[4].toInt()).toUShort(),
                             ((data[7].toInt() shl 8) or data[6].toInt()).toUShort(),
-                            ((data[9].toInt() shl 8) or data[8].toInt()).toUShort(),
-                            ((data[11].toInt() shl 8) or data[10].toInt()).toUShort(),
-                            ((data[13].toInt() shl 8) or data[12].toInt()).toUShort(),
-                            ((data[15].toInt() shl 8) or data[14].toInt()).toUShort(),
-                            ((data[17].toInt() shl 8) or data[16].toInt()).toUShort(),
-                            ((data[19].toInt() shl 8) or data[18].toInt()).toUShort(),
+                            ((data[9].toInt() shl 8) or data[8].toInt()).toUByte(),
+                            ((data[11].toInt() shl 8) or data[10].toInt()).toUByte(),
+                            ((data[13].toInt() shl 8) or data[12].toInt()).toUByte(),
+                            ((data[15].toInt() shl 8) or data[14].toInt()).toUByte(),
+                            ((data[17].toInt() shl 8) or data[16].toInt()).toUByte(),
+                            ((data[19].toInt() shl 8) or data[18].toInt()).toUByte(),
                         )
                     }
                 }

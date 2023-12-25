@@ -56,7 +56,9 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.diplom.mkp_mbsy_diagnostic.data.usb.MKPMessage
+import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToUShortArray
 import com.diplom.mkp_mbsy_diagnostic.viewmodel.MKPViewModel
+import java.util.BitSet
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -147,12 +149,12 @@ fun MKPContent(
                     MK_id = it.Mes21.MK_id.toString(),
                     kolErr = it.Mes21.KolErr.toString(),
                     Sec = it.Mes21.Sec.toString(),
-                    Param1 = it.Mes63?.Param1.toString(),
-                    Param2 = it.Mes63?.Param2.toString(),
-                    Param3 = it.Mes63?.Param3.toString(),
-                    Param4 = it.Mes63?.Param4.toString(),
-                    Param5 = it.Mes63?.Param5.toString(),
-                    Param6 = it.Mes63?.Param6.toString(),
+                    Param1 = it.Mes63?.Param1?.toUByte().toString(),
+                    Param2 = it.Mes63?.Param2?.toUByte().toString(),
+                    Param3 = it.Mes63?.Param3?.toUByte().toString(),
+                    Param4 = it.Mes63?.Param4?.toUByte().toString(),
+                    Param5 = it.Mes63?.Param5?.toUByte().toString(),
+                    Param6 = it.Mes63?.Param6?.toUByte().toString(),
                     Charge = it.Mes39?.Charge
                 )
             }
@@ -221,10 +223,11 @@ fun MessageMKPView(
             }
         }
         if (expandedState) {
-            val Underminning0 = UShortArray(20)
+            var Underminning0 = UShortArray(2)
             for (i in Underminning0.indices) {
                 Underminning0.set(index = i, value = 0u)
             }
+            val Underminning0_bit = BitSet(32)
             Row(
                 modifier = Modifier
                     .height(20.dp)
@@ -388,9 +391,13 @@ fun MessageMKPView(
                 val color_notselected = MaterialTheme.colorScheme.secondary
                 val color_selected = MaterialTheme.colorScheme.tertiaryContainer
                 var color = color_notselected
-                val values = Charge.toList()
+                var bitset = String()
+                for (i in Charge) {
+                    bitset += i.toString(2)
+                }
+                val values = bitset.toList()
                 val size_val = values.size
-                val counter = values.count { it.toUInt() == 1u }
+                val counter = values.count { it == '1' }
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -423,7 +430,7 @@ fun MessageMKPView(
                     {
                         val selected = remember { mutableStateOf(false) }
                         val index = it + 1
-                        if (Charge[it].toUInt() == 1u) {
+                        if (bitset[it] == '1') {
                             Column(horizontalAlignment = Alignment.CenterHorizontally)
                             {
                                 Text(
@@ -445,11 +452,13 @@ fun MessageMKPView(
                                             onClick = {
                                                 selected.value = !selected.value
                                                 if (selected.value) {
-                                                    Underminning0.set(index = it, value = 1u)
+                                                    Underminning0_bit.set(index-1, true)
                                                     color = color_selected
+                                                    Underminning0 = byteArrayToUShortArray(Underminning0_bit.toByteArray())
                                                 } else {
-                                                    Underminning0.set(index = it, value = 0u)
+                                                    Underminning0_bit.set(index-1, false)
                                                     color = color_notselected
+                                                    Underminning0 = byteArrayToUShortArray(Underminning0_bit.toByteArray())
                                                 }
                                             }
                                         ),

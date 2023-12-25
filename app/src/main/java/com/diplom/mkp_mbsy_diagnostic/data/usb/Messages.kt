@@ -67,7 +67,7 @@ class Message_39 @OptIn(ExperimentalUnsignedTypes::class) constructor(
     HiSumm: Byte,
     var MB_id: UShort,
     var MK_id: UShort,
-    var Charge: UShortArray = UShortArray(20)
+    var Charge: UShortArray = UShortArray(2)
 ) : Header(id_head, id, LoSumm, HiSumm)
 
 class Message_54 @OptIn(ExperimentalUnsignedTypes::class) constructor(
@@ -77,7 +77,7 @@ class Message_54 @OptIn(ExperimentalUnsignedTypes::class) constructor(
     HiSumm: Byte,
     var MB_id: UShort,
     var MK_id: UShort,
-    var Underminning0: UShortArray = UShortArray(20)
+    var Underminning0: UShortArray = UShortArray(2)
 ) : Header(id_head, id, LoSumm, HiSumm)
 
 class Message_62(

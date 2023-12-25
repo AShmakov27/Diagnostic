@@ -53,7 +53,6 @@ class LogViewModel @Inject constructor() : ViewModel() {
             val bodyEndIndex = if (nextBabIndex != -1) nextBabIndex else fileBytes.size
 
             val body = fileBytes.copyOfRange(dedIndex + 4, bodyEndIndex)
-            count_read += 1
             val year = BigInteger(byteArrayOf(header[9], header[8])).toInt()
             val moth = header[10].toInt()
             val day = header[14].toInt()
@@ -75,6 +74,7 @@ class LogViewModel @Inject constructor() : ViewModel() {
             data.value = readed
 
             startIndex = bodyEndIndex
+            count_read += 1
         }
     }
 

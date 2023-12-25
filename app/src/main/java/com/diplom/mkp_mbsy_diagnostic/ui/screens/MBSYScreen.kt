@@ -51,13 +51,10 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.diplom.mkp_mbsy_diagnostic.data.usb.MBSYMessage
 import com.diplom.mkp_mbsy_diagnostic.ui.navigation.Routes
-import com.diplom.mkp_mbsy_diagnostic.ui.theme.MKP_MBSY_diagnosticTheme
 import com.diplom.mkp_mbsy_diagnostic.viewmodel.MBSYViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -155,12 +152,12 @@ fun MBSYContent(
                     Year = it.Mes17.Year.toString(),
                     kolErr = it.Mes21?.KolErr.toString(),
                     Sec = it.Mes21?.Sec.toString(),
-                    Param1 = it.Mes63?.Param1.toString(),
-                    Param2 = it.Mes63?.Param2.toString(),
-                    Param3 = it.Mes63?.Param3.toString(),
-                    Param4 = it.Mes63?.Param4.toString(),
-                    Param5 = it.Mes63?.Param5.toString(),
-                    Param6 = it.Mes63?.Param6.toString()
+                    Param1 = it.Mes63?.Param1?.toUByte().toString(),
+                    Param2 = it.Mes63?.Param2?.toUByte().toString(),
+                    Param3 = it.Mes63?.Param3?.toUByte().toString(),
+                    Param4 = it.Mes63?.Param4?.toUByte().toString(),
+                    Param5 = it.Mes63?.Param5?.toUByte().toString(),
+                    Param6 = it.Mes63?.Param6?.toUByte().toString()
                 )
             }
         }
