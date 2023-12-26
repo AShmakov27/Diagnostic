@@ -42,16 +42,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.diplom.mkp_mbsy_diagnostic.ui.theme.MKP_MBSY_diagnosticTheme
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.Flag
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.MsgFromLog
-import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.PD_chooser
+import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.PD_chooser_pan
+import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.PD_chooser_pms
+import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.TStructField
 import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToMessage_39
 import com.diplom.mkp_mbsy_diagnostic.viewmodel.LogViewModel
-import java.math.BigInteger
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -77,7 +76,8 @@ fun LogScreen(
             Box(modifier = Modifier.padding(it))
             {
                 LogContent(
-                    data = data
+                    data = data,
+                    lib = viewModel.libName
                 )
             }
         },
@@ -96,7 +96,8 @@ fun LogScreen(
 
 @Composable
 fun LogContent(
-    data: List<MsgFromLog>
+    data: List<MsgFromLog>,
+    lib: String
 ) {
     Column(
         modifier = Modifier
@@ -110,6 +111,7 @@ fun LogContent(
         {
             items(items = data, key = { it.pos }) {
                 PackagesView(
+                    lib = lib,
                     pos = it.pos,
                     incoming_message = it.incoming_message,
                     id = it.ID,
@@ -125,7 +127,13 @@ fun LogContent(
 @OptIn(ExperimentalUnsignedTypes::class)
 @Composable
 fun PackagesView(
-    pos: Int, incoming_message: Byte, id: UInt, date_time: String, size: Int, data: ByteArray
+    lib: String,
+    pos: Int,
+    incoming_message: Byte,
+    id: UInt,
+    date_time: String,
+    size: Int,
+    data: ByteArray
 ) {
     var showData by remember { mutableStateOf(false) }
     Card(
@@ -295,19 +303,40 @@ fun PackagesView(
                             ((data[19].toInt() shl 8) or data[18].toInt()).toUByte(),
                         )
                     }
+
+                    220 -> {
+                        msg = listOf(
+
+                        )
+                    }
+
+                    221 -> {
+                        msg = listOf(
+                            ((data[1].toInt() shl 8) or data[0].toInt()).toUShort(),
+                            data[2].toUByte(),
+                            ((data[4].toInt() shl 8) or data[3].toInt()).toUShort()
+                        )
+                    }
                 }
-                val PD = PD_chooser(id.toInt())
+                var PD: List<TStructField>? = null
+                when (lib) {
+                    "CommMessages_pms" -> PD = PD_chooser_pms(id.toInt())
+                    "CommMessages_pan" -> PD = PD_chooser_pan(id.toInt())
+                    "CommMessages_ko" -> PD = PD_chooser_pms(id.toInt())
+                    "CommMessages_ikrl" -> PD = PD_chooser_pms(id.toInt())
+                }
+                var additional = ""
                 if (PD != null) {
                     if (msg != null) {
                         for (i in msg.indices) {
-                            val additional = if (PD[i].m_nEnumOp == Flag.T_OP_EQ) {
-                                if (PD[i].m_nEnumValue.toByte() == msg[i]) {
-                                    PD[i].m_sEnumValue
-                                } else {
-                                    ""
+                            if (PD[i].m_nEnumOp == Flag.T_OP_EQ) {
+                                for (j in PD[i].m_nEnumValue.indices) {
+                                    additional = if (PD[i].m_nEnumValue[j].toString() == msg[i].toString()) {
+                                        PD[i].m_sEnumValue[j]
+                                    } else {
+                                        PD[i].m_elseEnumValue
+                                    }
                                 }
-                            } else {
-                                ""
                             }
                             Text(
                                 text = "${PD[i].m_sName} ${msg[i]} $additional",
@@ -318,6 +347,7 @@ fun PackagesView(
                                 ),
                                 modifier = Modifier.padding(start = 5.dp, end = 10.dp)
                             )
+                            additional = ""
                         }
                     }
                 }
@@ -345,55 +375,5 @@ fun PackagesView(
                 )
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun PreviewLOG() {
-    MKP_MBSY_diagnosticTheme(darkTheme = false) {
-        val header = byteArrayOf(
-            0x10,
-            0x00,
-            0x00,
-            0x00,
-            0x08,
-            0x00,
-            0x00,
-            0x00,
-            0xE7.toByte(),
-            0x07,
-            0x0b,
-            0x00,
-            0x01,
-            0x00,
-            0x1b,
-            0x00,
-            0x0a,
-            0x00,
-            0x36,
-            0x00,
-            0x16,
-            0x00,
-            0x02,
-            0x02,
-            0x01
-        )
-        val year = BigInteger(byteArrayOf(header[9], header[8])).toInt()
-        val moth = header[10].toInt()
-        val day = header[14].toInt()
-        val hour = header[16]
-        val minute = header[18]
-        val second = header[20]
-        val nano = BigInteger(byteArrayOf(header[23], header[22])).toInt()
-        val date = "${day}.${moth}.${year}  ${hour}:${minute}:${second}.${nano}"
-        PackagesView(
-            pos = 0,
-            incoming_message = header[header.size - 1],
-            id = header[0].toUInt(),
-            date_time = date,
-            size = header[4].toInt(),
-            data = byteArrayOf(0x01, 0x10, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00)
-        )
     }
 }

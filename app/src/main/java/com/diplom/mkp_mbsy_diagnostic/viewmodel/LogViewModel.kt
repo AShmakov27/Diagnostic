@@ -13,6 +13,7 @@ import javax.inject.Inject
 class LogViewModel @Inject constructor() : ViewModel() {
 
     val data = MutableLiveData<List<MsgFromLog>>()
+    var libName = ""
 
     override fun onCleared() {
         super.onCleared()
@@ -32,8 +33,11 @@ class LogViewModel @Inject constructor() : ViewModel() {
 
     fun extractRecords(fileBytes: ByteArray) {
         val readed = ArrayList<MsgFromLog>()
-        var startIndex = 0
+        var startIndex = 295
         var count_read = 0
+        data.value = emptyList()
+        val fileheader = fileBytes.copyOfRange(fileBytes.indexOf('C'.code.toByte()), startIndex)
+        libName = fileheader.copyOfRange(0, fileheader.indexOf(0)).toString(Charsets.UTF_8)
         while (startIndex < fileBytes.size) {
             val babIndex =
                 find4BytesInArray(fileBytes, byteArrayOf(0x42, 0x41, 0x42, 0x00), startIndex)
