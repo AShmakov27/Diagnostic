@@ -1,5 +1,7 @@
 package com.diplom.mkp_mbsy_diagnostic.utils.MSSLog
 
+import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToMessage_39
+
 fun PD_chooser_pms(id: Int): List<TStructField>? {
     when (id) {
         16 -> return PD_16
@@ -11,6 +13,98 @@ fun PD_chooser_pms(id: Int): List<TStructField>? {
         54 -> return PD_54
         62 -> return PD_62
         63 -> return PD_63
+    }
+    return null
+}
+
+@OptIn(ExperimentalUnsignedTypes::class)
+fun process_data_pms(id: Int, data: ByteArray):List<Comparable<*>>? {
+    val msg: List<Comparable<*>>?
+    when (id) {
+        16, 20, 38, 62 -> {
+            msg = listOf(
+                data[0].toUByte(),
+                data[1].toUByte(),
+                data[2].toUByte(),
+                data[3].toUByte(),
+                ((data[5].toInt() shl 8) or data[4].toInt()).toUShort(),
+                ((data[7].toInt() shl 8) or data[6].toInt()).toUShort()
+            )
+            return msg
+        }
+
+        17 -> {
+            msg = listOf(
+                data[0].toUByte(),
+                data[1].toUByte(),
+                data[2].toUByte(),
+                data[3].toUByte(),
+                ((data[5].toInt() shl 8) or data[4].toInt()).toUShort(),
+                ((data[7].toInt() shl 8) or data[6].toInt()).toUShort(),
+                data[8].toUByte(),
+                data[9].toUByte(),
+                data[10].toUByte(),
+                data[11].toUByte()
+            )
+            return msg
+        }
+
+        21 -> {
+            msg = listOf(
+                data[0].toUByte(),
+                data[1].toUByte(),
+                data[2].toUByte(),
+                data[3].toUByte(),
+                ((data[5].toInt() shl 8) or data[4].toInt()).toUShort(),
+                ((data[7].toInt() shl 8) or data[6].toInt()).toUShort(),
+                ((data[9].toInt() shl 8) or data[8].toInt()).toUByte(),
+                ((data[11].toInt() shl 8) or data[10].toInt()).toUByte()
+            )
+            return msg
+        }
+
+        39, 54 -> {
+            val msg_class = byteArrayToMessage_39(data)
+            val undermining0: String
+            val undermining1: String
+            val bitsets = ArrayList<String>()
+            if (msg_class != null) {
+                for (i in msg_class.Charge) {
+                    bitsets.add(i.toString(2))
+                }
+            }
+            undermining0 = bitsets[0]
+            undermining1 = bitsets[1]
+            msg = listOf(
+                data[0].toUByte(),
+                data[1].toUByte(),
+                data[2].toUByte(),
+                data[3].toUByte(),
+                ((data[5].toInt() shl 8) or data[4].toInt()).toUShort(),
+                ((data[7].toInt() shl 8) or data[6].toInt()).toUShort(),
+                undermining0,
+                undermining1
+            )
+            return msg
+        }
+
+        63 -> {
+            msg = listOf(
+                data[0].toUByte(),
+                data[1].toUByte(),
+                data[2].toUByte(),
+                data[3].toUByte(),
+                ((data[5].toInt() shl 8) or data[4].toInt()).toUShort(),
+                ((data[7].toInt() shl 8) or data[6].toInt()).toUShort(),
+                ((data[9].toInt() shl 8) or data[8].toInt()).toUByte(),
+                ((data[11].toInt() shl 8) or data[10].toInt()).toUByte(),
+                ((data[13].toInt() shl 8) or data[12].toInt()).toUByte(),
+                ((data[15].toInt() shl 8) or data[14].toInt()).toUByte(),
+                ((data[17].toInt() shl 8) or data[16].toInt()).toUByte(),
+                ((data[19].toInt() shl 8) or data[18].toInt()).toUByte(),
+            )
+            return msg
+        }
     }
     return null
 }

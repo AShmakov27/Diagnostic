@@ -1,9 +1,48 @@
 package com.diplom.mkp_mbsy_diagnostic.utils.MSSLog
 
+import java.nio.ByteBuffer
+
 fun PD_chooser_pan(id: Int): List<TStructField>? {
     when (id) {
         220 -> return PD_220
         221 -> return PD_221
+    }
+    return null
+}
+
+fun process_data_pan(id: Int, data: ByteArray):List<Comparable<*>>? {
+    val msg: List<Comparable<*>>?
+    when (id) {
+        220 -> {
+            msg = listOf(
+                ((data[1].toInt() shl 8) or data[0].toInt()).toUShort(),
+                data[2].toUByte(),
+                ((data[4].toInt() shl 8) or data[3].toInt()).toUShort(),
+                ((data[6].toInt() shl 8) or data[5].toInt()).toUShort(),
+                data[7].toUByte(),
+                ((data[11].toInt() shl 24) or
+                        ((data[10].toInt() and 0xFF) shl 16) or
+                        ((data[9].toInt() and 0xFF) shl 8) or
+                        (data[8].toInt() and 0xFF)),
+                ((data[13].toInt() shl 8) or data[12].toInt()).toUShort(),
+                ByteBuffer.wrap(data, 14, 8).double,
+                ByteBuffer.wrap(data, 22, 8).double,
+                ByteBuffer.wrap(data, 30, 8).double,
+                ByteBuffer.wrap(data, 38, 8).double,
+                data[46].toUByte(),
+                data[47].toUByte(),
+            )
+            return msg
+        }
+
+        221 -> {
+            msg = listOf(
+                ((data[1].toInt() shl 8) or data[0].toInt()).toUShort(),
+                data[2].toUByte(),
+                ((data[4].toInt() shl 8) or data[3].toInt()).toUShort()
+            )
+            return msg
+        }
     }
     return null
 }

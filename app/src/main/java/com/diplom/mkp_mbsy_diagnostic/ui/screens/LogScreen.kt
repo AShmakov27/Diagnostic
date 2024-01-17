@@ -46,10 +46,15 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.Flag
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.MsgFromLog
+import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.PD_chooser_ikrl
+import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.PD_chooser_ko
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.PD_chooser_pan
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.PD_chooser_pms
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.TStructField
-import com.diplom.mkp_mbsy_diagnostic.utils.byteArrayToMessage_39
+import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.process_data_ikrl
+import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.process_data_ko
+import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.process_data_pan
+import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.process_data_pms
 import com.diplom.mkp_mbsy_diagnostic.viewmodel.LogViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -223,107 +228,28 @@ fun PackagesView(
                     .background(color = MaterialTheme.colorScheme.secondaryContainer)
             ) {
                 var msg: List<Comparable<*>>? = null
-                when (id.toInt()) {
-                    16, 20, 38, 62 -> {
-                        msg = listOf(
-                            data[0].toUByte(),
-                            data[1].toUByte(),
-                            data[2].toUByte(),
-                            data[3].toUByte(),
-                            ((data[5].toInt() shl 8) or data[4].toInt()).toUShort(),
-                            ((data[7].toInt() shl 8) or data[6].toInt()).toUShort()
-                        )
-                    }
-
-                    17 -> {
-                        msg = listOf(
-                            data[0].toUByte(),
-                            data[1].toUByte(),
-                            data[2].toUByte(),
-                            data[3].toUByte(),
-                            ((data[5].toInt() shl 8) or data[4].toInt()).toUShort(),
-                            ((data[7].toInt() shl 8) or data[6].toInt()).toUShort(),
-                            data[8].toUByte(),
-                            data[9].toUByte(),
-                            data[10].toUByte(),
-                            data[11].toUByte()
-                        )
-                    }
-
-                    21 -> {
-                        msg = listOf(
-                            data[0].toUByte(),
-                            data[1].toUByte(),
-                            data[2].toUByte(),
-                            data[3].toUByte(),
-                            ((data[5].toInt() shl 8) or data[4].toInt()).toUShort(),
-                            ((data[7].toInt() shl 8) or data[6].toInt()).toUShort(),
-                            ((data[9].toInt() shl 8) or data[8].toInt()).toUByte(),
-                            ((data[11].toInt() shl 8) or data[10].toInt()).toUByte()
-                        )
-                    }
-
-                    39, 54 -> {
-                        val msg_class = byteArrayToMessage_39(data)
-                        val undermining0: String
-                        val undermining1: String
-                        val bitsets = ArrayList<String>()
-                        if (msg_class != null) {
-                            for (i in msg_class.Charge) {
-                                bitsets.add(i.toString(2))
-                            }
-                        }
-                        undermining0 = bitsets[0]
-                        undermining1 = bitsets[1]
-                        msg = listOf(
-                            data[0].toUByte(),
-                            data[1].toUByte(),
-                            data[2].toUByte(),
-                            data[3].toUByte(),
-                            ((data[5].toInt() shl 8) or data[4].toInt()).toUShort(),
-                            ((data[7].toInt() shl 8) or data[6].toInt()).toUShort(),
-                            undermining0,
-                            undermining1
-                        )
-                    }
-
-                    63 -> {
-                        msg = listOf(
-                            data[0].toUByte(),
-                            data[1].toUByte(),
-                            data[2].toUByte(),
-                            data[3].toUByte(),
-                            ((data[5].toInt() shl 8) or data[4].toInt()).toUShort(),
-                            ((data[7].toInt() shl 8) or data[6].toInt()).toUShort(),
-                            ((data[9].toInt() shl 8) or data[8].toInt()).toUByte(),
-                            ((data[11].toInt() shl 8) or data[10].toInt()).toUByte(),
-                            ((data[13].toInt() shl 8) or data[12].toInt()).toUByte(),
-                            ((data[15].toInt() shl 8) or data[14].toInt()).toUByte(),
-                            ((data[17].toInt() shl 8) or data[16].toInt()).toUByte(),
-                            ((data[19].toInt() shl 8) or data[18].toInt()).toUByte(),
-                        )
-                    }
-
-                    220 -> {
-                        msg = listOf(
-
-                        )
-                    }
-
-                    221 -> {
-                        msg = listOf(
-                            ((data[1].toInt() shl 8) or data[0].toInt()).toUShort(),
-                            data[2].toUByte(),
-                            ((data[4].toInt() shl 8) or data[3].toInt()).toUShort()
-                        )
-                    }
-                }
                 var PD: List<TStructField>? = null
                 when (lib) {
-                    "CommMessages_pms" -> PD = PD_chooser_pms(id.toInt())
-                    "CommMessages_pan" -> PD = PD_chooser_pan(id.toInt())
-                    "CommMessages_ko" -> PD = PD_chooser_pms(id.toInt())
-                    "CommMessages_ikrl" -> PD = PD_chooser_pms(id.toInt())
+                    "CommMessages_pms" ->
+                    {
+                        PD = PD_chooser_pms(id.toInt())
+                        msg = process_data_pms(id.toInt(), data)
+                    }
+                    "CommMessages_pan" ->
+                    {
+                        PD = PD_chooser_pan(id.toInt())
+                        msg = process_data_pan(id.toInt(), data)
+                    }
+                    "CommMessages_ko" ->
+                    {
+                        PD = PD_chooser_ko(id.toInt())
+                        msg = process_data_ko(id.toInt(), data)
+                    }
+                    "CommMessages_ikrl" ->
+                    {
+                        PD = PD_chooser_ikrl(id.toInt())
+                        msg = process_data_ikrl(id.toInt(), data)
+                    }
                 }
                 var additional = ""
                 if (PD != null) {
