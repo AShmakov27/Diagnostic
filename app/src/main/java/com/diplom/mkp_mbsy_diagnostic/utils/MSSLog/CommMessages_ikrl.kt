@@ -26,36 +26,36 @@ fun process_data_ikrl(id: Int, data: ByteArray):List<Comparable<*>>? {
             msg = listOf(
                 data[0].toUByte(),
                 data[1].toUByte(),
-                ((data[3].toInt() shl 8) or data[2].toInt()).toUShort(),
-                ((data[5].toInt() shl 8) or data[4].toInt()).toUShort(),
-                ByteBuffer.wrap(data, 9, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
-                ByteBuffer.wrap(data, 13, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
-                data[17].toUByte(),
-                data[18].toUByte(),
-                ((data[20].toInt() shl 8) or data[19].toInt()).toUShort(),
-                data[22].toUByte(),
-                data[23].toUByte(),
-                ((data[25].toInt() shl 8) or data[24].toInt()).toUShort(),
-                ((data[27].toInt() shl 8) or data[26].toInt()).toUShort(),
-                ((data[29].toInt() shl 8) or data[38].toInt()).toUShort(),
-                ((data[31].toInt() shl 8) or data[30].toInt()).toUShort(),
-                data[32].toUByte(),
-                data[33].toUByte(),
-                ((data[35].toInt() shl 8) or data[34].toInt()).toUShort(),
-                ((data[37].toInt() shl 8) or data[36].toInt()).toUShort(),
-                ((data[39].toInt() shl 8) or data[38].toInt()).toUShort(),
-                ((data[41].toInt() shl 8) or data[40].toInt()).toUShort(),
-                ((data[43].toInt() shl 8) or data[42].toInt()).toUShort(),
-                ((data[45].toInt() shl 8) or data[44].toInt()).toUShort(),
-                ((data[47].toInt() shl 8) or data[46].toInt()).toUShort(),
-                ((data[49].toInt() shl 8) or data[48].toInt()).toUShort(),
-                ByteBuffer.wrap(data, 51, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
-                ((data[55].toInt() shl 8) or data[54].toInt()).toUShort(),
-                ((data[57].toInt() shl 8) or data[56].toInt()).toUShort(),
-                data[58].toUByte(),
-                data[59].toUByte(),
+                ((data[5].toUByte().toInt() shl 8) or data[4].toUByte().toInt()).toUShort(),
+                ((data[7].toUByte().toInt() shl 8) or data[6].toUByte().toInt()).toUShort(),
+                ByteBuffer.wrap(data, 11, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 15, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                data[19].toUByte(),
+                data[20].toUByte(),
+                ((data[22].toUByte().toInt() shl 8) or data[21].toUByte().toInt()).toUShort(),
+                data[24].toUByte(),
+                data[25].toUByte(),
+                ((data[27].toUByte().toInt() shl 8) or data[26].toUByte().toInt()).toUShort(),
+                ((data[29].toUByte().toInt() shl 8) or data[28].toUByte().toInt()).toUShort(),
+                ((data[31].toUByte().toInt() shl 8) or data[30].toUByte().toInt()).toUShort(),
+                ((data[33].toUByte().toInt() shl 8) or data[32].toUByte().toInt()).toUShort(),
+                data[34].toUByte(),
+                data[35].toUByte(),
+                ((data[37].toUByte().toInt() shl 8) or data[36].toUByte().toInt()).toUShort(),
+                ((data[39].toUByte().toInt() shl 8) or data[38].toUByte().toInt()).toUShort(),
+                ((data[41].toUByte().toInt() shl 8) or data[40].toUByte().toInt()).toUShort(),
+                ((data[43].toUByte().toInt() shl 8) or data[42].toUByte().toInt()).toUShort(),
+                ((data[45].toUByte().toInt() shl 8) or data[44].toUByte().toInt()).toUShort(),
+                ((data[47].toUByte().toInt() shl 8) or data[46].toUByte().toInt()).toUShort(),
+                ((data[49].toUByte().toInt() shl 8) or data[48].toUByte().toInt()).toUShort(),
+                ((data[52].toUByte().toInt() shl 8) or data[50].toUByte().toInt()).toUShort(),
+                ByteBuffer.wrap(data, 53, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ((data[57].toUByte().toInt() shl 8) or data[56].toUByte().toInt()).toUShort(),
+                ((data[59].toUByte().toInt() shl 8) or data[58].toUByte().toInt()).toUShort(),
                 data[60].toUByte(),
-                data[61].toUByte()
+                data[61].toUByte(),
+                data[62].toUByte(),
+                data[63].toUByte()
             )
             return msg
         }
@@ -64,13 +64,13 @@ fun process_data_ikrl(id: Int, data: ByteArray):List<Comparable<*>>? {
             msg = listOf(
                 data[0].toUByte(),
                 data[1].toUByte(),
-                ((data[3].toInt() shl 8) or data[2].toInt()).toUShort(),
-                ((data[5].toInt() shl 8) or data[4].toInt()).toUShort(),
-                ByteBuffer.wrap(data, 9, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
-                ByteBuffer.wrap(data, 13, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
-                ByteBuffer.wrap(data, 17, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
-                ByteBuffer.wrap(data, 21, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
-                ByteBuffer.wrap(data, 25, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt()
+                ((data[5].toUByte().toInt() shl 8) or data[4].toUByte().toInt()).toUShort(),
+                ((data[7].toUByte().toInt() shl 8) or data[6].toUByte().toInt()).toUShort(),
+                ByteBuffer.wrap(data, 11, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 15, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 19, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 23, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 27, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt()
             )
             return msg
         }
@@ -79,25 +79,25 @@ fun process_data_ikrl(id: Int, data: ByteArray):List<Comparable<*>>? {
             msg = listOf(
                 data[0].toUByte(),
                 data[1].toUByte(),
-                data[2].toUByte(),
-                data[3].toUByte(),
                 data[4].toUByte(),
                 data[5].toUByte(),
                 data[6].toUByte(),
                 data[7].toUByte(),
                 data[8].toUByte(),
                 data[9].toUByte(),
-                ((data[11].toInt() shl 8) or data[10].toInt()).toUShort(),
-                ((data[13].toInt() shl 8) or data[12].toInt()).toUShort(),
-                data[14].toUByte(),
-                data[15].toUByte(),
+                data[10].toUByte(),
+                data[11].toUByte(),
+                ((data[13].toUByte().toInt() shl 8) or data[12].toUByte().toInt()).toUShort(),
+                ((data[15].toUByte().toInt() shl 8) or data[14].toUByte().toInt()).toUShort(),
                 data[16].toUByte(),
                 data[17].toUByte(),
-                ByteBuffer.wrap(data, 18, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
-                ((data[23].toInt() shl 8) or data[22].toInt()).toUShort(),
-                ((data[25].toInt() shl 8) or data[24].toInt()).toUShort(),
-                ((data[27].toInt() shl 8) or data[26].toInt()).toUShort(),
-                ((data[29].toInt() shl 8) or data[28].toInt()).toUShort()
+                data[18].toUByte(),
+                data[19].toUByte(),
+                ByteBuffer.wrap(data, 20, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ((data[25].toUByte().toInt() shl 8) or data[24].toUByte().toInt()).toUShort(),
+                ((data[27].toUByte().toInt() shl 8) or data[26].toUByte().toInt()).toUShort(),
+                ((data[29].toUByte().toInt() shl 8) or data[28].toUByte().toInt()).toUShort(),
+                ((data[31].toUByte().toInt() shl 8) or data[30].toUByte().toInt()).toUShort()
             )
             return msg
         }
@@ -106,21 +106,21 @@ fun process_data_ikrl(id: Int, data: ByteArray):List<Comparable<*>>? {
             msg = listOf(
                 data[0].toUByte(),
                 data[1].toUByte(),
-                ((data[3].toInt() shl 8) or data[2].toInt()).toUShort(),
-                data[4].toUByte(),
-                data[5].toUByte(),
-                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
-                data[11].toUByte(),
+                ((data[5].toUByte().toInt() shl 8) or data[4].toUByte().toInt()).toUShort(),
+                data[6].toUByte(),
+                data[7].toUByte(),
+                ByteBuffer.wrap(data, 8, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
                 data[12].toUByte(),
-                ((data[14].toInt() shl 8) or data[13].toInt()).toUShort(),
-                ((data[16].toInt() shl 8) or data[15].toInt()).toUShort(),
-                ((data[18].toInt() shl 8) or data[17].toInt()).toUShort(),
-                data[19].toUByte(),
+                data[13].toUByte(),
+                ((data[15].toUByte().toInt() shl 8) or data[14].toUByte().toInt()).toUShort(),
+                ((data[17].toUByte().toInt() shl 8) or data[16].toUByte().toInt()).toUShort(),
+                ((data[19].toUByte().toInt() shl 8) or data[18].toUByte().toInt()).toUShort(),
                 data[20].toUByte(),
-                ((data[22].toInt() shl 8) or data[21].toInt()).toUShort(),
+                data[21].toUByte(),
+                ((data[23].toUByte().toInt() shl 8) or data[22].toUByte().toInt()).toUShort(),
                 ByteBuffer.wrap(data, 24, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
-                ((data[28].toInt() shl 8) or data[27].toInt()).toUShort(),
-                ((data[30].toInt() shl 8) or data[29].toInt()).toUShort(),
+                ((data[29].toUByte().toInt() shl 8) or data[28].toUByte().toInt()).toUShort(),
+                ((data[31].toUByte().toInt() shl 8) or data[30].toUByte().toInt()).toUShort(),
                 ByteBuffer.wrap(data, 32, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
                 ByteBuffer.wrap(data, 36, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
                 ByteBuffer.wrap(data, 40, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
@@ -145,14 +145,14 @@ fun process_data_ikrl(id: Int, data: ByteArray):List<Comparable<*>>? {
             msg = listOf(
                 data[0].toUByte(),
                 data[1].toUByte(),
-                ((data[3].toInt() shl 8) or data[2].toInt()).toUShort(),
-                ((data[5].toInt() shl 8) or data[4].toInt()).toUShort(),
-                ((data[7].toInt() shl 8) or data[6].toInt()).toUShort(),
-                ((data[9].toInt() shl 8) or data[8].toInt()).toUShort(),
-                ByteBuffer.wrap(data, 10, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
-                ByteBuffer.wrap(data, 14, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
-                ((data[18].toInt() shl 8) or data[17].toInt()).toUShort(),
-                ((data[20].toInt() shl 8) or data[19].toInt()).toUShort()
+                ((data[5].toUByte().toInt() shl 8) or data[4].toUByte().toInt()).toUShort(),
+                ((data[7].toUByte().toInt() shl 8) or data[6].toUByte().toInt()).toUShort(),
+                ((data[9].toUByte().toInt() shl 8) or data[8].toUByte().toInt()).toUShort(),
+                ((data[11].toUByte().toInt() shl 8) or data[10].toUByte().toInt()).toUShort(),
+                ByteBuffer.wrap(data, 12, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 16, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ((data[21].toUByte().toInt() shl 8) or data[20].toUByte().toInt()).toUShort(),
+                ((data[23].toUByte().toInt() shl 8) or data[22].toUByte().toInt()).toUShort()
             )
             return msg
         }
@@ -169,16 +169,16 @@ fun process_data_ikrl(id: Int, data: ByteArray):List<Comparable<*>>? {
 }
 
 val PD_0_ikrl = listOf(
-    TStructField("Тип протокола + тип сервиса: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
-    TStructField("Тип данных: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип протокола + тип сервиса ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип данных ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
 
-    TStructField("Резерв 1: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
-    TStructField("Резерв 2: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), "")
+    TStructField("Резерв 1 ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Резерв 2 ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), "")
 )
 
 val PD_10 = listOf(
-    TStructField("Тип протокола + тип сервиса: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
-    TStructField("Тип данных: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип протокола + тип сервиса ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип данных ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
 
     TStructField("Количество тестовых блоков", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
     TStructField("Количество отказов от декодирования", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
@@ -217,13 +217,13 @@ val PD_10 = listOf(
 )
 
 val PD_11 = listOf(
-    TStructField("Тип протокола + тип сервиса: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
-    TStructField("Тип данных: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), "")
+    TStructField("Тип протокола + тип сервиса ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип данных ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), "")
 )
 
 val PD_70 = listOf(
-    TStructField("Тип протокола + тип сервиса: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
-    TStructField("Тип данных: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип протокола + тип сервиса ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип данных ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
 
     TStructField("Код генератора опорной частоты", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
     TStructField("Дата записи параметров 1", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
@@ -234,13 +234,13 @@ val PD_70 = listOf(
 )
 
 val PD_71 = listOf(
-    TStructField("Тип протокола + тип сервиса: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
-    TStructField("Тип данных: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), "")
+    TStructField("Тип протокола + тип сервиса ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип данных ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), "")
 )
 
 val PD_80 = listOf(
-    TStructField("Тип протокола + тип сервиса: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
-    TStructField("Тип данных: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип протокола + тип сервиса ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип данных ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
 
     TStructField("Режим1", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
     TStructField("Частотная литера + Мощность", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
@@ -269,13 +269,13 @@ val PD_80 = listOf(
 )
 
 val PD_81 = listOf(
-    TStructField("Тип протокола + тип сервиса: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
-    TStructField("Тип данных: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), "")
+    TStructField("Тип протокола + тип сервиса ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип данных ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), "")
 )
 
 val PD_90 = listOf(
-    TStructField("Тип протокола + тип сервиса: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
-    TStructField("Тип данных: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип протокола + тип сервиса ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип данных ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
 
     TStructField("Длина строки TDMA в байтах (145)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
     TStructField("Номер строки TDMA (с нуля)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
@@ -307,18 +307,24 @@ val PD_90 = listOf(
     TStructField("Дополнительные данные 6. Угол V земля", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
     TStructField("Дополнительные данные 7. Угол Н борт", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
     TStructField("Дополнительные данные 8. Угол V борт", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Дополнительные данные 9.", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Дополнительные данные 10.", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Дополнительные данные 11.", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Дополнительные данные 12.", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Дополнительные данные 13.", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Дополнительные данные 14.", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
     TStructField("Дополнительные данные 15. Кол-во запросов", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
     TStructField("Дополнительные данные 16. Кол-во ответов", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), "")
 )
 
 val PD_91 = listOf(
-    TStructField("Тип протокола + тип сервиса: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
-    TStructField("Тип данных: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), "")
+    TStructField("Тип протокола + тип сервиса ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип данных ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), "")
 )
 
 val PD_100 = listOf(
-    TStructField("Тип протокола + тип сервиса: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
-    TStructField("Тип данных: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип протокола + тип сервиса ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип данных ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
 
     TStructField("Флаг", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
 
@@ -333,6 +339,6 @@ val PD_100 = listOf(
 )
 
 val PD_101 = listOf(
-    TStructField("Тип протокола + тип сервиса: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
-    TStructField("Тип данных: ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), "")
+    TStructField("Тип протокола + тип сервиса ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип данных ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), "")
 )

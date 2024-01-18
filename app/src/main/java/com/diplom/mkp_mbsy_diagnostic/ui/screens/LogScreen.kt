@@ -47,12 +47,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.Flag
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.MsgFromLog
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.PD_chooser_ikrl
-import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.PD_chooser_ko
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.PD_chooser_pan
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.PD_chooser_pms
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.TStructField
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.process_data_ikrl
-import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.process_data_ko
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.process_data_pan
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.process_data_pms
 import com.diplom.mkp_mbsy_diagnostic.viewmodel.LogViewModel
@@ -230,7 +228,12 @@ fun PackagesView(
                 var msg: List<Comparable<*>>? = null
                 var PD: List<TStructField>? = null
                 when (lib) {
-                    "CommMessages_pms" ->
+                    "CommMessages_pms"->
+                    {
+                        PD = PD_chooser_pms(id.toInt())
+                        msg = process_data_pms(id.toInt(), data)
+                    }
+                    "CommMessages_smo" ->
                     {
                         PD = PD_chooser_pms(id.toInt())
                         msg = process_data_pms(id.toInt(), data)
@@ -239,11 +242,6 @@ fun PackagesView(
                     {
                         PD = PD_chooser_pan(id.toInt())
                         msg = process_data_pan(id.toInt(), data)
-                    }
-                    "CommMessages_ko" ->
-                    {
-                        PD = PD_chooser_ko(id.toInt())
-                        msg = process_data_ko(id.toInt(), data)
                     }
                     "CommMessages_ikrl" ->
                     {
@@ -265,7 +263,7 @@ fun PackagesView(
                                 }
                             }
                             Text(
-                                text = "${PD[i].m_sName} ${msg[i]} $additional",
+                                text = "${PD[i].m_sName}: ${msg[i]} $additional",
                                 style = TextStyle(
                                     fontSize = MaterialTheme.typography.titleMedium.fontSize,
                                     fontWeight = FontWeight.Bold,
