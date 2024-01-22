@@ -46,10 +46,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.Flag
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.MsgFromLog
+import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.PD_chooser_be
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.PD_chooser_ikrl
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.PD_chooser_pan
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.PD_chooser_pms
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.TStructField
+import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.process_data_be
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.process_data_ikrl
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.process_data_pan
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.process_data_pms
@@ -248,6 +250,11 @@ fun PackagesView(
                         PD = PD_chooser_ikrl(id.toInt())
                         msg = process_data_ikrl(id.toInt(), data)
                     }
+                    "CommMessages_be" ->
+                    {
+                        PD = PD_chooser_be(id.toInt())
+                        msg = process_data_be(id.toInt(), data)
+                    }
                 }
                 var additional = ""
                 if (PD != null) {
@@ -272,6 +279,15 @@ fun PackagesView(
                                 modifier = Modifier.padding(start = 5.dp, end = 10.dp)
                             )
                             additional = ""
+                            if (i % 7 == 0) {
+                                Spacer(
+                                    modifier = Modifier
+                                        .padding(start = 5.dp, end = 5.dp)
+                                        .height(3.dp)
+                                        .fillMaxWidth()
+                                        .background(color = MaterialTheme.colorScheme.onSecondaryContainer)
+                                )
+                            }
                         }
                     }
                 }

@@ -56,9 +56,12 @@ val PD_220 = listOf(
     TStructField("ID Пакета ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
     TStructField("Контрольная сумма ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
 
-    TStructField("Идентификатор типа объекта ", Flag.T_OP_EQ,
+    TStructField("Идентификатор типа объекта ",
+        Flag.T_OP_EQ,
         intArrayOf(1, 2, 3, 101, 102, 103, 104, 105, 106),
-        listOf("ПАН", "ППМ", "Взрыв", "Цель-танк", "Цель-БМП", "Цель-РЛС", "Цель-Батарея", "Цель-КШМ", "Цель-ПУ ЗРК"), "запрещенный код"),
+        listOf("ПАН", "ППМ", "Взрыв", "Цель-танк", "Цель-БМП", "Цель-РЛС", "Цель-Батарея", "Цель-КШМ", "Цель-ПУ ЗРК"),
+        "запрещенный код"
+    ),
 
     TStructField("Порядковый номер пакета ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
     TStructField("Слово признаков ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
