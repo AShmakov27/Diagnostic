@@ -1,5 +1,8 @@
 package com.diplom.mkp_mbsy_diagnostic.utils.MSSLog
 
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
+
 fun PD_chooser_be(id: Int): List<TStructField>? {
     when (id) {
         10 -> return PD_10_be
@@ -31,150 +34,860 @@ fun PD_chooser_be(id: Int): List<TStructField>? {
 }
 
 fun process_data_be(id: Int, data: ByteArray):List<Comparable<*>>? {
-    var msg: List<Comparable<*>>?
+    val msg: List<Comparable<*>>?
     when (id) {
         10 -> {
             msg = listOf(
-                TODO()
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+                ((data[4].toUByte().toInt() shl 8) or data[3].toUByte().toInt()).toUShort(),
+                data[5].toUByte(),
+                data[6].toUByte(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00FFFFFF.toUInt(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0xFF000000.toUInt(),
+                data[11].toUByte() and 0x000001.toUByte(),
+                data[11].toUByte() and 0x000010.toUByte(),
+                data[11].toUByte() and 0x000008.toUByte(),
+
+                ByteBuffer.wrap(data, 12, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+
+                ByteBuffer.wrap(data, 16, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 20, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 24, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+
+                ByteBuffer.wrap(data, 28, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ByteBuffer.wrap(data, 32, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ByteBuffer.wrap(data, 36, 4).order(ByteOrder.LITTLE_ENDIAN).int
             )
             return msg
         }
 
         100 -> {
             msg = listOf(
-                TODO()
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+
+                data[3].toUByte(),
+                data[4].toUByte(),
+                ByteBuffer.wrap(data, 5, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 9, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 13, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 17, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+
+                ((data[22].toUByte().toInt() shl 8) or data[21].toUByte().toInt()).toUShort()
             )
             return msg
         }
 
         110 -> {
             msg = listOf(
-                TODO()
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+                ((data[4].toUByte().toInt() shl 8) or data[3].toUByte().toInt()).toUShort(),
+                data[5].toUByte(),
+                data[6].toUByte(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00FFFFFF.toUInt(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0xFF000000.toUInt(),
+                data[11].toUByte() and 0x000001.toUByte(),
+                data[11].toUByte() and 0x000010.toUByte(),
+                data[11].toUByte() and 0x000008.toUByte(),
+
+                ByteBuffer.wrap(data, 12, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+
+                ByteBuffer.wrap(data, 16, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 20, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 24, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+
+                ByteBuffer.wrap(data, 28, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ByteBuffer.wrap(data, 32, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ByteBuffer.wrap(data, 36, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ((data[41].toUByte().toInt() shl 8) or data[40].toUByte().toInt()).toUShort(),
+                ((data[43].toUByte().toInt() shl 8) or data[42].toUByte().toInt()).toShort(),
+                ((data[45].toUByte().toInt() shl 8) or data[44].toUByte().toInt()).toShort(),
+                ByteBuffer.wrap(data, 46, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 50, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+
+                ((data[55].toUByte().toInt() shl 8) or data[54].toUByte().toInt()).toShort(),
+                ((data[57].toUByte().toInt() shl 8) or data[56].toUByte().toInt()).toShort(),
+                ((data[59].toUByte().toInt() shl 8) or data[58].toUByte().toInt()).toShort(),
+                ((data[61].toUByte().toInt() shl 8) or data[60].toUByte().toInt()).toShort(),
+                ByteBuffer.wrap(data, 62, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ((data[67].toUByte().toInt() shl 8) or data[66].toUByte().toInt()).toUShort(),
+                ((data[69].toUByte().toInt() shl 8) or data[68].toUByte().toInt()).toUShort(),
+                ((data[71].toUByte().toInt() shl 8) or data[70].toUByte().toInt()).toUShort(),
+                ((data[73].toUByte().toInt() shl 8) or data[72].toUByte().toInt()).toUShort(),
+                ((data[75].toUByte().toInt() shl 8) or data[74].toUByte().toInt()).toShort(),
+                ((data[77].toUByte().toInt() shl 8) or data[76].toUByte().toInt()).toShort(),
+
+                ByteBuffer.wrap(data, 78, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+
+                ByteBuffer.wrap(data, 78, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x07,
+
+                ByteBuffer.wrap(data, 78, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x38,
+
+                ByteBuffer.wrap(data, 78, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x03C0,
+
+                ByteBuffer.wrap(data, 78, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x03FC00,
+
+                ByteBuffer.wrap(data, 78, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x00040000,
+                ByteBuffer.wrap(data, 78, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x00080000,
+                ByteBuffer.wrap(data, 78, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x00100000,
+                ByteBuffer.wrap(data, 78, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x00200000,
+                ByteBuffer.wrap(data, 78, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x00400000,
+                ByteBuffer.wrap(data, 78, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x00800000,
+                ByteBuffer.wrap(data, 78, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x01000000,
+                ByteBuffer.wrap(data, 78, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x02000000,
+                ByteBuffer.wrap(data, 78, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x04000000,
+                ByteBuffer.wrap(data, 78, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x08000000,
+                ByteBuffer.wrap(data, 78, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x10000000,
+                ByteBuffer.wrap(data, 78, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x20000000,
+                ByteBuffer.wrap(data, 78, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x40000000,
+                ByteBuffer.wrap(data, 78, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x80000000.toInt(),
+
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x00000001,
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x00000002,
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x00000004,
+
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x00000008,
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x00000010,
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x00000020,
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x00000040,
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x00000080,
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x00000100,
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x00000200,
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x00000400,
+
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x02000000,
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x04000000,
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x08000000,
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x10000000,
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x20000000,
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x40000000,
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int and 0x80000000.toInt(),
+
+                ByteBuffer.wrap(data, 86, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt()
             )
             return msg
         }
 
         222 -> {
             msg = listOf(
-                TODO()
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+                ((data[4].toUByte().toInt() shl 8) or data[3].toUByte().toInt()).toUShort(),
+                data[5].toUByte(),
+                data[6].toUByte(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00FFFFFF.toUInt(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0xFF000000.toUInt(),
+                data[11].toUByte() and 0x000010.toUByte(),
+                data[11].toUByte() and 0x000008.toUByte(),
+                data[11].toUByte() and 0x000001.toUByte(),
+                data[11].toUByte() and 0x000002.toUByte(),
+                data[11].toUByte() and 0x000004.toUByte(),
+
+                ((data[13].toUByte().toInt() shl 8) or data[12].toUByte().toInt()).toUShort(),
+                ((data[15].toUByte().toInt() shl 8) or data[14].toUByte().toInt()).toUShort(),
+                ByteBuffer.wrap(data, 16, 8).order(ByteOrder.LITTLE_ENDIAN).double,
+                ByteBuffer.wrap(data, 24, 4).order(ByteOrder.LITTLE_ENDIAN).float,
+                ByteBuffer.wrap(data, 28, 8).order(ByteOrder.LITTLE_ENDIAN).double,
+                ByteBuffer.wrap(data, 36, 8).order(ByteOrder.LITTLE_ENDIAN).double,
+                ByteBuffer.wrap(data, 44, 8).order(ByteOrder.LITTLE_ENDIAN).double,
+                data[52].toUByte(),
+                data[53].toUByte(),
+
+                ((data[55].toUByte().toInt() shl 8) or data[54].toUByte().toInt()).toUShort(),
+                ((data[57].toUByte().toInt() shl 8) or data[56].toUByte().toInt()).toUShort(),
+                ByteBuffer.wrap(data, 58, 8).order(ByteOrder.LITTLE_ENDIAN).double,
+                ByteBuffer.wrap(data, 66, 4).order(ByteOrder.LITTLE_ENDIAN).float,
+                ByteBuffer.wrap(data, 70, 8).order(ByteOrder.LITTLE_ENDIAN).double,
+                ByteBuffer.wrap(data, 78, 8).order(ByteOrder.LITTLE_ENDIAN).double,
+                ByteBuffer.wrap(data, 86, 8).order(ByteOrder.LITTLE_ENDIAN).double,
+                data[87].toUByte(),
+                data[88].toUByte()
             )
             return msg
         }
 
         223 -> {
             msg = listOf(
-                TODO()
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+                ((data[4].toUByte().toInt() shl 8) or data[3].toUByte().toInt()).toUShort(),
+                data[5].toUByte(),
+
+                data[6].toUByte() and 0x000001.toUByte(),
+                data[6].toUByte() and 0x000002.toUByte(),
+                data[6].toUByte() and 0x000004.toUByte(),
+
+                ((data[8].toUByte().toInt() shl 8) or data[7].toUByte().toInt()).toUShort(),
+                ((data[10].toUByte().toInt() shl 8) or data[9].toUByte().toInt()).toUShort(),
+                ByteBuffer.wrap(data, 11, 8).order(ByteOrder.LITTLE_ENDIAN).double,
+                ByteBuffer.wrap(data, 19, 4).order(ByteOrder.LITTLE_ENDIAN).float,
+                ByteBuffer.wrap(data, 23, 8).order(ByteOrder.LITTLE_ENDIAN).double,
+                ByteBuffer.wrap(data, 31, 8).order(ByteOrder.LITTLE_ENDIAN).double,
+                ByteBuffer.wrap(data, 39, 8).order(ByteOrder.LITTLE_ENDIAN).double,
+                data[47].toUByte(),
+                data[48].toUByte(),
+
+                ((data[50].toUByte().toInt() shl 8) or data[49].toUByte().toInt()).toUShort(),
+                ((data[52].toUByte().toInt() shl 8) or data[51].toUByte().toInt()).toUShort(),
+                ByteBuffer.wrap(data, 53, 8).order(ByteOrder.LITTLE_ENDIAN).double,
+                ByteBuffer.wrap(data, 61, 4).order(ByteOrder.LITTLE_ENDIAN).float,
+                ByteBuffer.wrap(data, 65, 8).order(ByteOrder.LITTLE_ENDIAN).double,
+                ByteBuffer.wrap(data, 73, 8).order(ByteOrder.LITTLE_ENDIAN).double,
+                ByteBuffer.wrap(data, 81, 8).order(ByteOrder.LITTLE_ENDIAN).double,
+                data[89].toUByte(),
+                data[90].toUByte()
             )
             return msg
         }
 
         300 -> {
             msg = listOf(
-                TODO()
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+                ((data[4].toUByte().toInt() shl 8) or data[3].toUByte().toInt()).toUShort(),
+                data[5].toUByte(),
+                data[6].toUByte(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00FFFFFF.toUInt(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0xFF000000.toUInt(),
+                data[11].toUByte() and 0x000010.toUByte(),
+                data[11].toUByte() and 0x000008.toUByte(),
+
+                ByteBuffer.wrap(data, 12, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 16, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 20, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+
+                ByteBuffer.wrap(data, 24, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ((data[29].toUByte().toInt() shl 8) or data[28].toUByte().toInt()).toUShort(),
+                ByteBuffer.wrap(data, 30, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 34, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 38, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 42, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 46, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 50, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 54, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+
+                ByteBuffer.wrap(data, 58, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 58, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00800000.toUInt(),
+                ByteBuffer.wrap(data, 58, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x01000000.toUInt(),
+
+                ByteBuffer.wrap(data, 58, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x0000000F.toUInt(),
+
+                ByteBuffer.wrap(data, 58, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00070000.toUInt(),
+
+                ByteBuffer.wrap(data, 58, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00380000.toUInt(),
+
+                ByteBuffer.wrap(data, 62, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 66, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+
+                ByteBuffer.wrap(data, 70, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ((data[75].toUByte().toInt() shl 8) or data[74].toUByte().toInt()).toShort(),
+                ((data[77].toUByte().toInt() shl 8) or data[76].toUByte().toInt()).toShort(),
+
+                ((data[79].toUByte().toInt() shl 8) or data[78].toUByte().toInt()).toShort(),
+                ((data[81].toUByte().toInt() shl 8) or data[80].toUByte().toInt()).toShort(),
+                ((data[83].toUByte().toInt() shl 8) or data[82].toUByte().toInt()).toUShort(),
+
+                ((data[85].toUByte().toInt() shl 8) or data[84].toUByte().toInt()).toShort(),
+
+                ((data[87].toUByte().toInt() shl 8) or data[86].toUByte().toInt()).toUShort(),
+                ByteBuffer.wrap(data, 88, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt()
             )
             return msg
         }
 
         305 -> {
             msg = listOf(
-                TODO()
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+                ((data[4].toUByte().toInt() shl 8) or data[3].toUByte().toInt()).toUShort(),
+                data[5].toUByte(),
+                data[6].toUByte(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00FFFFFF.toUInt(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0xFF000000.toUInt(),
+                data[11].toUByte() and 0x000010.toUByte(),
+                data[11].toUByte() and 0x000008.toUByte(),
+
+                ByteBuffer.wrap(data, 12, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 16, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 20, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 24, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ByteBuffer.wrap(data, 28, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ((data[33].toUByte().toInt() shl 8) or data[32].toUByte().toInt()).toShort(),
+
+                ByteBuffer.wrap(data, 34, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 38, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 42, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 46, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 50, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 54, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 58, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 62, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 66, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 70, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 74, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ((data[79].toUByte().toInt() shl 8) or data[78].toUByte().toInt()).toShort(),
+                ((data[81].toUByte().toInt() shl 8) or data[80].toUByte().toInt()).toShort()
             )
             return msg
         }
 
         310 -> {
             msg = listOf(
-                TODO()
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+                ((data[4].toUByte().toInt() shl 8) or data[3].toUByte().toInt()).toUShort(),
+                data[5].toUByte(),
+                data[6].toUByte(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00FFFFFF.toUInt(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0xFF000000.toUInt(),
+                data[11].toUByte() and 0x000010.toUByte(),
+                data[11].toUByte() and 0x000008.toUByte(),
+
+                ((data[13].toUByte().toInt() shl 8) or data[12].toUByte().toInt()).toShort(),
+                ((data[15].toUByte().toInt() shl 8) or data[14].toUByte().toInt()).toShort(),
+                ByteBuffer.wrap(data, 16, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 20, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 24, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 28, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ((data[33].toUByte().toInt() shl 8) or data[32].toUByte().toInt()).toUShort(),
+                ByteBuffer.wrap(data, 34, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ((data[39].toUByte().toInt() shl 8) or data[38].toUByte().toInt()).toUShort(),
+                ((data[41].toUByte().toInt() shl 8) or data[40].toUByte().toInt()).toShort(),
+                ((data[43].toUByte().toInt() shl 8) or data[42].toUByte().toInt()).toShort(),
+                ((data[45].toUByte().toInt() shl 8) or data[44].toUByte().toInt()).toUShort(),
+                ((data[47].toUByte().toInt() shl 8) or data[46].toUByte().toInt()).toShort()
             )
             return msg
         }
 
         315 -> {
             msg = listOf(
-                TODO()
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+                ((data[4].toUByte().toInt() shl 8) or data[3].toUByte().toInt()).toUShort(),
+                data[5].toUByte(),
+                data[6].toUByte(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00FFFFFF.toUInt(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0xFF000000.toUInt(),
+                data[11].toUByte() and 0x000010.toUByte(),
+                data[11].toUByte() and 0x000008.toUByte(),
+
+                ByteBuffer.wrap(data, 12, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ByteBuffer.wrap(data, 16, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ((data[21].toUByte().toInt() shl 8) or data[20].toUByte().toInt()).toUShort(),
+                ((data[23].toUByte().toInt() shl 8) or data[22].toUByte().toInt()).toUShort(),
+                ((data[25].toUByte().toInt() shl 8) or data[24].toUByte().toInt()).toUShort(),
+                ((data[27].toUByte().toInt() shl 8) or data[26].toUByte().toInt()).toUShort(),
+                ((data[29].toUByte().toInt() shl 8) or data[28].toUByte().toInt()).toUShort(),
+                ((data[31].toUByte().toInt() shl 8) or data[30].toUByte().toInt()).toUShort(),
+                ByteBuffer.wrap(data, 32, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 36, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 40, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ((data[45].toUByte().toInt() shl 8) or data[44].toUByte().toInt()).toShort(),
+                ((data[47].toUByte().toInt() shl 8) or data[46].toUByte().toInt()).toShort(),
+                ((data[49].toUByte().toInt() shl 8) or data[48].toUByte().toInt()).toShort()
             )
             return msg
         }
 
         320 -> {
             msg = listOf(
-                TODO()
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+                ((data[4].toUByte().toInt() shl 8) or data[3].toUByte().toInt()).toUShort(),
+                data[5].toUByte(),
+
+                ByteBuffer.wrap(data, 6, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 10, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 14, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ((data[19].toUByte().toInt() shl 8) or data[18].toUByte().toInt()).toUShort(),
+                ((data[21].toUByte().toInt() shl 8) or data[20].toUByte().toInt()).toUShort(),
+                ((data[23].toUByte().toInt() shl 8) or data[22].toUByte().toInt()).toUShort(),
+                ByteBuffer.wrap(data, 24, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 28, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 32, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 36, 4).order(ByteOrder.LITTLE_ENDIAN).int
             )
             return msg
         }
 
         321 -> {
             msg = listOf(
-                TODO()
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+                ((data[4].toUByte().toInt() shl 8) or data[3].toUByte().toInt()).toUShort(),
+                data[5].toUByte(),
+
+                ByteBuffer.wrap(data, 6, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 10, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ByteBuffer.wrap(data, 14, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+
+                ByteBuffer.wrap(data, 18, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ByteBuffer.wrap(data, 22, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ((data[27].toUByte().toInt() shl 8) or data[26].toUByte().toInt()).toUShort(),
+                ByteBuffer.wrap(data, 28, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ByteBuffer.wrap(data, 32, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 36, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ((data[41].toUByte().toInt() shl 8) or data[40].toUByte().toInt()).toUShort(),
+                ByteBuffer.wrap(data, 42, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt()
             )
             return msg
         }
 
         322 -> {
             msg = listOf(
-                TODO()
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+                ((data[4].toUByte().toInt() shl 8) or data[3].toUByte().toInt()).toUShort(),
+                data[5].toUByte(),
+                ByteBuffer.wrap(data, 6, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 10, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ByteBuffer.wrap(data, 14, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+
+                ByteBuffer.wrap(data, 18, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ((data[23].toUByte().toInt() shl 8) or data[22].toUByte().toInt()).toShort(),
+                ((data[25].toUByte().toInt() shl 8) or data[24].toUByte().toInt()).toUShort(),
+                ByteBuffer.wrap(data, 26, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ((data[31].toUByte().toInt() shl 8) or data[30].toUByte().toInt()).toShort(),
+                ByteBuffer.wrap(data, 32, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 36, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 40, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 44, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 48, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt()
             )
             return msg
         }
 
         323 -> {
             msg = listOf(
-                TODO()
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+                ((data[4].toUByte().toInt() shl 8) or data[3].toUByte().toInt()).toUShort(),
+                data[5].toUByte(),
+                ByteBuffer.wrap(data, 6, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 10, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ByteBuffer.wrap(data, 14, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+
+                ByteBuffer.wrap(data, 18, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ByteBuffer.wrap(data, 22, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt()
             )
             return msg
         }
 
         324 -> {
             msg = listOf(
-                TODO()
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+                ((data[4].toUByte().toInt() shl 8) or data[3].toUByte().toInt()).toUShort(),
+                data[5].toUByte(),
+                ByteBuffer.wrap(data, 6, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 10, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ByteBuffer.wrap(data, 14, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+
+                ByteBuffer.wrap(data, 18, 4).order(ByteOrder.LITTLE_ENDIAN).int
             )
             return msg
         }
 
         325 -> {
             msg = listOf(
-                TODO()
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+                ((data[4].toUByte().toInt() shl 8) or data[3].toUByte().toInt()).toUShort(),
+                data[5].toUByte(),
+                ByteBuffer.wrap(data, 6, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 10, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ByteBuffer.wrap(data, 14, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+
+                ByteBuffer.wrap(data, 18, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ByteBuffer.wrap(data, 22, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt()
             )
             return msg
         }
 
         326 -> {
             msg = listOf(
-                TODO()
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+                ((data[4].toUByte().toInt() shl 8) or data[3].toUByte().toInt()).toUShort(),
+                data[5].toUByte(),
+                ByteBuffer.wrap(data, 6, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 10, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ByteBuffer.wrap(data, 14, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+
+                ByteBuffer.wrap(data, 18, 4).order(ByteOrder.LITTLE_ENDIAN).int
             )
             return msg
         }
 
         400 -> {
             msg = listOf(
-                TODO()
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+
+                data[3].toUByte(),
+                data[4].toUByte(),
+                ByteBuffer.wrap(data, 5, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+
+                ((data[10].toUByte().toInt() shl 8) or data[9].toUByte().toInt()).toUShort(),
+
+                data[1].toUByte(),
+                data[12].toUByte(),
+                data[13].toUByte(),
+                data[14].toUByte()
             )
             return msg
         }
 
         410 -> {
             msg = listOf(
-                TODO()
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+                ((data[4].toUByte().toInt() shl 8) or data[3].toUByte().toInt()).toUShort(),
+                data[5].toUByte(),
+                data[6].toUByte(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00FFFFFF.toUInt(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0xFF000000.toUInt(),
+                data[11].toUByte() and 0x000001.toUByte(),
+                data[11].toUByte() and 0x000010.toUByte(),
+                data[11].toUByte() and 0x000008.toUByte(),
+                data[11].toUByte() and 0x000004.toUByte(),
+
+                ByteBuffer.wrap(data, 12, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 16, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 20, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 24, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ((data[29].toUByte().toInt() shl 8) or data[28].toUByte().toInt()).toUShort(),
+                ((data[31].toUByte().toInt() shl 8) or data[30].toUByte().toInt()).toShort(),
+                ((data[33].toUByte().toInt() shl 8) or data[32].toUByte().toInt()).toShort(),
+                ((data[35].toUByte().toInt() shl 8) or data[34].toUByte().toInt()).toShort(),
+
+                ((data[37].toUByte().toInt() shl 8) or data[36].toUByte().toInt()).toShort(),
+                ((data[39].toUByte().toInt() shl 8) or data[38].toUByte().toInt()).toShort(),
+                ((data[41].toUByte().toInt() shl 8) or data[40].toUByte().toInt()).toShort(),
+                ByteBuffer.wrap(data, 42, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ByteBuffer.wrap(data, 46, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ((data[51].toUByte().toInt() shl 8) or data[50].toUByte().toInt()).toShort(),
+                ((data[53].toUByte().toInt() shl 8) or data[52].toUByte().toInt()).toShort(),
+                ((data[55].toUByte().toInt() shl 8) or data[54].toUByte().toInt()).toShort(),
+                ((data[57].toUByte().toInt() shl 8) or data[56].toUByte().toInt()).toShort(),
+                ((data[59].toUByte().toInt() shl 8) or data[58].toUByte().toInt()).toShort(),
+                ((data[61].toUByte().toInt() shl 8) or data[60].toUByte().toInt()).toShort(),
+                ((data[63].toUByte().toInt() shl 8) or data[62].toUByte().toInt()).toShort(),
+                ((data[65].toUByte().toInt() shl 8) or data[64].toUByte().toInt()).toShort(),
+                ((data[67].toUByte().toInt() shl 8) or data[66].toUByte().toInt()).toShort(),
+
+                ByteBuffer.wrap(data, 68, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000100.toUInt(),
+                ByteBuffer.wrap(data, 68, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000200.toUInt(),
+                ByteBuffer.wrap(data, 68, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000400.toUInt(),
+                ByteBuffer.wrap(data, 68, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000800.toUInt(),
+
+                ByteBuffer.wrap(data, 68, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x0001F000.toUInt(),
+
+                ByteBuffer.wrap(data, 68, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00060000.toUInt(),
+
+                ByteBuffer.wrap(data, 68, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00080000.toUInt(),
+
+                ByteBuffer.wrap(data, 68, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00100000.toUInt(),
+
+                ByteBuffer.wrap(data, 68, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00600000.toUInt(),
+
+                ByteBuffer.wrap(data, 68, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00800000.toUInt(),
+                ByteBuffer.wrap(data, 68, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x01000000.toUInt(),
+                ByteBuffer.wrap(data, 68, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x02000000.toUInt(),
+                ByteBuffer.wrap(data, 68, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x04000000.toUInt(),
+                ByteBuffer.wrap(data, 68, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x08000000.toUInt(),
+                ByteBuffer.wrap(data, 68, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x10000000.toUInt(),
+                ByteBuffer.wrap(data, 68, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x20000000.toUInt(),
+
+                ByteBuffer.wrap(data, 72, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000100.toUInt(),
+                ByteBuffer.wrap(data, 72, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000200.toUInt(),
+                ByteBuffer.wrap(data, 72, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000C00.toUInt(),
+                ByteBuffer.wrap(data, 72, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00001000.toUInt(),
+                ByteBuffer.wrap(data, 72, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00002000.toUInt(),
+                ByteBuffer.wrap(data, 72, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00004000.toUInt(),
+                ByteBuffer.wrap(data, 72, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00008000.toUInt(),
+                ByteBuffer.wrap(data, 72, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00010000.toUInt(),
+                ByteBuffer.wrap(data, 72, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00020000.toUInt(),
+                ByteBuffer.wrap(data, 72, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00200000.toUInt(),
+                ByteBuffer.wrap(data, 72, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00400000.toUInt(),
+                ByteBuffer.wrap(data, 72, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00040000.toUInt(),
+                ByteBuffer.wrap(data, 72, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00080000.toUInt(),
+                ByteBuffer.wrap(data, 72, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00100000.toUInt(),
+                ByteBuffer.wrap(data, 72, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00800000.toUInt(),
+                ByteBuffer.wrap(data, 72, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x01000000.toUInt(),
+                ByteBuffer.wrap(data, 72, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x02000000.toUInt(),
+                ByteBuffer.wrap(data, 72, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x04000000.toUInt(),
+                ByteBuffer.wrap(data, 72, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x08000000.toUInt(),
+                ByteBuffer.wrap(data, 72, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x10000000.toUInt(),
+                ByteBuffer.wrap(data, 72, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x20000000.toUInt(),
+
+                ByteBuffer.wrap(data, 76, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000100.toUInt(),
+                ByteBuffer.wrap(data, 76, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000200.toUInt(),
+                ByteBuffer.wrap(data, 76, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00001C00.toUInt(),
+                ByteBuffer.wrap(data, 76, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00002000.toUInt(),
+                ByteBuffer.wrap(data, 76, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00004000.toUInt(),
+                ByteBuffer.wrap(data, 76, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00008000.toUInt(),
+                ByteBuffer.wrap(data, 76, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00070000.toUInt(),
+                ByteBuffer.wrap(data, 76, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00080000.toUInt(),
+                ByteBuffer.wrap(data, 76, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00100000.toUInt(),
+                ByteBuffer.wrap(data, 76, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00200000.toUInt(),
+                ByteBuffer.wrap(data, 76, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00400000.toUInt(),
+                ByteBuffer.wrap(data, 76, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00800000.toUInt(),
+                ByteBuffer.wrap(data, 76, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x01000000.toUInt(),
+                ByteBuffer.wrap(data, 76, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x02000000.toUInt(),
+                ByteBuffer.wrap(data, 76, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x04000000.toUInt(),
+                ByteBuffer.wrap(data, 76, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x08000000.toUInt(),
+                ByteBuffer.wrap(data, 76, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x10000000.toUInt(),
+                ByteBuffer.wrap(data, 76, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x20000000.toUInt(),
+
+                ByteBuffer.wrap(data, 80, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ByteBuffer.wrap(data, 84, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ByteBuffer.wrap(data, 88, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+
+                ByteBuffer.wrap(data, 68, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 72, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 76, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt()
             )
             return msg
         }
 
         411 -> {
             msg = listOf(
-                TODO()
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+                ((data[4].toUByte().toInt() shl 8) or data[3].toUByte().toInt()).toUShort(),
+                data[5].toUByte(),
+                data[6].toUByte(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00FFFFFF.toUInt(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0xFF000000.toUInt(),
+                data[11].toUByte() and 0x000001.toUByte(),
+                data[11].toUByte() and 0x000002.toUByte(),
+                data[11].toUByte() and 0x000004.toUByte(),
+                data[11].toUByte() and 0x000008.toUByte(),
+                data[11].toUByte() and 0x000010.toUByte(),
+                data[11].toUByte() and 0x000020.toUByte(),
+                data[11].toUByte() and 0x000040.toUByte(),
+                data[11].toUByte() and 0x000080.toUByte(),
+
+                ((data[15].toUByte().toInt() shl 8) or data[14].toUByte().toInt()).toUShort(),
+                ByteBuffer.wrap(data, 16, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ByteBuffer.wrap(data, 20, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ByteBuffer.wrap(data, 24, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ByteBuffer.wrap(data, 28, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ByteBuffer.wrap(data, 32, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ((data[37].toUByte().toInt() shl 8) or data[36].toUByte().toInt()).toShort(),
+                ((data[39].toUByte().toInt() shl 8) or data[38].toUByte().toInt()).toUShort(),
+                ((data[41].toUByte().toInt() shl 8) or data[40].toUByte().toInt()).toShort(),
+                ((data[43].toUByte().toInt() shl 8) or data[42].toUByte().toInt()).toShort(),
+                ((data[45].toUByte().toInt() shl 8) or data[44].toUByte().toInt()).toShort(),
+                ((data[47].toUByte().toInt() shl 8) or data[46].toUByte().toInt()).toShort(),
+                ((data[49].toUByte().toInt() shl 8) or data[48].toUByte().toInt()).toShort(),
+                ((data[51].toUByte().toInt() shl 8) or data[50].toUByte().toInt()).toUShort(),
+                ByteBuffer.wrap(data, 52, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ((data[57].toUByte().toInt() shl 8) or data[56].toUByte().toInt()).toShort(),
+                ((data[59].toUByte().toInt() shl 8) or data[58].toUByte().toInt()).toUShort(),
+                ((data[61].toUByte().toInt() shl 8) or data[60].toUByte().toInt()).toUShort(),
+
+                data[62].toUByte(),
+                ByteBuffer.wrap(data, 63, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x30000000.toUInt(),
+
+                ByteBuffer.wrap(data, 63, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and  0x0C000000.toUInt(),
+
+                ByteBuffer.wrap(data, 63, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x03000000.toUInt(),
+
+                ByteBuffer.wrap(data, 63, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00C00000.toUInt(),
+
+                ByteBuffer.wrap(data, 63, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00300000.toUInt(),
+
+                ByteBuffer.wrap(data, 63, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x000C0000.toUInt(),
+
+                ByteBuffer.wrap(data, 63, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00030000.toUInt(),
+
+                ByteBuffer.wrap(data, 63, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x0000C000.toUInt(),
+
+                ByteBuffer.wrap(data, 63, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00003000.toUInt(),
+
+                ByteBuffer.wrap(data, 63, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000C00.toUInt(),
+
+                ByteBuffer.wrap(data, 63, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000300.toUInt(),
+
+                ByteBuffer.wrap(data, 63, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+
+                ByteBuffer.wrap(data, 67, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ((data[72].toUByte().toInt() shl 8) or data[71].toUByte().toInt()).toShort(),
+                ((data[74].toUByte().toInt() shl 8) or data[73].toUByte().toInt()).toShort(),
+                ((data[76].toUByte().toInt() shl 8) or data[75].toUByte().toInt()).toShort(),
+                ((data[78].toUByte().toInt() shl 8) or data[77].toUByte().toInt()).toShort(),
+                ((data[80].toUByte().toInt() shl 8) or data[79].toUByte().toInt()).toShort(),
+
+                ByteBuffer.wrap(data, 81, 4).order(ByteOrder.LITTLE_ENDIAN).int,
+                ((data[86].toUByte().toInt() shl 8) or data[85].toUByte().toInt()).toShort(),
+                ((data[88].toUByte().toInt() shl 8) or data[87].toUByte().toInt()).toShort(),
+                ((data[90].toUByte().toInt() shl 8) or data[89].toUByte().toInt()).toShort()
             )
             return msg
         }
 
         412 -> {
             msg = listOf(
-                TODO()
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+                ((data[4].toUByte().toInt() shl 8) or data[3].toUByte().toInt()).toUShort(),
+                data[5].toUByte(),
+                data[6].toUByte(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00FFFFFF.toUInt(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0xFF000000.toUInt(),
+
+                ((data[13].toUByte().toInt() shl 8) or data[12].toUByte().toInt()).toShort(),
+                ((data[15].toUByte().toInt() shl 8) or data[14].toUByte().toInt()).toShort(),
+                ((data[17].toUByte().toInt() shl 8) or data[16].toUByte().toInt()).toShort(),
+                ((data[19].toUByte().toInt() shl 8) or data[18].toUByte().toInt()).toShort(),
+                ((data[21].toUByte().toInt() shl 8) or data[20].toUByte().toInt()).toShort(),
+                ((data[23].toUByte().toInt() shl 8) or data[22].toUByte().toInt()).toShort(),
+                ((data[25].toUByte().toInt() shl 8) or data[24].toUByte().toInt()).toUShort(),
+                ((data[27].toUByte().toInt() shl 8) or data[26].toUByte().toInt()).toUShort(),
+                data[28].toUByte(),
+                ((data[30].toUByte().toInt() shl 8) or data[29].toUByte().toInt()).toShort(),
+                ((data[32].toUByte().toInt() shl 8) or data[31].toUByte().toInt()).toUShort(),
+                ((data[34].toUByte().toInt() shl 8) or data[33].toUByte().toInt()).toUShort(),
+
+                ByteBuffer.wrap(data, 35, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+
+                ((data[40].toUByte().toInt() shl 8) or data[39].toUByte().toInt()).toUShort(),
+
+                ByteBuffer.wrap(data, 41, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+
+                ByteBuffer.wrap(data, 41, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x30000000.toUInt(),
+
+                ByteBuffer.wrap(data, 41, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x0C000000.toUInt(),
+
+                ByteBuffer.wrap(data, 41, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x03000000.toUInt(),
+
+                ByteBuffer.wrap(data, 41, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00C00000.toUInt(),
+
+                ByteBuffer.wrap(data, 41, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00300000.toUInt(),
+
+                ByteBuffer.wrap(data, 41, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x000C0000.toUInt(),
+
+                ByteBuffer.wrap(data, 41, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00030000.toUInt(),
+
+                ByteBuffer.wrap(data, 41, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x0000C000.toUInt(),
+
+                ByteBuffer.wrap(data, 41, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00003000.toUInt(),
+
+                ByteBuffer.wrap(data, 41, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000C00.toUInt(),
+
+                ByteBuffer.wrap(data, 41, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000300.toUInt(),
+
+                ByteBuffer.wrap(data, 45, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+
+                ByteBuffer.wrap(data, 45, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x30000000.toUInt(),
+
+                ByteBuffer.wrap(data, 45, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x0C000000.toUInt(),
+
+                ByteBuffer.wrap(data, 45, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x03000000.toUInt(),
+
+                ByteBuffer.wrap(data, 45, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00C00000.toUInt(),
+
+                ByteBuffer.wrap(data, 45, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00300000.toUInt(),
+
+                ByteBuffer.wrap(data, 45, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x000C0000.toUInt(),
+
+                ByteBuffer.wrap(data, 45, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x0003C000.toUInt(),
+
+                ByteBuffer.wrap(data, 45, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00002000.toUInt(),
+
+                ByteBuffer.wrap(data, 45, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00001000.toUInt(),
+
+                ByteBuffer.wrap(data, 45, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000800.toUInt(),
+
+                ByteBuffer.wrap(data, 45, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000400.toUInt(),
+
+                ByteBuffer.wrap(data, 45, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000200.toUInt(),
+
+                ByteBuffer.wrap(data, 45, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000100.toUInt(),
+
+                ((data[50].toUByte().toInt() shl 8) or data[49].toUByte().toInt()).toShort(),
+                ((data[52].toUByte().toInt() shl 8) or data[51].toUByte().toInt()).toShort(),
+                ((data[54].toUByte().toInt() shl 8) or data[53].toUByte().toInt()).toShort(),
+
+                ByteBuffer.wrap(data, 55, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+
+                ByteBuffer.wrap(data, 55, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x18000000.toUInt(),
+
+                ByteBuffer.wrap(data, 55, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x04000000.toUInt(),
+
+                ByteBuffer.wrap(data, 55, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x03000000.toUInt(),
+
+                ByteBuffer.wrap(data, 55, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00800000.toUInt(),
+
+                ByteBuffer.wrap(data, 55, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00400000.toUInt(),
+
+                ByteBuffer.wrap(data, 55, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00300000.toUInt(),
+
+                ByteBuffer.wrap(data, 55, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00080000.toUInt(),
+                ByteBuffer.wrap(data, 55, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00040000.toUInt(),
+                ByteBuffer.wrap(data, 55, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00020000.toUInt(),
+                ByteBuffer.wrap(data, 55, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00010000.toUInt(),
+                ByteBuffer.wrap(data, 55, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x0000FF00.toUInt(),
+
+                ((data[60].toUByte().toInt() shl 8) or data[59].toUByte().toInt()).toUShort(),
+                data[61].toUByte(),
+                data[62].toUByte(),
+
+                ByteBuffer.wrap(data, 63, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 63, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x02000000.toUInt(),
+                ByteBuffer.wrap(data, 63, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x01000000.toUInt(),
+                ByteBuffer.wrap(data, 63, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00800000.toUInt(),
+                ByteBuffer.wrap(data, 63, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00400000.toUInt(),
+                ByteBuffer.wrap(data, 63, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00100000.toUInt(),
+                ByteBuffer.wrap(data, 63, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00080000.toUInt(),
+
+                ByteBuffer.wrap(data, 63, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00060000.toUInt(),
+
+                ByteBuffer.wrap(data, 63, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x0001F800.toUInt(),
+
+                ByteBuffer.wrap(data, 63, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000200.toUInt(),
+                ByteBuffer.wrap(data, 63, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000100.toUInt(),
+
+                ByteBuffer.wrap(data, 67, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 67, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x20000000.toUInt(),
+                ByteBuffer.wrap(data, 67, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x08000000.toUInt(),
+                ByteBuffer.wrap(data, 67, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x04000000.toUInt(),
+                ByteBuffer.wrap(data, 67, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x02000000.toUInt(),
+                ByteBuffer.wrap(data, 67, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00400000.toUInt(),
+                ByteBuffer.wrap(data, 67, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00180000.toUInt(),
+                ByteBuffer.wrap(data, 67, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00040000.toUInt(),
+                ByteBuffer.wrap(data, 67, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00001000.toUInt(),
+                ByteBuffer.wrap(data, 67, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000800.toUInt(),
+                ByteBuffer.wrap(data, 67, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000400.toUInt(),
+                ByteBuffer.wrap(data, 67, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000200.toUInt(),
+                ByteBuffer.wrap(data, 67, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000100.toUInt(),
+
+                ((data[72].toUByte().toInt() shl 8) or data[71].toUByte().toInt()).toUShort(),
+                ((data[74].toUByte().toInt() shl 8) or data[73].toUByte().toInt()).toShort(),
+                ((data[76].toUByte().toInt() shl 8) or data[75].toUByte().toInt()).toShort(),
+                ((data[78].toUByte().toInt() shl 8) or data[77].toUByte().toInt()).toShort(),
+                ((data[80].toUByte().toInt() shl 8) or data[79].toUByte().toInt()).toUShort(),
+                ((data[82].toUByte().toInt() shl 8) or data[81].toUByte().toInt()).toShort(),
+                ((data[84].toUByte().toInt() shl 8) or data[83].toUByte().toInt()).toShort(),
+                ((data[86].toUByte().toInt() shl 8) or data[85].toUByte().toInt()).toShort(),
+                ((data[88].toUByte().toInt() shl 8) or data[87].toUByte().toInt()).toShort()
+                //91
             )
             return msg
         }
 
         500 -> {
             msg = listOf(
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+                //далее сам класс
                 TODO()
             )
             return msg
@@ -182,6 +895,18 @@ fun process_data_be(id: Int, data: ByteArray):List<Comparable<*>>? {
 
         510 -> {
             msg = listOf(
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+                ((data[4].toUByte().toInt() shl 8) or data[3].toUByte().toInt()).toUShort(),
+                data[5].toUByte(),
+                data[6].toUByte(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00FFFFFF.toUInt(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0xFF000000.toUInt(),
+                data[11].toUByte() and 0x000001.toUByte(),
+                data[11].toUByte() and 0x000010.toUByte(),
+                data[11].toUByte() and 0x000008.toUByte(),
+                data[11].toUByte() and 0x000004.toUByte(),
+                //далее сам класс
                 TODO()
             )
             return msg
@@ -189,6 +914,22 @@ fun process_data_be(id: Int, data: ByteArray):List<Comparable<*>>? {
 
         511 -> {
             msg = listOf(
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+                ((data[4].toUByte().toInt() shl 8) or data[3].toUByte().toInt()).toUShort(),
+                data[5].toUByte(),
+                data[6].toUByte(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00FFFFFF.toUInt(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0xFF000000.toUInt(),
+                data[11].toUByte() and 0x000001.toUByte(),
+                data[11].toUByte() and 0x000002.toUByte(),
+                data[11].toUByte() and 0x000004.toUByte(),
+                data[11].toUByte() and 0x000008.toUByte(),
+                data[11].toUByte() and 0x000010.toUByte(),
+                data[11].toUByte() and 0x000020.toUByte(),
+                data[11].toUByte() and 0x000040.toUByte(),
+                data[11].toUByte() and 0x000080.toUByte(),
+                //далее сам класс
                 TODO()
             )
             return msg
@@ -196,6 +937,15 @@ fun process_data_be(id: Int, data: ByteArray):List<Comparable<*>>? {
 
         512 -> {
             msg = listOf(
+                ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
+                data[2].toUByte(),
+                ((data[4].toUByte().toInt() shl 8) or data[3].toUByte().toInt()).toUShort(),
+                data[5].toUByte(),
+                data[6].toUByte(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00FFFFFF.toUInt(),
+                ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0xFF000000.toUInt(),
+                //11 индекс скип
+                //далее сам класс
                 TODO()
             )
             return msg
@@ -455,8 +1205,6 @@ val PD_300 = listOf(
     TStructField( "Разовые ком реж СЗ, РК32", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
     TStructField( "Атака 2 вида", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
     TStructField( "Воздух-Земля (1-Воздух)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
-
-    TStructField( "Способ применения АСП", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
 
     TStructField( "Способ применения АСП",
         Flag.T_OP_EQ,
@@ -873,29 +1621,798 @@ val PD_410 = listOf(
 val PD_411 = listOf(
     TStructField( "Идентификатор пакета", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
     TStructField( "Контрольная сумма", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField( "Счетчик секундных циклов", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField( "Счетчик внутри секундного цикла", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField( "Порядковый номер выстрела", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField( "Время выстрела, сек", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField( "Счетчик времени удержания БК, циклов по 50 мс", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Достоверность внутрисистемного обмена БЭИПНО", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Отказ МКВ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Отказ ПКУ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Отказ БВ-С", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Отказ БСС", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Отказ БППУ-ГН", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Отказ бортовой ИКРЛ-С", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Отказ МС", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Путевой угол фактический, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Широта географическая компл., град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Долгота географическая компл., град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Широта географическая инерциальная, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Долгота географическая инерциальная, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Высота бароинерциальная, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Относительная барометрническая высота, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Высота геометрическая (радиовысота), м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Скорость приборная, км/ч", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Вертикальная бароинерциальная скорость, м/с", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Давление у земли, мм. рт. ст.", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Баллистический относ, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Относ НАР, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Время падения НАР, сек", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Дальность до цели, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Магнитное склонение, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Максимальная дальность прим. АСП, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Минимальная дальность прим. АСП, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Мощность бортового передатчика",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2, 3, 4),
+        listOf("опред.УРЧ", "выкл", "пониженная", "средняя", "полная"),
+        "запрещенная комбинация"
+    ),
+
+    TStructField("Исправность СНС",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность РВ",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность БПС-1 (СПАДИ)",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность ПКВ",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность КСС",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность БК-77",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность АРК",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность БПС-2 (СПАДИ)",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность РЛС",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность СУО",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность БСПИ-4",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Признаки исправности подсистем БРЭО (СРК4)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Время текущее московское, сек", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Превышение над навигационной целью в ЗСК, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Угол отклонения ПМ по направлению, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Угол отклонения ПМ по месту, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Расчетный угол атаки, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Расчетный угол скольжения, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Дальность от оператора плоская, км", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Скорость продольная земная Vx, км/ч", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Скорость поперечная земная Vz, км/ч", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Скорость вертикальная земная Vy, м/с", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), "")
 )
 
 val PD_412 = listOf(
     TStructField( "Идентификатор пакета", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
     TStructField( "Контрольная сумма", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField( "Счетчик секундных циклов", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField( "Счетчик внутри секундного цикла", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField( "Порядковый номер выстрела", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField( "Время выстрела, сек", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField( "Счетчик времени удержания БК, циклов по 50 мс", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Составляющая угловой скорости по оси X, град/с", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Составляющая угловой скорости по оси Y, град/с", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Составляющая угловой скорости по оси Z, град/с", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Составляющая линейного ускорения по оси X, м/с2", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Составляющая линейного ускорения по оси Y, м/с2", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Составляющая линейного ускорения по оси Z, м/с2", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Курс заданный, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Скорость приборная заданная, км/ч", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Перегрузка, ед", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Высота барометрическая заданная, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Высота опасная, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Расчетное время полета АСП до цели, сек", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Слово данных №2 АРК-25", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Дальность до исполняемой НТ, км", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Признаки исправности подсистем БРЭО (СРК3)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Исправность БЦВМ-1",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность БЦВМ-2",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность МФИ-О в (№1)",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность МФИ-О н (№2)",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность МФИ-Л л (№3)",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность МФИ-Л п (№4)",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность ПС",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность ИНС",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность СБКВ",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность ДИСС",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность СВС",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Признаки исправности подсистем БРЭО (СРК5)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Исправность ОПС",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность ТпСЛ",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность БСПИ-6",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность СВР-Б",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность МТЦ-Л",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Исправность БКТС-1",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2),
+        listOf("Неисправно", "Исправно", "Неготово или частично исправно"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Код БЧ НАР", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Пуск", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("ПР", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("ПКС", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("АКС", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Сброс", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("ДР-А", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Угол отклонения МПЦ по ИЛС по оси Y, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Угол отклонения МПЦ по ИЛС по оси Z, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Отклонение от ортодромии боковое (от ЛЗП), м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Дискретные пар-ры на ИЛС", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Яркость \"Запрета стрельбы\"",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 3),
+        listOf("Не рисуется", "Рисуется", "Мигает"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Яркость БК ИЛС", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Яркость МПЦ",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 3),
+        listOf("Не рисуется", "Рисуется", "Мигает"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Яркость времени полета УР-А", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Яркость отклонения от ЛЗП", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Яркость ПМ",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 3),
+        listOf("Не рисуется", "Рисуется", "Мигает"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Яркость мин. дальности прим.", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Яркость макс. дальности прим.", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Яркость ОМ лев.", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Яркость ОМ прав.", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("№ кадра", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Высота геометрическая заданная, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Максимально допустимая вертикальная перегрузка, ед", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("№ текущей НТ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Признаки НТ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Инерциальный режим счисления", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Курсовой режим счисления", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Допплеровский режим счисления", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Воздушный режим счисления", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Режим \"Возврат\"", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Выбор НППУ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Режим управления",
+        Flag.T_OP_EQ,
+        intArrayOf(1, 2, 3),
+        listOf("Путевой режим управления", "Маршрутный режим управления", "Комбинированный режим упрааления"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Тип НТ",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2, 4, 8, 16, 32),
+        listOf("Не определен", "Неизвестен", "Полет на Цель", "Полет на Аэродром", "Полет на ППМ", "Полет на КПМ", "Полет на ИПМ"),
+        "Запрещенный код"
+    ),
+
+    TStructField("К2-кв", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("К1-кв", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("СРК2", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Выбор НАР", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("режим ЛУР", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Разрешена коррекция от СНС", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Разрешена коррекция от ДИСС", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Коррекция координат по СНС", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Курс от (Авто-1, ИНС-2, СБКВ-3)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Поверхность", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Выбор А-С", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Выбор А-Ф", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Выбор А-К", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("ПОС", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("ЦУ-Л", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Время полета, сек", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Дальность до цели измеренная ТОЭС, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Угол ЛВ по азимуту ТОЭС, град.", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Угол места ЛВ  ТОЭС, град.", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Курс СБИ, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Дальность до цели тек. (ОПС), м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Дальность до цели (оператор) изм. (ОПС), м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Превышение над целью, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Превышение цели относительно точки взлета, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), "")
 )
 
 val PD_500 = listOf(
     TStructField( "Идентификатор пакета", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
     TStructField( "Контрольная сумма", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Слово признаков", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Порядковый номер последнего обработанного выстрела", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Счетчик сообщений", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Мощность передатчика",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2, 3, 4),
+        listOf("опред.УРЧ", "выкл", "пониженная", "средняя", "полная"),
+        "запрещенная комбинация"
+    )
 )
 
 val PD_510 = listOf(
     TStructField( "Идентификатор пакета", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
     TStructField( "Контрольная сумма", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Счетчик секундных циклов", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Счетчик внутри секундного цикла", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Порядковый номер выстрела", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Время выстрела, сек", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Счетчик времени удержания БК, циклов по 50 мс", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Признак приема 250 (VS) пакета", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Признак нажатия БК подвесок", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Признак нажатия БК ВПУ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Признак повторного пакета", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Время внутри суток, сек", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Широта (неуточненная), рад", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Долгота (неуточненная), рад", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Высота (неуточненная), м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Курс истинный, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Крен, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тангаж, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Высота абсолютная барометрическая, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Пуск 2 ТП 1", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Пуск 2 ТП 2", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Пуск 2 ТП 3", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Пуск 2 ТП 4", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("СУО ГЛАВНЫЙ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("ПР-Л", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("ПР-П", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Выбранный тип АСП",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2, 3, 4, 5),
+        listOf("Не выбран", "УР-А (Атака)", "ИГЛА", "C8", "ТБ", "УР-B (Вихрь)"),
+        "Запрещенный код"
+    ),
+
+    TStructField("Вариант разгрузки",
+        Flag.T_OP_EQ,
+        intArrayOf(1),
+        listOf("Внутр"),
+        "Внешн"
+    ),
+
+    TStructField("Режим разгрузки",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2, 3),
+        listOf("Не выбран", "КОР", "СР", "ДЛ"),
+        "Запрещенный код"
+    ),
+
+    TStructField("БК ВПУ Л", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("БК ВПУ O", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("БК ВПУ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("БК РС Л", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("БК РС O", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("БК УР О", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("БК", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("БР", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Тренаж",
+        Flag.T_OP_EQ,
+        intArrayOf(1),
+        listOf("Вкл"),
+        "Нет"
+    ),
+
+    TStructField("Блокировка СУО", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("ПР", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Выбор ТП 1", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Выбор ТП 2", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Выбор ТП 3", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Выбор ТП 4", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Выбор ТП 5", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Выбор ТП 6", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("ЛСН в работе", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Выбор ВПУ Л", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Выбор ВПУ О", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Выбранный ПЯ",
+        Flag.T_OP_EQ,
+        intArrayOf(1),
+        listOf("Передний"),
+        "Задний"
+    ),
+
+    TStructField("Темп работы ПУ",
+        Flag.T_OP_EQ,
+        intArrayOf(1),
+        listOf("Большой"),
+        "Малый"
+    ),
+
+    TStructField("Перекладка", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Выбор ВПУ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Квитанция ППУ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Остаток ПУ переднего", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Остаток ПУ заднего", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Скорость вдоль продольной оси, м/с", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Скорость вдоль поперечной оси, м/с", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Скорость вдоль вертикальной оси, м/с", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Продольная составляющая воздушной скорости, км/ч", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Поперечная составляющая воздушной скорости, км/ч", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Вертикальная составляющая воздушной скорости, км/ч", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Скорость относительная северная инерциальная, м/с", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Скорость относительная восточная инерциальная, м/с", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Вертикальная составляющая относительной скорости, м/с", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Значение скорости ветра, км/ч", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Навигационное направление ветра, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Угол отклонения ПМ по направлению, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Угол отклонения ПМ по месту, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Угол положения ППУ по направлению, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Угол положения ППУ по месту, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Угол ЛВ по азимуту ГОЭС, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Угол места ЛВ ГОЭС, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Превышение над целью, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), "")
 )
 
 val PD_511 = listOf(
     TStructField( "Идентификатор пакета", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
     TStructField( "Контрольная сумма", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Счетчик секундных циклов", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Счетчик внутри секундного цикла", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Порядковый номер выстрела", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Время выстрела, сек", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Счетчик времени удержания БК, циклов по 50 мс", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Достоверность внутрисистемного обмена БЭИПНО", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Отказ МКВ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Отказ ПКУ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Отказ БВ-С", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Отказ БСС", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Отказ БППУ-ГН", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Отказ бортовой ИКРЛ-С", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Отказ МС", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Время текущее московское", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Путевой угол фактический, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Угол крена компл., град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Угол тангажа компл., град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Широта географическая компл., град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Долгота географическая компл., град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Широта географическая инерциальная , град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Долгота географическая инерциальная , град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Высота бароинерциальная, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Относительная барометрническая высота, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Высота геометрическая (радиовысота), м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Скорость приборная, км/ч", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Вертикальная бароинерциальная скорость, м/с", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Давление у земли, мм. рт. ст.", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Полный относ снаряда в горизонтальной плоскости, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Полный относ снаряда в боковой плоскости, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Время полета снаряда, сек", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Расчетное время полета АСП до цели, сек", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Дальность до цели (оператора), тек., м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Дальность до цели (оператора), изм., м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Магнитное склонение, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Излучение ЛД РК4", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("ТА захватил цель РК4", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("ЛСН в работе РК4", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Неисправность ЛСН РК4", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Готовность ЛСН РК4", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Блокировка лазерного излучения РК4", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Арретир РК4", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Готовность ГОЭС", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Тип АСП на ТП1", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Количество АСП на ТП1", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Выбор ТП1", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Тип АСП на ТП2", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Количество АСП на ТП2", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Выбор ТП2", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Тип АСП на ТП3", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Количество АСП на ТП3", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Выбор ТП3", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Тип АСП на ТП4", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Количество АСП на ТП4", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Выбор ТП4", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Тип АСП на ТП5", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Количество АСП на ТП5", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Выбор ТП5", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Тип АСП на ТП6", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Количество АСП на ТП6", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Выбор ТП6", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Максимальная дальность прим. АСП, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Минимальная дальность прим. АСП, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Мощность бортового передатчика",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2, 3, 4),
+        listOf("опред.УРЧ", "выкл", "пониженная", "средняя", "полная"),
+        "запрещенная комбинация"
+    ),
+
+    TStructField("ЦУ Л", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Автовыбор ИНС или СБКВ",
+        Flag.T_OP_EQ,
+        intArrayOf(1),
+        listOf("Автовыбор"),
+        "Нет"
+    ),
+
+    TStructField("Система для счисленения СБКВ",
+        Flag.T_OP_EQ,
+        intArrayOf(1),
+        listOf("СБКВ"),
+        "Нет"
+    ),
+
+    TStructField("Система для счисленения ИНС",
+        Flag.T_OP_EQ,
+        intArrayOf(1),
+        listOf("ИНС"),
+        "Нет"
+    ),
+
+    TStructField("ЛЕВ/ПРАВ",
+        Flag.T_OP_EQ,
+        intArrayOf(1),
+        listOf("ПРАВ"),
+        "ЛЕВ"
+    ),
+
+    TStructField("Признак \"Работа\" (РК2)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Признак \"Маршрутный способ управления\" (РК2)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Пуск 1 ТП 1 (РК2)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Пуск 2 ТП 1 (РК2)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Пуск 1 ТП 2 (РК2)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Пуск 2 ТП 2 (РК2)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Пуск 1 ТП 3 (РК2)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Пуск 2 ТП 3 (РК2)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Пуск 1 ТП 4 (РК2)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Пуск 2 ТП 4 (РК2)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("ППУ (РК2)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("ЦУ О", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("СБРОС О", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Путевой способ управления", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Комбинированный способ управления", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Маршрутный способ управления", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("АС СНЯТ (о)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("АС СНЯТ (л)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Режимы ГОЭС Ка-52 (РК4)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Режимы ТП1 (РК6)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Режимы ТП2 (РК7)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Режимы ТП3 (РК8)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Режимы ТП4 (РК9)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Режимы ТП5 (РК10)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Режимы ТП6 (РК11)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Признаки достоверности подсистем БРЭО (РК2)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), "")
 )
 
 val PD_512 = listOf(
     TStructField( "Идентификатор пакета", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
     TStructField( "Контрольная сумма", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Счетчик секундных циклов", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Счетчик внутри секундного цикла", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Порядковый номер выстрела", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Время выстрела, сек", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Счетчик времени удержания БК, циклов по 50 мс", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Составляющая угловой скорости по оси X, град/с", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Составляющая угловой скорости по оси Y, град/с", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Составляющая угловой скорости по оси Z, град/с", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Составляющая линейного ускорения по оси X, м/с2", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Составляющая линейного ускорения по оси Y, м/с2", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Составляющая линейного ускорения по оси Z, м/с2", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Курс заданный, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Скорость заданная, км/ч", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Угол отклонения МПЦ по ИЛС по оси Y, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Угол отклонения МПЦ по ИЛС по оси Z, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Отклонение от ортодромии боковое (от ЛЗП), м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Дискретные пар-ры на ИЛС", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("№ кадра", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Яркость ОМ прав.", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Яркость ОМ лев.", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Яркость макс. дальности прим.", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Яркость мин. дальности прим.", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Яркость ПМ",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 3),
+        listOf("Не рисуется", "Рисуется", "Мигает"),
+        "Запрещенная комбинация"
+    ),
+
+    TStructField("Яркость отклонения от ЛЗП", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Яркость времени полета УР", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Яркость МПЦ",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 3),
+        listOf("Не рисуется", "Рисуется", "Мигает"),
+        "Запрещенная комбинация"
+    ),
+
+    TStructField("Яркость БК ИЛС", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Яркость Запрета стрельбы",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 3),
+        listOf("Не рисуется", "Рисуется", "Мигает"),
+        "Запрещенная комбинация"
+    ),
+
+    TStructField("Несход 1 АСП на ТП1", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Несход 2 АСП на ТП1", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Несход 3 АСП на ТП1", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Несход 4 АСП на ТП1", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Несход 5 АСП на ТП1", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Несход 6 АСП на ТП1", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип БЧ 1.1", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип БЧ 1.2", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип БЧ 1.3", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип БЧ 1.4", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип БЧ 1.5", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип БЧ 1.6", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Выбранный тип БЧ ТП1",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2, 3),
+        listOf("нет", "Ф1 - ОД", "Ф - ОФ", "К - кумулятивный"),
+        "Запрещенная комбинация"
+    ),
+
+    TStructField("Несход 1 АСП на ТП4", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Несход 2 АСП на ТП4", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Несход 3 АСП на ТП4", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Несход 4 АСП на ТП4", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Несход 5 АСП на ТП4", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Несход 6 АСП на ТП4", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Тип БЧ 4.1", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип БЧ 4.2", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип БЧ 4.3", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип БЧ 4.4", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип БЧ 4.5", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Тип БЧ 4.6", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Выбранный тип БЧ ТП4",
+        Flag.T_OP_EQ,
+        intArrayOf(0, 1, 2, 3),
+        listOf("нет", "Ф1 - ОД", "Ф - ОФ", "К - кумулятивный"),
+        "Запрещенная комбинация"
+    ),
+
+    TStructField("Дальность до исполняемой НТ, км", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Слово данных №2 АРК-25", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Исправность ИНС", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Отказ СБКВ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Отказ МИВП л.б.", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Отказ МИВП п.б.", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Отказ внутрисистемного обмена", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Исправность информации (РВ)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Исправность аппаратурная (РВ)", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Исправность УСК", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Исправность ИЛС", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Достоверность Аx", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Достоверность Аy", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Достоверность Тснар", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Достоверность Нпревц", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Отказ ГОЭС", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Исправность СУО", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Навигация", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Высота заданная, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Значение ЗПУ пролета НТ, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Признаки НТ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Расчетное время прибытия в НТ", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Максимально допустимая скорость полог. Пикир., км/ч", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Поперечная составляющая приборной скорости, км/ч", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Боковое отклонение от ЛЗП, м", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Азимут исполняемой НТ, град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+
+    TStructField("Время СВР, час", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Время СВР, мин", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Время СВР, сек", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), ""),
+    TStructField("Угол курса компл., град", Flag.T_OP_UNDEF, intArrayOf(0), listOf(""), "")
 )

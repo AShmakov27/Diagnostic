@@ -70,7 +70,7 @@ class LogViewModel @Inject constructor() : ViewModel() {
             readed.add(
                 MsgFromLog(
                     pos = count_read,
-                    ID = header[0].toUInt(),
+                    ID = ((header[1].toUByte().toInt() shl 8) or header[0].toUByte().toInt()).toUInt(),
                     size = header[4].toInt(),
                     date_time = date,
                     incoming_message = header[header.size - 1],
