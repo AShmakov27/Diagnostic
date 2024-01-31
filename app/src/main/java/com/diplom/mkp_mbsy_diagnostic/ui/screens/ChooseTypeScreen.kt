@@ -110,6 +110,7 @@ fun ChooseTypeContent(
                 Text(text = "Просмотр логов")
             }
         }
+        /*
         Spacer(modifier = Modifier.height(12.dp))
         Row(
             modifier = Modifier
@@ -124,6 +125,7 @@ fun ChooseTypeContent(
                 Text(text = "Тестирование")
             }
         }
+        */
     }
 }
 

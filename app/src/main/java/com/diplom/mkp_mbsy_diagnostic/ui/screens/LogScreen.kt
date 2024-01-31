@@ -261,15 +261,20 @@ fun PackagesView(
                         for (i in msg.indices) {
                             if (PD[i].m_nEnumOp == Flag.T_OP_EQ) {
                                 for (j in PD[i].m_nEnumValue.indices) {
-                                    additional = if (PD[i].m_nEnumValue[j].toString() == msg[i].toString()) {
-                                        PD[i].m_sEnumValue[j]
+                                    if (PD[i].m_nEnumValue[j].toString() == msg[i].toString()) {
+                                        additional = PD[i].m_sEnumValue[j]
+                                        break
                                     } else {
-                                        PD[i].m_elseEnumValue
+                                        additional = PD[i].m_elseEnumValue
                                     }
                                 }
                             }
+                            var tire = ""
+                            if (additional != "") {
+                                tire = "--"
+                            }
                             Text(
-                                text = "${PD[i].m_sName}: ${msg[i]} $additional",
+                                text = "${PD[i].m_sName}: ${msg[i]} $tire $additional",
                                 style = TextStyle(
                                     fontSize = MaterialTheme.typography.titleMedium.fontSize,
                                     fontWeight = FontWeight.Bold,
@@ -278,15 +283,13 @@ fun PackagesView(
                                 modifier = Modifier.padding(start = 5.dp, end = 10.dp)
                             )
                             additional = ""
-                            if (i % 7 == 0) {
-                                Spacer(
-                                    modifier = Modifier
-                                        .padding(start = 5.dp, end = 5.dp)
-                                        .height(3.dp)
-                                        .fillMaxWidth()
-                                        .background(color = MaterialTheme.colorScheme.onSecondaryContainer)
-                                )
-                            }
+                            Spacer(
+                                modifier = Modifier
+                                    .padding(start = 5.dp, end = 5.dp)
+                                    .height(1.dp)
+                                    .fillMaxWidth()
+                                    .background(color = MaterialTheme.colorScheme.onSecondaryContainer)
+                            )
                         }
                     }
                 }

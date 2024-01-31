@@ -88,6 +88,7 @@ class LogViewModel @Inject constructor() : ViewModel() {
         val input = context.contentResolver.openInputStream(uri)
         if (input != null) {
             val bytes = input.readBytes()
+            data.value = emptyList()
             extractRecords(bytes)
             input.close()
         }
