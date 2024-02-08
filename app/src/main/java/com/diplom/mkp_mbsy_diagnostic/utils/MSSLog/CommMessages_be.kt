@@ -886,8 +886,11 @@ fun process_data_be(id: Int, data: ByteArray):List<Comparable<*>>? {
             msg = listOf(
                 ((data[1].toUByte().toInt() shl 8) or data[0].toUByte().toInt()).toUShort(),
                 data[2].toUByte(),
-                //далее сам класс
-                TODO()
+
+                data[3].toUByte(),
+                data[4].toUByte(),
+                ByteBuffer.wrap(data, 5, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ((data[10].toUByte().toInt() shl 8) or data[9].toUByte().toInt()).toUShort()
             )
             return msg
         }
@@ -901,12 +904,89 @@ fun process_data_be(id: Int, data: ByteArray):List<Comparable<*>>? {
                 data[6].toUByte(),
                 (ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00FFFFFF.toUInt() shr Integer.numberOfTrailingZeros(0x00FFFFFF)).toInt() * 0.01,
                 ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0xFF000000.toUInt() shr Integer.numberOfTrailingZeros(0xFF000000.toInt()),
-                data[11].toUByte() and 0x000001.toUByte(),
-                data[11].toUByte() and 0x000010.toUByte(),
-                data[11].toUByte() and 0x000008.toUByte(),
-                data[11].toUByte() and 0x000004.toUByte(),
-                //далее сам класс
-                TODO()
+                data[11].toUByte().toUInt() and 0x000001.toUByte().toUInt() shr Integer.numberOfTrailingZeros(0x000001),
+                data[11].toUByte().toUInt() and 0x000010.toUByte().toUInt() shr Integer.numberOfTrailingZeros(0x000010),
+                data[11].toUByte().toUInt() and 0x000008.toUByte().toUInt() shr Integer.numberOfTrailingZeros(0x000008),
+                data[11].toUByte().toUInt() and 0x000004.toUByte().toUInt() shr Integer.numberOfTrailingZeros(0x000004),
+
+                ByteBuffer.wrap(data, 12, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 16, 4).order(ByteOrder.LITTLE_ENDIAN).int * 16384.0 / 1073741824.0,
+                ByteBuffer.wrap(data, 20, 4).order(ByteOrder.LITTLE_ENDIAN).int * 16384.0 / 1073741824.0,
+                ByteBuffer.wrap(data, 24, 4).order(ByteOrder.LITTLE_ENDIAN).int * 16384.0 / 1073741824.0,
+                ((data[41].toUByte().toInt() shl 8) or data[40].toUByte().toInt()).toShort() * 0.01,
+                ((data[43].toUByte().toInt() shl 8) or data[42].toUByte().toInt()).toShort() * 90.0 / 16384.0,
+                ((data[45].toUByte().toInt() shl 8) or data[44].toUByte().toInt()).toShort() * 90.0 / 16384.0,
+                ((data[47].toUByte().toInt() shl 8) or data[46].toUByte().toInt()).toShort() * 4096.0 / 16384.0,
+
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000001.toUInt() shr Integer.numberOfTrailingZeros(0x00000001),
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000002.toUInt() shr Integer.numberOfTrailingZeros(0x00000002),
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000004.toUInt() shr Integer.numberOfTrailingZeros(0x00000004),
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000008.toUInt() shr Integer.numberOfTrailingZeros(0x00000008),
+
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000100.toUInt() shr Integer.numberOfTrailingZeros(0x00000100),
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000400.toUInt() shr Integer.numberOfTrailingZeros(0x00000400),
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000800.toUInt() shr Integer.numberOfTrailingZeros(0x00000800),
+
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x0000F000.toUInt() shr Integer.numberOfTrailingZeros(0x0000F000),
+
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00010000.toUInt() shr Integer.numberOfTrailingZeros(0x00010000),
+
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00060000.toUInt() shr Integer.numberOfTrailingZeros(0x00060000),
+
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00080000.toUInt() shr Integer.numberOfTrailingZeros(0x00080000),
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00100000.toUInt() shr Integer.numberOfTrailingZeros(0x00100000),
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00200000.toUInt() shr Integer.numberOfTrailingZeros(0x00200000),
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00400000.toUInt() shr Integer.numberOfTrailingZeros(0x00400000),
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00800000.toUInt() shr Integer.numberOfTrailingZeros(0x00800000),
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x01000000.toUInt() shr Integer.numberOfTrailingZeros(0x01000000),
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x02000000.toUInt() shr Integer.numberOfTrailingZeros(0x02000000),
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x04000000.toUInt() shr Integer.numberOfTrailingZeros(0x04000000),
+
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x08000000.toUInt() shr Integer.numberOfTrailingZeros(0x08000000),
+
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x10000000.toUInt() shr Integer.numberOfTrailingZeros(0x10000000),
+                ByteBuffer.wrap(data, 82, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x20000000.toUInt() shr Integer.numberOfTrailingZeros(0x20000000),
+
+                ByteBuffer.wrap(data, 86, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000001.toUInt() shr Integer.numberOfTrailingZeros(0x00000001),
+                ByteBuffer.wrap(data, 86, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000002.toUInt() shr Integer.numberOfTrailingZeros(0x00000002),
+                ByteBuffer.wrap(data, 86, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000004.toUInt() shr Integer.numberOfTrailingZeros(0x00000004),
+                ByteBuffer.wrap(data, 86, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000008.toUInt() shr Integer.numberOfTrailingZeros(0x00000008),
+                ByteBuffer.wrap(data, 86, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000010.toUInt() shr Integer.numberOfTrailingZeros(0x00000010),
+                ByteBuffer.wrap(data, 86, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000020.toUInt() shr Integer.numberOfTrailingZeros(0x00000020),
+
+                ByteBuffer.wrap(data, 86, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000080.toUInt() shr Integer.numberOfTrailingZeros(0x00000080),
+                ByteBuffer.wrap(data, 86, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000100.toUInt() shr Integer.numberOfTrailingZeros(0x00000100),
+                ByteBuffer.wrap(data, 86, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000200.toUInt() shr Integer.numberOfTrailingZeros(0x00000200),
+
+                ByteBuffer.wrap(data, 86, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000400.toUInt() shr Integer.numberOfTrailingZeros(0x00000400),
+
+                ByteBuffer.wrap(data, 86, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000800.toUInt() shr Integer.numberOfTrailingZeros(0x00000800),
+
+                ByteBuffer.wrap(data, 86, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00001000.toUInt() shr Integer.numberOfTrailingZeros(0x00000020),
+                ByteBuffer.wrap(data, 86, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00002000.toUInt() shr Integer.numberOfTrailingZeros(0x00002000),
+                ByteBuffer.wrap(data, 86, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00004000.toUInt() shr Integer.numberOfTrailingZeros(0x00004000),
+                ByteBuffer.wrap(data, 86, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x007F8000.toUInt() shr Integer.numberOfTrailingZeros(0x007F8000),
+                ByteBuffer.wrap(data, 86, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x7F800000.toUInt() shr Integer.numberOfTrailingZeros(0x7F800000),
+
+                ByteBuffer.wrap(data, 28, 4).order(ByteOrder.LITTLE_ENDIAN).int * 0.01,
+                ByteBuffer.wrap(data, 32, 4).order(ByteOrder.LITTLE_ENDIAN).int * 0.01,
+                ByteBuffer.wrap(data, 36, 4).order(ByteOrder.LITTLE_ENDIAN).int * 0.01,
+
+                ((data[49].toUByte().toInt() shl 8) or data[48].toUByte().toInt()).toShort() * 256.0 / 16384.0,
+                ((data[51].toUByte().toInt() shl 8) or data[50].toUByte().toInt()).toShort() * 256.0 / 16384.0,
+                ((data[53].toUByte().toInt() shl 8) or data[52].toUByte().toInt()).toShort() * 256.0 / 16384.0,
+                ByteBuffer.wrap(data, 54, 4).order(ByteOrder.LITTLE_ENDIAN).int * 842.865 / 1073741824.0,
+                ByteBuffer.wrap(data, 58, 4).order(ByteOrder.LITTLE_ENDIAN).int * 842.865 / 1073741824.0,
+                ((data[63].toUByte().toInt() shl 8) or data[62].toUByte().toInt()).toShort() * 842.865 / 16384.0,
+                ((data[65].toUByte().toInt() shl 8) or data[64].toUByte().toInt()).toShort() * 64.0 / 32768.0,
+                ((data[67].toUByte().toInt() shl 8) or data[66].toUByte().toInt()).toShort() * 90.0 / 16384.0,
+                ((data[69].toUByte().toInt() shl 8) or data[68].toUByte().toInt()).toShort() * 1.0 / 83.409,
+                ((data[71].toUByte().toInt() shl 8) or data[70].toUByte().toInt()).toShort() * 1.0 / 83.409,
+                ((data[73].toUByte().toInt() shl 8) or data[72].toUByte().toInt()).toShort() * 90.0 / 16384.0,
+                ((data[75].toUByte().toInt() shl 8) or data[74].toUByte().toInt()).toShort() * 90.0 / 16384.0,
+                ((data[77].toUByte().toInt() shl 8) or data[76].toUByte().toInt()).toShort() * 180.0 / 16384.0,
+                ((data[79].toUByte().toInt() shl 8) or data[78].toUByte().toInt()).toShort() * 90.0 / 16384.0,
+                ((data[81].toUByte().toInt() shl 8) or data[80].toUByte().toInt()).toShort() * 4096.0 / 16384.0
             )
             return msg
         }
@@ -920,16 +1000,116 @@ fun process_data_be(id: Int, data: ByteArray):List<Comparable<*>>? {
                 data[6].toUByte(),
                 (ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00FFFFFF.toUInt() shr Integer.numberOfTrailingZeros(0x00FFFFFF)).toInt() * 0.01,
                 ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0xFF000000.toUInt() shr Integer.numberOfTrailingZeros(0xFF000000.toInt()),
-                data[11].toUByte() and 0x000001.toUByte(),
-                data[11].toUByte() and 0x000002.toUByte(),
-                data[11].toUByte() and 0x000004.toUByte(),
-                data[11].toUByte() and 0x000008.toUByte(),
-                data[11].toUByte() and 0x000010.toUByte(),
-                data[11].toUByte() and 0x000020.toUByte(),
-                data[11].toUByte() and 0x000040.toUByte(),
-                data[11].toUByte() and 0x000080.toUByte(),
-                //далее сам класс
-                TODO()
+                data[11].toUByte().toUInt() and 0x000001.toUByte().toUInt() shr Integer.numberOfTrailingZeros(0x000001),
+                data[11].toUByte().toUInt() and 0x000002.toUByte().toUInt() shr Integer.numberOfTrailingZeros(0x000002),
+                data[11].toUByte().toUInt() and 0x000004.toUByte().toUInt() shr Integer.numberOfTrailingZeros(0x000004),
+                data[11].toUByte().toUInt() and 0x000008.toUByte().toUInt() shr Integer.numberOfTrailingZeros(0x000008),
+                data[11].toUByte().toUInt() and 0x000010.toUByte().toUInt() shr Integer.numberOfTrailingZeros(0x000010),
+                data[11].toUByte().toUInt() and 0x000020.toUByte().toUInt() shr Integer.numberOfTrailingZeros(0x000020),
+                data[11].toUByte().toUInt() and 0x000040.toUByte().toUInt() shr Integer.numberOfTrailingZeros(0x000040),
+                data[11].toUByte().toUInt() and 0x000080.toUByte().toUInt() shr Integer.numberOfTrailingZeros(0x000080),
+
+                ByteBuffer.wrap(data, 12, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ((data[17].toUByte().toInt() shl 8) or data[16].toUByte().toInt()).toShort() * 90.0 / 16384.0,
+                ((data[19].toUByte().toInt() shl 8) or data[18].toUByte().toInt()).toShort() * 90.0 / 16384.0,
+                ((data[21].toUByte().toInt() shl 8) or data[20].toUByte().toInt()).toShort() * 90.0 / 16384.0,
+                ByteBuffer.wrap(data, 22, 4).order(ByteOrder.LITTLE_ENDIAN).int * 90.0 / 1073741824.0,
+                ByteBuffer.wrap(data, 26, 4).order(ByteOrder.LITTLE_ENDIAN).int * 90.0 / 1073741824.0,
+                ByteBuffer.wrap(data, 30, 4).order(ByteOrder.LITTLE_ENDIAN).int * 90.0 / 1073741824.0,
+                ByteBuffer.wrap(data, 34, 4).order(ByteOrder.LITTLE_ENDIAN).int * 90.0 / 1073741824.0,
+                ByteBuffer.wrap(data, 38, 4).order(ByteOrder.LITTLE_ENDIAN).int * 16384.0 / 1073741824.0,
+                ((data[43].toUByte().toInt() shl 8) or data[42].toUByte().toInt()).toShort() * 4096.0 / 16384.0,
+                ((data[45].toUByte().toInt() shl 8) or data[44].toUByte().toInt()).toShort() * 1024.0 / 32768.0,
+                ((data[47].toUByte().toInt() shl 8) or data[46].toUByte().toInt()).toShort() * 256.0 / 16384.0,
+                ((data[49].toUByte().toInt() shl 8) or data[48].toUByte().toInt()).toShort() * 32.0 / 16384.0,
+                ((data[51].toUByte().toInt() shl 8) or data[50].toUByte().toInt()).toShort() * 512.0 / 16384.0,
+                ((data[53].toUByte().toInt() shl 8) or data[52].toUByte().toInt()).toShort() * 16384.0 / 16384.0,
+                ((data[55].toUByte().toInt() shl 8) or data[54].toUByte().toInt()).toShort() * 4096.0 / 16384.0,
+                ((data[57].toUByte().toInt() shl 8) or data[56].toUByte().toInt()).toShort() * 128.0 / 16384.0,
+                ((data[59].toUByte().toInt() shl 8) or data[58].toUByte().toInt()).toShort() * 128.0 / 16384.0,
+                ((data[61].toUByte().toInt() shl 8) or data[60].toUByte().toInt()).toShort() * 16384.0 / 32768.0,
+                ((data[63].toUByte().toInt() shl 8) or data[62].toUByte().toInt()).toShort() * 16384.0 / 16384.0,
+                ((data[65].toUByte().toInt() shl 8) or data[64].toUByte().toInt()).toShort() * 90.0 / 16384.0,
+
+                ByteBuffer.wrap(data, 66, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000100.toUInt() shr Integer.numberOfTrailingZeros(0x00000100),
+                ByteBuffer.wrap(data, 66, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000200.toUInt() shr Integer.numberOfTrailingZeros(0x00000200),
+                ByteBuffer.wrap(data, 66, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00001000.toUInt() shr Integer.numberOfTrailingZeros(0x00001000),
+                ByteBuffer.wrap(data, 66, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00002000.toUInt() shr Integer.numberOfTrailingZeros(0x00002000),
+                ByteBuffer.wrap(data, 66, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00004000.toUInt() shr Integer.numberOfTrailingZeros(0x00004000),
+                ByteBuffer.wrap(data, 66, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00008000.toUInt() shr Integer.numberOfTrailingZeros(0x00008000),
+                ByteBuffer.wrap(data, 66, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00080000.toUInt() shr Integer.numberOfTrailingZeros(0x00080000),
+                ByteBuffer.wrap(data, 66, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00100000.toUInt() shr Integer.numberOfTrailingZeros(0x00100000),
+
+                ((data[71].toUByte().toInt() shl 8) or data[70].toUByte().toInt()).toUShort().toUInt() and 0x000003C0.toUInt() shr Integer.numberOfTrailingZeros(0x000003C0),
+                ((data[71].toUByte().toInt() shl 8) or data[70].toUByte().toInt()).toUShort().toUInt() and 0x0000003E.toUInt() shr Integer.numberOfTrailingZeros(0x0000003E),
+                ((data[71].toUByte().toInt() shl 8) or data[70].toUByte().toInt()).toUShort().toUInt() and 0x00000001.toUInt() shr Integer.numberOfTrailingZeros(0x00000001),
+
+                ((data[73].toUByte().toInt() shl 8) or data[72].toUByte().toInt()).toUShort().toUInt() and 0x000003C0.toUInt() shr Integer.numberOfTrailingZeros(0x000003C0),
+                ((data[73].toUByte().toInt() shl 8) or data[72].toUByte().toInt()).toUShort().toUInt() and 0x0000003E.toUInt() shr Integer.numberOfTrailingZeros(0x0000003E),
+                ((data[73].toUByte().toInt() shl 8) or data[72].toUByte().toInt()).toUShort().toUInt() and 0x00000001.toUInt() shr Integer.numberOfTrailingZeros(0x00000001),
+
+                ((data[75].toUByte().toInt() shl 8) or data[74].toUByte().toInt()).toUShort().toUInt() and 0x000003C0.toUInt() shr Integer.numberOfTrailingZeros(0x000003C0),
+                ((data[75].toUByte().toInt() shl 8) or data[74].toUByte().toInt()).toUShort().toUInt() and 0x0000003E.toUInt() shr Integer.numberOfTrailingZeros(0x0000003E),
+                ((data[75].toUByte().toInt() shl 8) or data[74].toUByte().toInt()).toUShort().toUInt() and 0x00000001.toUInt() shr Integer.numberOfTrailingZeros(0x00000001),
+
+                ((data[77].toUByte().toInt() shl 8) or data[76].toUByte().toInt()).toUShort().toUInt() and 0x000003C0.toUInt() shr Integer.numberOfTrailingZeros(0x000003C0),
+                ((data[77].toUByte().toInt() shl 8) or data[76].toUByte().toInt()).toUShort().toUInt() and 0x0000003E.toUInt() shr Integer.numberOfTrailingZeros(0x0000003E),
+                ((data[77].toUByte().toInt() shl 8) or data[76].toUByte().toInt()).toUShort().toUInt() and 0x00000001.toUInt() shr Integer.numberOfTrailingZeros(0x00000001),
+
+                ((data[79].toUByte().toInt() shl 8) or data[78].toUByte().toInt()).toUShort().toUInt() and 0x000003C0.toUInt() shr Integer.numberOfTrailingZeros(0x000003C0),
+                ((data[79].toUByte().toInt() shl 8) or data[78].toUByte().toInt()).toUShort().toUInt() and 0x0000003E.toUInt() shr Integer.numberOfTrailingZeros(0x0000003E),
+                ((data[79].toUByte().toInt() shl 8) or data[78].toUByte().toInt()).toUShort().toUInt() and 0x00000001.toUInt() shr Integer.numberOfTrailingZeros(0x00000001),
+
+                ((data[81].toUByte().toInt() shl 8) or data[80].toUByte().toInt()).toUShort().toUInt() and 0x000003C0.toUInt() shr Integer.numberOfTrailingZeros(0x000003C0),
+                ((data[81].toUByte().toInt() shl 8) or data[80].toUByte().toInt()).toUShort().toUInt() and 0x0000003E.toUInt() shr Integer.numberOfTrailingZeros(0x0000003E),
+                ((data[81].toUByte().toInt() shl 8) or data[80].toUByte().toInt()).toUShort().toUInt() and 0x00000001.toUInt() shr Integer.numberOfTrailingZeros(0x00000001),
+
+                ((data[83].toUByte().toInt() shl 8) or data[82].toUByte().toInt()).toShort(),
+                ((data[85].toUByte().toInt() shl 8) or data[84].toUByte().toInt()).toShort(),
+                data[86].toUByte(),
+
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x20000000.toUInt() shr Integer.numberOfTrailingZeros(0x20000000),
+
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x10000000.toUInt() shr Integer.numberOfTrailingZeros(0x10000000),
+
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x08000000.toUInt() shr Integer.numberOfTrailingZeros(0x08000000),
+
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x04000000.toUInt() shr Integer.numberOfTrailingZeros(0x04000000),
+
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x02000000.toUInt() shr Integer.numberOfTrailingZeros(0x02000000),
+
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x01000000.toUInt() shr Integer.numberOfTrailingZeros(0x01000000),
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000400.toUInt() shr Integer.numberOfTrailingZeros(0x00000400),
+
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00010000.toUInt() shr Integer.numberOfTrailingZeros(0x00010000),
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00020000.toUInt() shr Integer.numberOfTrailingZeros(0x00020000),
+
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00040000.toUInt() shr Integer.numberOfTrailingZeros(0x00040000),
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00080000.toUInt() shr Integer.numberOfTrailingZeros(0x00080000),
+
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00100000.toUInt() shr Integer.numberOfTrailingZeros(0x00100000),
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00200000.toUInt() shr Integer.numberOfTrailingZeros(0x00200000),
+
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00400000.toUInt() shr Integer.numberOfTrailingZeros(0x00400000),
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00800000.toUInt() shr Integer.numberOfTrailingZeros(0x00800000),
+
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00008000.toUInt() shr Integer.numberOfTrailingZeros(0x00008000),
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00004000.toUInt() shr Integer.numberOfTrailingZeros(0x00004000),
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00002000.toUInt() shr Integer.numberOfTrailingZeros(0x00002000),
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00001000.toUInt() shr Integer.numberOfTrailingZeros(0x00001000),
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000800.toUInt() shr Integer.numberOfTrailingZeros(0x00000800),
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000400.toUInt() shr Integer.numberOfTrailingZeros(0x00000400),
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000200.toUInt() shr Integer.numberOfTrailingZeros(0x00000200),
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000100.toUInt() shr Integer.numberOfTrailingZeros(0x00000100),
+
+                ByteBuffer.wrap(data, 66, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ((data[71].toUByte().toInt() shl 8) or data[70].toUByte().toInt()).toUShort(),
+                ((data[73].toUByte().toInt() shl 8) or data[72].toUByte().toInt()).toUShort(),
+                ((data[75].toUByte().toInt() shl 8) or data[74].toUByte().toInt()).toUShort(),
+                ((data[77].toUByte().toInt() shl 8) or data[76].toUByte().toInt()).toUShort(),
+                ((data[79].toUByte().toInt() shl 8) or data[78].toUByte().toInt()).toUShort(),
+                ((data[81].toUByte().toInt() shl 8) or data[80].toUByte().toInt()).toUShort(),
+                ByteBuffer.wrap(data, 87, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt()
             )
             return msg
         }
@@ -943,9 +1123,101 @@ fun process_data_be(id: Int, data: ByteArray):List<Comparable<*>>? {
                 data[6].toUByte(),
                 (ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00FFFFFF.toUInt() shr Integer.numberOfTrailingZeros(0x00FFFFFF)).toInt() * 0.01,
                 ByteBuffer.wrap(data, 7, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0xFF000000.toUInt() shr Integer.numberOfTrailingZeros(0xFF000000.toInt()),
-                //11 индекс скип
-                //далее сам класс
-                TODO()
+
+                ((data[13].toUByte().toInt() shl 8) or data[12].toUByte().toInt()).toShort() * 256.0 / 16384.0,
+                ((data[15].toUByte().toInt() shl 8) or data[14].toUByte().toInt()).toShort() * 256.0 / 16384.0,
+                ((data[17].toUByte().toInt() shl 8) or data[16].toUByte().toInt()).toShort() * 256.0 / 16384.0,
+                ((data[19].toUByte().toInt() shl 8) or data[18].toUByte().toInt()).toShort() * 64.0 / 16384.0,
+                ((data[21].toUByte().toInt() shl 8) or data[20].toUByte().toInt()).toShort() * 64.0 / 16384.0,
+                ((data[23].toUByte().toInt() shl 8) or data[22].toUByte().toInt()).toShort() * 64.0 / 16384.0,
+                ((data[25].toUByte().toInt() shl 8) or data[24].toUByte().toInt()).toShort() * 0.01,
+                ((data[27].toUByte().toInt() shl 8) or data[26].toUByte().toInt()).toShort() * 256.0 / 32768.0,
+                ((data[29].toUByte().toInt() shl 8) or data[28].toUByte().toInt()).toShort() * 1.0 / 83.409,
+                ((data[31].toUByte().toInt() shl 8) or data[30].toUByte().toInt()).toShort() * 1.0 / 83.409,
+                ((data[33].toUByte().toInt() shl 8) or data[32].toUByte().toInt()).toShort() * 2048.0 / 32768.0,
+
+                ByteBuffer.wrap(data, 34, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 34, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x0000FF00.toUInt() shr Integer.numberOfTrailingZeros(0x0000FF00),
+                ByteBuffer.wrap(data, 34, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00010000.toUInt() shr Integer.numberOfTrailingZeros(0x00010000),
+                ByteBuffer.wrap(data, 34, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00020000.toUInt() shr Integer.numberOfTrailingZeros(0x00020000),
+                ByteBuffer.wrap(data, 34, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00040000.toUInt() shr Integer.numberOfTrailingZeros(0x00040000),
+                ByteBuffer.wrap(data, 34, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00080000.toUInt() shr Integer.numberOfTrailingZeros(0x00080000),
+
+                ByteBuffer.wrap(data, 34, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00300000.toUInt() shr Integer.numberOfTrailingZeros(0x00300000),
+
+                ByteBuffer.wrap(data, 34, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00400000.toUInt() shr Integer.numberOfTrailingZeros(0x00400000),
+                ByteBuffer.wrap(data, 34, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00800000.toUInt() shr Integer.numberOfTrailingZeros(0x00800000),
+
+                ByteBuffer.wrap(data, 34, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x03000000.toUInt() shr Integer.numberOfTrailingZeros(0x03000000),
+
+                ByteBuffer.wrap(data, 34, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x04000000.toUInt() shr Integer.numberOfTrailingZeros(0x04000000),
+
+                ByteBuffer.wrap(data, 34, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x18000000.toUInt() shr Integer.numberOfTrailingZeros(0x18000000),
+
+                ByteBuffer.wrap(data, 38, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00400000.toUInt() shr Integer.numberOfTrailingZeros(0x00400000),
+                ByteBuffer.wrap(data, 38, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00800000.toUInt() shr Integer.numberOfTrailingZeros(0x00800000),
+                ByteBuffer.wrap(data, 38, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x01000000.toUInt() shr Integer.numberOfTrailingZeros(0x01000000),
+                ByteBuffer.wrap(data, 38, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x02000000.toUInt() shr Integer.numberOfTrailingZeros(0x02000000),
+                ByteBuffer.wrap(data, 38, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x04000000.toUInt() shr Integer.numberOfTrailingZeros(0x04000000),
+                ByteBuffer.wrap(data, 38, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x08000000.toUInt() shr Integer.numberOfTrailingZeros(0x08000000),
+
+                ByteBuffer.wrap(data, 38, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000C00.toUInt() shr Integer.numberOfTrailingZeros(0x00000C00),
+                ByteBuffer.wrap(data, 38, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00003000.toUInt() shr Integer.numberOfTrailingZeros(0x00003000),
+                ByteBuffer.wrap(data, 38, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x0000C000.toUInt() shr Integer.numberOfTrailingZeros(0x0000C000),
+                ByteBuffer.wrap(data, 38, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00030000.toUInt() shr Integer.numberOfTrailingZeros(0x00030000),
+                ByteBuffer.wrap(data, 38, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x000C0000.toUInt() shr Integer.numberOfTrailingZeros(0x000C0000),
+                ByteBuffer.wrap(data, 38, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00300000.toUInt() shr Integer.numberOfTrailingZeros(0x00300000),
+
+                ByteBuffer.wrap(data, 38, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+
+                ByteBuffer.wrap(data, 42, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00400000.toUInt() shr Integer.numberOfTrailingZeros(0x00400000),
+                ByteBuffer.wrap(data, 42, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00800000.toUInt() shr Integer.numberOfTrailingZeros(0x00800000),
+                ByteBuffer.wrap(data, 42, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x01000000.toUInt() shr Integer.numberOfTrailingZeros(0x01000000),
+                ByteBuffer.wrap(data, 42, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x02000000.toUInt() shr Integer.numberOfTrailingZeros(0x02000000),
+                ByteBuffer.wrap(data, 42, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x04000000.toUInt() shr Integer.numberOfTrailingZeros(0x04000000),
+                ByteBuffer.wrap(data, 42, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x08000000.toUInt() shr Integer.numberOfTrailingZeros(0x08000000),
+
+                ByteBuffer.wrap(data, 42, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000C00.toUInt() shr Integer.numberOfTrailingZeros(0x00000C00),
+                ByteBuffer.wrap(data, 42, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00003000.toUInt() shr Integer.numberOfTrailingZeros(0x00003000),
+                ByteBuffer.wrap(data, 42, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x0000C000.toUInt() shr Integer.numberOfTrailingZeros(0x0000C000),
+                ByteBuffer.wrap(data, 42, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00030000.toUInt() shr Integer.numberOfTrailingZeros(0x00030000),
+                ByteBuffer.wrap(data, 42, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x000C0000.toUInt() shr Integer.numberOfTrailingZeros(0x000C0000),
+                ByteBuffer.wrap(data, 42, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00300000.toUInt() shr Integer.numberOfTrailingZeros(0x00300000),
+
+                ByteBuffer.wrap(data, 42, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+
+                ((data[47].toUByte().toInt() shl 8) or data[46].toUByte().toInt()).toShort() * 500.0 / 32768.0,
+                ByteBuffer.wrap(data, 48, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+
+                ByteBuffer.wrap(data, 52, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000100.toUInt() shr Integer.numberOfTrailingZeros(0x00000100),
+                ByteBuffer.wrap(data, 52, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000200.toUInt() shr Integer.numberOfTrailingZeros(0x00000200),
+                ByteBuffer.wrap(data, 52, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000400.toUInt() shr Integer.numberOfTrailingZeros(0x00000400),
+                ByteBuffer.wrap(data, 52, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00000800.toUInt() shr Integer.numberOfTrailingZeros(0x00000800),
+                ByteBuffer.wrap(data, 52, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00001000.toUInt() shr Integer.numberOfTrailingZeros(0x00001000),
+                ByteBuffer.wrap(data, 52, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00002000.toUInt() shr Integer.numberOfTrailingZeros(0x00002000),
+                ByteBuffer.wrap(data, 52, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00004000.toUInt() shr Integer.numberOfTrailingZeros(0x00004000),
+                ByteBuffer.wrap(data, 52, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00008000.toUInt() shr Integer.numberOfTrailingZeros(0x00008000),
+                ByteBuffer.wrap(data, 52, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00010000.toUInt() shr Integer.numberOfTrailingZeros(0x00010000),
+                ByteBuffer.wrap(data, 52, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00020000.toUInt() shr Integer.numberOfTrailingZeros(0x00020000),
+                ByteBuffer.wrap(data, 52, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00040000.toUInt() shr Integer.numberOfTrailingZeros(0x00040000),
+                ByteBuffer.wrap(data, 52, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00080000.toUInt() shr Integer.numberOfTrailingZeros(0x00080000),
+                ByteBuffer.wrap(data, 52, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00100000.toUInt() shr Integer.numberOfTrailingZeros(0x00100000),
+                ByteBuffer.wrap(data, 52, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00200000.toUInt() shr Integer.numberOfTrailingZeros(0x00200000),
+                ByteBuffer.wrap(data, 52, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00400000.toUInt() shr Integer.numberOfTrailingZeros(0x00400000),
+                ByteBuffer.wrap(data, 52, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00800000.toUInt() shr Integer.numberOfTrailingZeros(0x00800000),
+
+                ((data[57].toUByte().toInt() shl 8) or data[56].toUByte().toInt()).toShort() * 2048.0 / 32768.0,
+                ((data[59].toUByte().toInt() shl 8) or data[58].toUByte().toInt()).toShort() * 90.0 / 16384.0,
+                ByteBuffer.wrap(data, 60, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ByteBuffer.wrap(data, 64, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt(),
+                ((data[69].toUByte().toInt() shl 8) or data[68].toUByte().toInt()).toShort() * 256.0 / 16384.0,
+                ((data[71].toUByte().toInt() shl 8) or data[70].toUByte().toInt()).toShort() * 256.0 / 16384.0,
+                ((data[73].toUByte().toInt() shl 8) or data[72].toUByte().toInt()).toShort() * 2000.0 / 16384.0,
+                ((data[75].toUByte().toInt() shl 8) or data[74].toUByte().toInt()).toShort() * 90.0 / 16384.0,
+                ByteBuffer.wrap(data, 76, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x01F00000.toUInt() shr Integer.numberOfTrailingZeros(0x01F00000),
+                ByteBuffer.wrap(data, 76, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x000FC000.toUInt() shr Integer.numberOfTrailingZeros(0x000FC000),
+                ByteBuffer.wrap(data, 76, 4).order(ByteOrder.LITTLE_ENDIAN).int.toUInt() and 0x00003F00.toUInt() shr Integer.numberOfTrailingZeros(0x00003F00),
+                ((data[81].toUByte().toInt() shl 8) or data[80].toUByte().toInt()).toShort() * 0.01
             )
             return msg
         }

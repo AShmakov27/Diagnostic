@@ -259,6 +259,7 @@ fun PackagesView(
                 if (PD != null) {
                     if (msg != null) {
                         for (i in msg.indices) {
+
                             if (PD[i].m_nEnumOp == Flag.T_OP_EQ) {
                                 for (j in PD[i].m_nEnumValue.indices) {
                                     if (PD[i].m_nEnumValue[j].toString() == msg[i].toString()) {
@@ -269,10 +270,12 @@ fun PackagesView(
                                     }
                                 }
                             }
+
                             var tire = ""
                             if (additional != "") {
                                 tire = "--"
                             }
+
                             Text(
                                 text = "${PD[i].m_sName}: ${msg[i]} $tire $additional",
                                 style = TextStyle(

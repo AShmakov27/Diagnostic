@@ -35,9 +35,12 @@ class LogViewModel @Inject constructor() : ViewModel() {
         val readed = ArrayList<MsgFromLog>()
         var startIndex = 295
         var count_read = 0
+        var shift = 0
         data.value = emptyList()
+        
         val fileheader = fileBytes.copyOfRange(fileBytes.indexOf('C'.code.toByte()), startIndex)
         libName = fileheader.copyOfRange(0, fileheader.indexOf(0)).toString(Charsets.UTF_8)
+
         while (startIndex < fileBytes.size) {
             val babIndex =
                 find4BytesInArray(fileBytes, byteArrayOf(0x42, 0x41, 0x42, 0x00), startIndex)
@@ -54,25 +57,17 @@ class LogViewModel @Inject constructor() : ViewModel() {
             val header = fileBytes.copyOfRange(babIndex + 4, dedIndex)
 
             val nextBabIndex =
-                find4BytesInArray(fileBytes, byteArrayOf(0x42, 0x41, 0x42, 0x00), dedIndex)
+                find4BytesInArray(fileBytes, byteArrayOf(0x42, 0x41, 0x42, 0x00), dedIndex + shift)
             val bodyEndIndex = if (nextBabIndex != -1) nextBabIndex else fileBytes.size
 
             val body = fileBytes.copyOfRange(dedIndex + 4, bodyEndIndex)
 
-            val year = BigInteger(byteArrayOf(header[9], header[8])).toInt()
-            val moth = header[10].toInt()
-            val day = header[14].toInt()
-            val hour = header[16]
-            val minute = header[18]
-            val second = header[20]
-            val nano = BigInteger(byteArrayOf(header[23], header[22])).toInt()
-            val date = "${day}.${moth}.${year}  ${hour}:${minute}:${second}.${nano}"
             readed.add(
                 MsgFromLog(
                     pos = count_read,
                     ID = ((header[1].toUByte().toInt() shl 8) or header[0].toUByte().toInt()).toUInt(),
                     size = header[4].toInt(),
-                    date_time = date,
+                    date_time = "${header[14].toInt()}.${header[10].toInt()}.${BigInteger(byteArrayOf(header[9], header[8])).toInt()}  ${header[16]}:${header[18]}:${header[20]}.${BigInteger(byteArrayOf(header[23], header[22])).toInt()}",
                     incoming_message = header[header.size - 1],
                     msg_data = body
                 )
@@ -80,6 +75,7 @@ class LogViewModel @Inject constructor() : ViewModel() {
             data.value = readed
 
             startIndex = bodyEndIndex
+            shift = body.size + 4
             count_read += 1
         }
     }
@@ -88,9 +84,9 @@ class LogViewModel @Inject constructor() : ViewModel() {
         val input = context.contentResolver.openInputStream(uri)
         if (input != null) {
             val bytes = input.readBytes()
+            input.close()
             data.value = emptyList()
             extractRecords(bytes)
-            input.close()
         }
     }
 }
