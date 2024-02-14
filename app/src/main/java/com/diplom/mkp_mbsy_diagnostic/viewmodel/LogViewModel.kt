@@ -13,11 +13,13 @@ import javax.inject.Inject
 class LogViewModel @Inject constructor() : ViewModel() {
 
     val data = MutableLiveData<List<MsgFromLog>>()
+    val IDs = MutableLiveData<List<UInt>>()
     var libName = ""
 
     override fun onCleared() {
         super.onCleared()
         data.value = emptyList()
+        IDs.value = emptyList()
     }
 
     fun find4BytesInArray(target: ByteArray, element: ByteArray, startPos: Int): Int {
@@ -75,13 +77,27 @@ class LogViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    fun getIDs() {
+        if (data.value != null) {
+            val distinctIDs = data.value!!.mapNotNull {
+                when (it) {
+                    is MsgFromLog -> it.ID
+                    else -> null
+                }
+            }.distinct().sorted()
+            IDs.value = distinctIDs
+        }
+    }
+
     fun onFilePathsListChange(context: Context, uri: Uri) {
         val input = context.contentResolver.openInputStream(uri)
         if (input != null) {
             val bytes = input.readBytes()
             input.close()
             data.value = emptyList()
+            IDs.value = emptyList()
             extractRecords(bytes)
+            getIDs()
         }
     }
 }

@@ -3,6 +3,7 @@ package com.diplom.mkp_mbsy_diagnostic.ui.screens
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,6 +14,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -507,6 +510,82 @@ fun IDsMKPDialog(
     }
 }
 
+@Composable
+fun FilterDialog(
+    IDs: List<UInt>,
+    showDialog: Boolean,
+    onDismiss: () -> Unit,
+    onConfirm: (ArrayList<UInt>) -> Unit
+) {
+    val picked = ArrayList(IDs)
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { onDismiss() },
+            title = {
+                Text(
+                    text = "Выберите пакеты",
+                    style = TextStyle(
+                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                )
+            },
+            confirmButton = {
+                Button(onClick =
+                {
+                    onConfirm(picked)
+                    onDismiss()
+                }) {
+                    Text("Отфильтровать")
+                }
+            },
+            dismissButton = {
+                Button(onClick = { onDismiss() })
+                {
+                    Text("Отмена")
+                }
+            },
+            text = {
+                Column(
+                    modifier = Modifier.fillMaxWidth()
+                )
+                {
+                    for (i in IDs.indices) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        )
+                        {
+                            val checkState = remember { mutableStateOf(true) }
+                            Checkbox(
+                                checked = checkState.value,
+                                onCheckedChange = {
+                                    checkState.value = it
+                                    if ((checkState.value) && !(picked.contains(IDs[i]))) {
+                                        picked.add(IDs[i])
+                                    }
+                                    if ((!checkState.value) && (picked.contains(IDs[i]))) {
+                                        picked.remove(IDs[i])
+                                    }
+                                }
+                            )
+                            Text(
+                                text = "${IDs[i]}",
+                                style = TextStyle(
+                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+        )
+    }
+}
+
 @Preview
 @Composable
 fun TopBarDarkPreview() {
@@ -580,6 +659,36 @@ fun DialogMKPDarkPreview() {
                 println("Text 1: $text1")
                 println("Text 2: $text2")
                 println("Text 3: $text3")
+            }
+        )
+    }
+}
+
+@Preview
+@Composable
+fun FilterDarkPreview() {
+    MKP_MBSY_diagnosticTheme(darkTheme = true) {
+        FilterDialog(
+            IDs = listOf(100u, 110u, 223u),
+            showDialog = true,
+            onDismiss = {},
+            onConfirm = { filter ->
+                println("filter: $filter")
+            }
+        )
+    }
+}
+
+@Preview
+@Composable
+fun FilterMKPLightPreview() {
+    MKP_MBSY_diagnosticTheme(darkTheme = false) {
+        FilterDialog(
+            IDs = listOf(100u, 110u, 223u),
+            showDialog = true,
+            onDismiss = {},
+            onConfirm = { filter ->
+                println("filter: $filter")
             }
         )
     }

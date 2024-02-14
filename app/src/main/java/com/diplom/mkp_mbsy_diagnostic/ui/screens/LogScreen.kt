@@ -1,5 +1,6 @@
 package com.diplom.mkp_mbsy_diagnostic.ui.screens
 
+import android.annotation.SuppressLint
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateContentSize
@@ -32,6 +33,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -50,10 +52,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.diplom.mkp_mbsy_diagnostic.utils.MSSLog.Flag
@@ -77,6 +82,7 @@ fun LogScreen(
     viewModel: LogViewModel = hiltViewModel()
 ) {
     val data by viewModel.data.observeAsState(initial = emptyList())
+    val IDs by viewModel.IDs.observeAsState(initial = emptyList())
     val context = LocalContext.current
     val filePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument(),
@@ -96,6 +102,7 @@ fun LogScreen(
             {
                 LogContent(
                     data = data,
+                    IDs = IDs,
                     lib = viewModel.libName
                 )
             }
@@ -113,21 +120,34 @@ fun LogScreen(
     )
 }
 
+@SuppressLint("MutableCollectionMutableState")
 @Composable
 fun LogContent(
     data: List<MsgFromLog>,
+    IDs: List<UInt>,
     lib: String
 ) {
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
+    var showFilterDialog by remember { mutableStateOf(false) }
+    var filtered by remember { mutableStateOf(false) }
     var index by remember { mutableStateOf("") }
+    var IDsfilter by remember { mutableStateOf(ArrayList<UInt>()) }
+    FilterDialog(
+        IDs = IDs,
+        showDialog = showFilterDialog,
+        onDismiss = { showFilterDialog = false },
+        onConfirm = { picked ->
+            IDsfilter = picked
+            filtered = IDsfilter != IDs
+        })
     Column {
         Row(
             modifier = Modifier
                 .height(30.dp)
                 .fillMaxWidth()
                 .padding(start = 10.dp, end = 10.dp, top = 5.dp),
-            horizontalArrangement = Arrangement.End
+            horizontalArrangement = Arrangement.Center
         )
         {
             BasicTextField(
@@ -170,34 +190,59 @@ fun LogContent(
             )
             IconButton (onClick =
             {
-                if (data.isEmpty()) {
-                    index = "Откройте файл"
-                } else {
-                    try {
-                        index.toInt()
-                        if ((index.toInt() > data.size-1) && (index.toInt() < 0)) {
-                            index = "Сообщения с таким номером нет в файле"
-                        } else {
-                            coroutineScope.launch { listState.animateScrollToItem(index = index.toInt()) }
-                        }
-                    } catch (e: NumberFormatException) {
-                        index = "Некорректное значение"
+                try {
+                    index.toInt()
+                    if ((index.toInt() > data.size-1) || (index.toInt() < 0)) {
+                        index = "Сообщения с таким номером нет в файле"
+                    } else {
+                        coroutineScope.launch { listState.animateScrollToItem(index = index.toInt()) }
                     }
+                } catch (e: NumberFormatException) {
+                    index = "Некорректное значение"
                 }
-            })
+            }, enabled = data.isNotEmpty())
             {
                 Icon(Icons.Filled.Search, contentDescription = "Search")
             }
         }
-        Text(
-            text = "Сообщений: ${data.size}          Библиотека: ${lib.removePrefix("CommMessages_")}",
-            modifier = Modifier.padding(start = 10.dp, top = 5.dp),
-            style = TextStyle(
-                fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
-            )
+        Row(
+            modifier = Modifier
+                .height(30.dp)
+                .fillMaxWidth()
+                .padding(start = 10.dp, end = 10.dp, top = 5.dp),
+            horizontalArrangement = Arrangement.Center
         )
+        {
+            Text(
+                text = "Сообщений: ${data.size}          Библиотека: ${lib.removePrefix("CommMessages_")}",
+                style = TextStyle(
+                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+            )
+        }
+        Row(
+            modifier = Modifier
+                .height(30.dp)
+                .fillMaxWidth()
+                .padding(start = 10.dp, end = 10.dp, top = 5.dp),
+            horizontalArrangement = Arrangement.Center
+        )
+        {
+            Text(
+                text = "Настройки отображения пакетов",
+                style = TextStyle(
+                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+            )
+            IconButton (onClick = { showFilterDialog = true}, enabled = data.isNotEmpty())
+            {
+                Icon(Icons.Filled.Settings, contentDescription = "Filter")
+            }
+        }
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -206,18 +251,35 @@ fun LogContent(
             horizontalAlignment = Alignment.CenterHorizontally
         )
         {
-            LazyColumn(modifier = Modifier.weight(1f), state = listState)
-            {
-                items(items = data, key = { it.pos }) {
-                    PackagesView(
-                        lib = lib,
-                        pos = it.pos,
-                        incoming_message = it.incoming_message,
-                        id = it.ID,
-                        date_time = it.date_time,
-                        size = it.size,
-                        data = it.msg_data
-                    )
+            if (filtered) {
+                LazyColumn(modifier = Modifier.weight(1f), state = listState)
+                {
+                    items(items = data.filter { IDsfilter.contains(it.ID) }, key = { it.pos }) {
+                        PackagesView(
+                            lib = lib,
+                            pos = it.pos,
+                            incoming_message = it.incoming_message,
+                            id = it.ID,
+                            date_time = it.date_time,
+                            size = it.size,
+                            data = it.msg_data
+                        )
+                    }
+                }
+            } else {
+                LazyColumn(modifier = Modifier.weight(1f), state = listState)
+                {
+                    items(items = data, key = { it.pos }) {
+                        PackagesView(
+                            lib = lib,
+                            pos = it.pos,
+                            incoming_message = it.incoming_message,
+                            id = it.ID,
+                            date_time = it.date_time,
+                            size = it.size,
+                            data = it.msg_data
+                        )
+                    }
                 }
             }
         }
@@ -372,13 +434,33 @@ fun PackagesView(
                             }
 
                             Text(
-                                text = "${PD[i].m_sName}: ${msg[i]} $tire $additional",
-                                style = TextStyle(
-                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier.padding(start = 5.dp, end = 10.dp)
+                                modifier = Modifier.padding(start = 5.dp),
+                                text = buildAnnotatedString {
+                                    withStyle(
+                                        style = SpanStyle(
+                                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                    )
+                                    {
+                                        append("${PD[i].m_sName}: ")
+                                    }
+                                    withStyle(
+                                        style = SpanStyle(
+                                            color = MaterialTheme.colorScheme.error,
+                                            fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                                            fontWeight = FontWeight.Normal
+                                        )
+                                    )
+                                    {
+                                        var value = msg[i].toString()
+                                        if (value.contains('E')) {
+                                            value = "%.21f".format(msg[i])
+                                        }
+                                        append("$value $tire $additional")
+                                    }
+                                }
                             )
                             additional = ""
                             Spacer(
