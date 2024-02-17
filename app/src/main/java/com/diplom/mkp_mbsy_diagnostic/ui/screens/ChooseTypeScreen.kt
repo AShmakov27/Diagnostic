@@ -63,7 +63,7 @@ fun ChooseTypeContent(
         )
         {
             Text(
-                text = "Выберите тип связи",
+                text = "Выберите функцию",
                 style = TextStyle(
                     fontSize = MaterialTheme.typography.titleLarge.fontSize
                 )
