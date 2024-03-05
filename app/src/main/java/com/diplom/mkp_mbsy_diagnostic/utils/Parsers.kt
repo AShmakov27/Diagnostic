@@ -99,12 +99,12 @@ fun byteArrayToMessage_63(bytes: ByteArray): Message_63? {
     val HiSumm = bytes[3]
     val MB_id = ((bytes[5].toInt() shl 8) or bytes[4].toInt()).toUShort()
     val MK_id = ((bytes[7].toInt() shl 8) or bytes[6].toInt()).toUShort()
-    val param1 = ((bytes[9].toInt() shl 8) or bytes[8].toInt()).toUShort()
-    val param2 = ((bytes[11].toInt() shl 8) or bytes[10].toInt()).toUShort()
-    val param3 = ((bytes[13].toInt() shl 8) or bytes[12].toInt()).toUShort()
-    val param4 = ((bytes[15].toInt() shl 8) or bytes[14].toInt()).toUShort()
-    val param5 = ((bytes[17].toInt() shl 8) or bytes[16].toInt()).toUShort()
-    val param6 = ((bytes[19].toInt() shl 8) or bytes[18].toInt()).toUShort()
+    val param1 = ((bytes[9].toInt() shl 8) or bytes[8].toInt()).toUByte().toUShort()
+    val param2 = ((bytes[11].toInt() shl 8) or bytes[10].toInt()).toUByte().toUShort()
+    val param3 = ((bytes[13].toInt() shl 8) or bytes[12].toInt()).toUByte().toUShort()
+    val param4 = ((bytes[15].toInt() shl 8) or bytes[14].toInt()).toUByte().toUShort()
+    val param5 = ((bytes[17].toInt() shl 8) or bytes[16].toInt()).toUByte().toUShort()
+    val param6 = ((bytes[19].toInt() shl 8) or bytes[18].toInt()).toUByte().toUShort()
 
     return Message_63(id_head, id, LoSumm, HiSumm, MB_id, MK_id, param1, param2, param3, param4, param5, param6)
 }

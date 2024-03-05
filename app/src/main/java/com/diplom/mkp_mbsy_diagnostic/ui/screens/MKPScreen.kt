@@ -453,12 +453,16 @@ fun MessageMKPView(
                                                 selected.value = !selected.value
                                                 if (selected.value) {
                                                     Underminning0_bit.set(index-1, true)
+                                                    val arr = ByteArray(4)
+                                                    Underminning0_bit.toByteArray().copyInto(arr)
                                                     color = color_selected
-                                                    Underminning0 = byteArrayToUShortArray(Underminning0_bit.toByteArray())
+                                                    Underminning0 = byteArrayToUShortArray(arr)
                                                 } else {
                                                     Underminning0_bit.set(index-1, false)
+                                                    val arr = ByteArray(4)
+                                                    Underminning0_bit.toByteArray().copyInto(arr)
                                                     color = color_notselected
-                                                    Underminning0 = byteArrayToUShortArray(Underminning0_bit.toByteArray())
+                                                    Underminning0 = byteArrayToUShortArray(arr)
                                                 }
                                             }
                                         ),
@@ -487,6 +491,21 @@ fun MessageMKPView(
                                         .background(
                                             color = MaterialTheme.colorScheme.error,
                                             shape = RoundedCornerShape(5.dp)
+                                        )
+                                        .selectable(
+                                            selected = selected.value,
+                                            onClick = {
+                                                selected.value = !selected.value
+                                                if (selected.value) {
+                                                    Underminning0_bit.set(index-1, true)
+                                                    color = color_selected
+                                                    Underminning0 = byteArrayToUShortArray(Underminning0_bit.toByteArray())
+                                                } else {
+                                                    Underminning0_bit.set(index-1, false)
+                                                    color = color_notselected
+                                                    Underminning0 = byteArrayToUShortArray(Underminning0_bit.toByteArray())
+                                                }
+                                            }
                                         ),
                                     text = "$index",
                                     style = TextStyle(

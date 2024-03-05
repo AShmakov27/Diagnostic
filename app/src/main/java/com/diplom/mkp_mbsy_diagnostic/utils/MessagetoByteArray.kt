@@ -56,7 +56,7 @@ fun Message_38toByteArray(message: Message_38): ByteArray {
 
 @OptIn(ExperimentalUnsignedTypes::class)
 fun Message_54toByteArray(message: Message_54): ByteArray {
-    val buffer = ByteBuffer.allocate(48)
+    val buffer = ByteBuffer.allocate(12)
     buffer.order(ByteOrder.LITTLE_ENDIAN)
 
     buffer.put(message.id_head)
