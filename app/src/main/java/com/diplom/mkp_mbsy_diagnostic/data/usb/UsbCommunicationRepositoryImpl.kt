@@ -101,7 +101,7 @@ class UsbCommunicationRepositoryImpl @Inject constructor(
                 it.read(UsbSerialReceiver)
                 Log.d("Connection", "Serial Connection Opened")
             } else {
-                Log.e("Connection", "Port not opened - There might be a problem with the serial connection to Arduino")
+                Log.e("Connection", "Port not opened - There might be a problem with the serial connection")
             }
         }
     }

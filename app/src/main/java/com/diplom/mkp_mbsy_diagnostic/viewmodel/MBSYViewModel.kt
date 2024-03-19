@@ -192,8 +192,7 @@ class MBSYViewModel @Inject constructor(
         val message = Message_20(head_id.toByte(), 20, 1, 1, MB_id.toUShort(), 0u)
         val data = Message_20toByteArray(message)
         if (usbCommunicationRepository.serialWrite(data)) {
-            Toast.makeText(context, "Сообщение на МБСУ №$MB_id отправлено", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(context, "Сообщение на МБСУ №$MB_id отправлено", Toast.LENGTH_SHORT).show()
             val index = data_list.value?.indexOfFirst { it.Mes17.MB_id == MB_id.toUShort() }
             if (index != null) {
                 if (index != -1) {
@@ -214,8 +213,7 @@ class MBSYViewModel @Inject constructor(
         val message = Message_62(head_id.toByte(), 62, 1, 1, MB_id.toUShort(), 0u)
         val data = Message_62toByteArray(message)
         if (usbCommunicationRepository.serialWrite(data)) {
-            Toast.makeText(context, "Сообщение на МБСУ №$MB_id отправлено", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(context, "Сообщение на МБСУ №$MB_id отправлено", Toast.LENGTH_SHORT).show()
             val index = data_list.value?.indexOfFirst { it.Mes17.MB_id == MB_id.toUShort() }
             if (index != null) {
                 if (index != -1) {
