@@ -35,7 +35,7 @@ class UsbCommunicationRepositoryImpl @Inject constructor(
                     connect(device)
                     return true
                 } else {
-                    Log.e("Connection", "Arduino Device not found.")
+                    Log.e("Connection", "Device not found.")
                     return false
                 }
             }

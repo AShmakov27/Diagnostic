@@ -14,7 +14,7 @@ class UsbSerialReceiver: UsbSerialInterface.UsbReadCallback {
     override fun onReceivedData(data: ByteArray?) {
         data?.let {
             try {
-                Log.i("Read", "message from arduino: $data")
+                Log.i("Read", "message: $data")
                 _received = data
             } catch (e: UnsupportedEncodingException) {
                 e.printStackTrace()
