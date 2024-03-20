@@ -24,16 +24,16 @@ class structLabelFile {
 }
 
 class structLabelMessage {
-    var baba:CharArray = CharArray(4)
+    var bab:CharArray = CharArray(4)
     var ID: UInt = 0u
     var size: Int = 0
     var date_time = LocalDateTime.now(ZoneId.systemDefault())
     var incoming_message: Byte = 0
-    var deda:CharArray = CharArray(4)
+    var ded:CharArray = CharArray(4)
 
     init {
-        "BAB".toCharArray(baba)
-        "DED".toCharArray(deda)
+        "BAB".toCharArray(bab)
+        "DED".toCharArray(ded)
     }
 }
 
@@ -65,11 +65,11 @@ class WorkMSSFile {
                 val messTypeByteArray = ByteArray(1)
                 messTypeByteArray[0] = labelMessage.incoming_message
 
-                file!!.appendBytes(labelMessage.baba.joinToString("").toByteArray())
+                file!!.appendBytes(labelMessage.bab.joinToString("").toByteArray())
                 file!!.appendBytes(messIDSIZEByteArray)
                 file!!.appendBytes(DateTimetoByteArray(labelMessage.date_time))
                 file!!.appendBytes(messTypeByteArray)
-                file!!.appendBytes(labelMessage.deda.joinToString("").toByteArray())
+                file!!.appendBytes(labelMessage.ded.joinToString("").toByteArray())
                 file!!.appendBytes(data)
 
                 Log.d("MSSLog", "Message label and data Added to MSS")
